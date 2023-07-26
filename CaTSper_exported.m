@@ -847,7 +847,10 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % grouping all phase values into one single vector
             pData = [pData3 pData1];
             
-            % correction for lower frequency region(0 to 0.1THz) with extrapolation
+            % default: extrapolate phase data from 0.2 to 0.4 THz to estimate the
+            % shift in phase and correct for it
+            % more noise seems to be resulted if the lower limit of the specified region 
+            % takes a value less than 0.2 THz
             epol_srtFreq = app.FromEpolFreqEditField.Value * 1e12;
             epol_endFreq = app.ToEpolFreqEditField.Value * 1e12;
             % find the index of the first element in 'freq' that has a value
@@ -1305,6 +1308,37 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % trim the sample electric field vector using the
                 % selected indices
                 E_sample = E_sample(cutoff_low:cutoff_high);
+
+                % centre reference and sample peak to midpoint of apodisation
+                % function respectively, by adding minimum number of zeros
+                % to one end of the waveform
+                % this is not upsampling of data; upsampling will be done by
+                % MATLAB's built-in FFT function
+
+                % find the location of the reference and sample peak
+                % respectively
+                % use max() instead of findpeaks() as the sample and
+                % reference peak must always have the greatest amplitude
+                % amongst all points in the waveform by definition
+                [~,reference_pk_loc] = max(E_sample);
+                [~,sample_pk_loc] = max(E_sample);
+
+                % find the minimum number of zeros that needs to be added
+                % before or after the waveform in order to centre the
+                % reference or sample peak
+                % if the value is positive, it means that the
+                % zeros should be added before the waveform; if the value
+                % is negative, zeros should be added after the waveform
+                % note this is the result of (length(E_reference)-reference_pk_loc)-(reference_pk_loc-1)
+                ref_add_zero_no = length(E_reference)-2*reference_pk_loc+1;
+                sam_add_zero_no = length(E_sample)-2*sample_pk_loc+1;
+
+                % adding zeros based on the results above to locate
+                % reference and sam peaks at the midpoint of the
+                % apodisation function
+                % no zeros are added if the peak is already at midpoint
+                E_reference = [zeros(1, max(0, ref_add_zero_no)), E_reference, zeros(1, max(0, -ref_add_zero_no))];
+                E_sample = [zeros(1, max(0, sam_add_zero_no)), E_sample, zeros(1, max(0, -sam_add_zero_no))];
                 
                 % window function
                 % if any apodization function is chosen (apart from
@@ -1336,7 +1370,16 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % into frequency domain
                 FD_reference = fft(E_reference,N);
                 FD_sample = fft(E_sample,N);
-                
+
+                % correcting for phase introduced due to fast Fourier
+                % transform and zero padding due to centering time-domain waveform
+                % correction for zero padding due to centering time-domain waveform is
+                % only needed when the zeros are added before the
+                % time-domain waveform
+                k = [0:1:N-1];
+                FD_reference = FD_reference.*exp(i.*2.*pi.*k.*max(1,ref_add_zero_no)./N);
+                FD_sample = FD_sample.*exp(i.*2.*pi.*k.*max(1,sam_add_zero_no)./N);
+                                
                 % Calculate the double and single-sided spectra
                 % create a frequency vector from 0 to half the frequency
                 % spacing (calculated earlier in this function), in
@@ -1408,12 +1451,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 app.FD_data.metadata{FDindex}.etlNum_ref = etlNum_ref;
                 app.FD_data.metadata{FDindex}.etlNum_sam = etlNum_sam;
                 
-                % unwrap phase data (calling TDS-unwrap function)
+                % unwrap phase data (calling TDSunwrap function)
                 % unwrapping phase values for reference and sample
                 % measurements in frequency domain
                 app.FD_data.frequency{FDindex} = FD_frequency;
-                uw_refPhase = TDSunwrap(app,angle(FD_reference),FD_frequency);
-                uw_samPhase = TDSunwrap(app,angle(FD_sample),FD_frequency);
+                % the negative sign is added to compensate for the negative sign introduced during the fast Fourier transform process
+                uw_refPhase = TDSunwrap(app,-angle(FD_reference),FD_frequency);
+                uw_samPhase = TDSunwrap(app,-angle(FD_sample),FD_frequency);
                 
                 % cut off lower frequency part
                 % trim lower end values using the lower cutoff value
@@ -1441,8 +1485,10 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % domain by that of the equivalent reference value
                 app.FD_data.transmit_amplitude{FDindex} =...
                     abs(FD_sample)./abs(FD_reference);
+                % ensure transmitted phase is positive and hence ensure
+                % refractive index spectra is correctly calculated
                 app.FD_data.transmit_phase{FDindex} = ...
-                    uw_refPhase - uw_samPhase;
+                    abs(uw_samPhase - uw_refPhase);
                 
             end
             
@@ -2311,6 +2357,14 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % into frequency domain
             FD_reference = fft(E_reference,N);
             FD_sample = fft(E_sample,N);
+
+            % correcting for phase introduced due to fast Fourier
+            % transform
+            % correction for zero padding is not necessary here
+            % since no padding is placed to centre waveform with respect to apodisation function
+            k = [0:1:N-1];
+            FD_reference = FD_reference.*exp(i.*2.*pi.*k./N);
+            FD_sample = FD_sample.*exp(i.*2.*pi.*k./N);
                 
             % Calculate the double and single-sided spectra
             % create a frequency vector from 0 to half the frequency
@@ -2337,11 +2391,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             FD_reference = FD_reference(1:cutoff_high);
             FD_sample = FD_sample(1:cutoff_high);
 
-            % unwrap phase data (calling TDS-unwrap function)
+            % unwrap phase data (calling TDSunwrap function)
             % unwrapping phase values for reference and sample
             % measurements in frequency domain
-            uw_refPhase = TDSunwrap(app,angle(FD_reference),FD_frequency);
-            uw_samPhase = TDSunwrap(app,angle(FD_sample),FD_frequency);
+            % the negative sign is added to compensate for the negative sign introduced during the fast Fourier transform process
+            uw_refPhase = TDSunwrap(app,-angle(FD_reference),FD_frequency);
+            uw_samPhase = TDSunwrap(app,-angle(FD_sample),FD_frequency);
 
             % cut off lower frequency part
             FD_frequency = FD_frequency(cutoff_low:end);
@@ -2352,7 +2407,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
               
             % calculate Transmittance
             transmAmp = abs(FD_sample)./abs(FD_reference);
-            transmPha = uw_refPhase - uw_samPhase;
+            % ensure transmitted phase is positive and hence ensure
+            % refractive index spectra is correctly calculated
+            transmPha = abs(uw_refPhase - uw_samPhase);
          
             % calculate the absorption coefficient, the logartihm base is e.
             % this is calculated by referencing equation 2 from Jepsen and Fischer (DOI: 10.1364/ol.30.000029)
@@ -2864,12 +2921,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % SAVETDFDDMButtonPushed saves selected or all time domain data,
             % all frequency domain and data manipulation data
 
-            % TD_data save
+            % preparing to save TD_data
             % creates a dialouge box asking if user would like to save all
             % data (time domain, frequency domain and data manipulation),
             % and provides three options for response
-            question = "Do you want to save all data?";
-            answer = questdlg(question,'Data Range','Yes','No, only selected data','cancel');
+            question = 'Do you want to save all data?';
+            answer = questdlg(question,'Data Range','Yes','No, only selected data','Cancel','Yes');
             
             % open a dialouge box for saving file as *.mat format or for
             % any file format
@@ -2886,8 +2943,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             fullfile = strcat(filepath,filename);
             
             % if all data are to be saved, assign the time domain data to parameters
-            if isequal(answer,'Yes')
-                ListItems = app.MeasurementListBox.Items;
+            if isequal(answer,"Yes")
+                TD_ListItems = app.MeasurementListBox.Items;
                 TD_data = app.TD_data;
             else
                 % if no time domain data are selected, display warning message and do
@@ -2899,7 +2956,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 
                 % if only selected data are to be saved, assign the
                 % selected time domain data to parameters
-                ListItems = app.SelectionListBox.Items;
+                TD_ListItems = app.SelectionListBox.Items;
                 ListIdx = app.TD_select;
                 cnt = 1
                 
@@ -2917,24 +2974,22 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 TD_data.totalMeasNum = length(ListIdx);
 
             end
-            
-            % save the time domain data
-            save(fullfile,'TD_data','TD_ListItems');
-            
-            % FD_data save
+                    
+            % preparing to save FD_data
             % extract the frequency domain data and assign them to
             % parameters
             FD_ListItems = app.FDListListBox.Items;
             FD_ListItems2 = app.FDSelectionListBox_2.Items;
             % save the frequency domain data
             FD_data = app.FD_data;
-            save(fullfile,'FD_data','FD_ListItems','FD_ListItems2');
-            
-            % DM_data save
+                        
+            % preparing to save DM_data
             % extract the data manipulation data and assign them to parameters
             DM_ListItems = app.SourceDataSetEditField.Value;
             DM_data = app.DM_data;
-            save(fullfile,'DM_data','DM_ListItems');
+
+            % save all TD, FD and DM data
+            save(fullfile,'TD_data','TD_ListItems','FD_data','FD_ListItems','FD_ListItems2','DM_data','DM_ListItems');
                   
         end
 
@@ -3530,7 +3585,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create ApodisationFunctionDropDown
             app.ApodisationFunctionDropDown = uidropdown(app.FFTSettingsPanel);
-            app.ApodisationFunctionDropDown.Items = {'Boxcar', 'Hamming', 'Bartlett', 'Blackman', 'Hann', 'Taylor', 'Triang'};
+            app.ApodisationFunctionDropDown.Items = {'Boxcar', 'Hamming', 'Bartlett', 'Blackman', 'Rectangular window', 'Hann', 'Taylor', 'Triang'};
             app.ApodisationFunctionDropDown.ItemsData = {'Boxcar', 'hamming', 'bartlett', 'blackman', 'rectwin', 'hann', 'taylorwin', 'triang'};
             app.ApodisationFunctionDropDown.Position = [139 82 137 22];
             app.ApodisationFunctionDropDown.Value = 'Boxcar';
@@ -3648,7 +3703,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FromEpolFreqEditField.ValueDisplayFormat = '%5.2f';
             app.FromEpolFreqEditField.ValueChangedFcn = createCallbackFcn(app, @FromEpolFreqEditFieldValueChanged, true);
             app.FromEpolFreqEditField.Position = [126 173 45 22];
-            app.FromEpolFreqEditField.Value = 0.05;
+            app.FromEpolFreqEditField.Value = 0.2;
 
             % Create ToEditFieldLabel_2
             app.ToEditFieldLabel_2 = uilabel(app.FFTSettingsPanel);
