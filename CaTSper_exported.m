@@ -28,7 +28,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         LoadData_TD                     matlab.ui.control.Button
         GridOffButton_3                 matlab.ui.control.StateButton
         JetColormapButton_2             matlab.ui.control.StateButton
-        LegenButton                     matlab.ui.control.StateButton
+        LegendButton_2                  matlab.ui.control.StateButton
         ButtonGroupTD                   matlab.ui.container.ButtonGroup
         BothButtonTD                    matlab.ui.control.RadioButton
         SampleButtonTD                  matlab.ui.control.RadioButton
@@ -375,7 +375,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
             
             % reset 'NO LEGEND', 'JET COLORMAP'
-            app.LegenButton.Value = 0;
+            app.LegendButton_2.Value = 0;
             app.JetColormapButton_2.Value = 0;
             
 
@@ -2233,11 +2233,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
         end
 
-        % Value changed function: LegenButton
-        function LegenButtonValueChanged(app, event)
+        % Value changed function: LegendButton_2
+        function LegendButton_2ValueChanged(app, event)
             % LEGENDButton_2ValueChanged displays or hides legend based on
             % user's specified preference
-            value = app.LegenButton.Value;
+            value = app.LegendButton_2.Value;
             if isequal(value,0)
                 legend(app.UIAxes1,"hide");
                 legend(app.UIAxes2,"hide");
@@ -3756,11 +3756,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.BothButtonTD.Position = [11 7 65 22];
             app.BothButtonTD.Value = true;
 
-            % Create LegenButton
-            app.LegenButton = uibutton(app.TimeDomainTDTab, 'state');
-            app.LegenButton.ValueChangedFcn = createCallbackFcn(app, @LegenButtonValueChanged, true);
-            app.LegenButton.Text = 'Legen';
-            app.LegenButton.Position = [1142 8 99 23];
+            % Create LegendButton_2
+            app.LegendButton_2 = uibutton(app.TimeDomainTDTab, 'state');
+            app.LegendButton_2.ValueChangedFcn = createCallbackFcn(app, @LegendButton_2ValueChanged, true);
+            app.LegendButton_2.Text = 'Legend';
+            app.LegendButton_2.Position = [1142 8 99 23];
 
             % Create JetColormapButton_2
             app.JetColormapButton_2 = uibutton(app.TimeDomainTDTab, 'state');
