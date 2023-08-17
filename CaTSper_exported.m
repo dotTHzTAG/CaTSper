@@ -1108,7 +1108,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         function startupFcn(app)
             app.PRJ_count = 0;
             app.filename = [];
-            Tcell_measDetails = {"Description","Instrument","Date","Time","Metadata","mt1","mt2","mt3","mt4","Datasets","Time Delay","Refractive Index","1st Etalon";...
+            Tcell_measDetails = {"Description","Instrument","Date","Time","Metadata","md1","md2","md3","md4","Datasets","Time Delay","Refractive Index","1st Etalon";...
                 "","","","","","","","","","","","",""}';
             app.UITable_MeasDetail.Data = cell2table(Tcell_measDetails);
             app.Tcell_measDetails = Tcell_measDetails;
@@ -1130,17 +1130,17 @@ classdef CaTSper_exported < matlab.apps.AppBase
             refNum = sum(~cellfun("isempty",app.TD_data.references(MeasNum,:)))/2;
             
             description = app.TD_data.metadata{MeasNum}.description;
-            mt1 = app.TD_data.metadata{MeasNum}.mt1;
-            mt2 = app.TD_data.metadata{MeasNum}.mt2;
-            mt3 = app.TD_data.metadata{MeasNum}.mt3;
-            mt4 = app.TD_data.metadata{MeasNum}.mt4;
+            md1 = app.TD_data.metadata{MeasNum}.md1;
+            md2 = app.TD_data.metadata{MeasNum}.md2;
+            md3 = app.TD_data.metadata{MeasNum}.md3;
+            md4 = app.TD_data.metadata{MeasNum}.md4;
 
             scanTime = app.TD_data.metadata{MeasNum}.time;
             scanDate = app.TD_data.metadata{MeasNum}.date;
             insProfile = app.TD_data.metadata{MeasNum}.instrument;            
             
             %display measurement setting
-            Tcell_measDetails([1,2,3,4,6,7,8,9,11,12,13],2) = {description,insProfile,scanDate,scanTime,mt1,mt2,mt3,mt4,timeDelay,n_eff,etl_t}';
+            Tcell_measDetails([1,2,3,4,6,7,8,9,11,12,13],2) = {description,insProfile,scanDate,scanTime,md1,md2,md3,md4,timeDelay,n_eff,etl_t}';
             app.UITable_MeasDetail.Data = cell2table(Tcell_measDetails);
             app.Tcell_measDetails = Tcell_measDetails;
 
@@ -3215,16 +3215,16 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
                     % metadata retrieving
                     if newDataset
-                        mtDescription = h5readatt(fullpath,dn,"mtDescription");
-                        Tcell_measDetails{5,2} = mtDescription;
-                        mtList = split(mtDescription,',');
-                        TD_data.metadataList = mtList';
-                        for mtIdx = 1:4
-                            mtDRow = 5; % metadata description row
-                            if mtIdx<=size(mtList,1)
-                                Tcell_measDetails{mtIdx+mtDRow,1} = mtList(mtIdx);
+                        mdDescription = h5readatt(fullpath,dn,"mdDescription");
+                        Tcell_measDetails{5,2} = mdDescription;
+                        mdList = split(mdDescription,',');
+                        TD_data.metadataList = mdList';
+                        for mdIdx = 1:4
+                            mdDRow = 5; % metadata description row
+                            if mdIdx<=size(mdList,1)
+                                Tcell_measDetails{mdIdx+mdDRow,1} = mdList(mdIdx);
                             else
-                                Tcell_measDetails{mtIdx+mtDRow,1} = "-";
+                                Tcell_measDetails{mdIdx+mdDRow,1} = "-";
                             end
                         end
 
@@ -3236,14 +3236,14 @@ classdef CaTSper_exported < matlab.apps.AppBase
                         newDataset = 0;
                     end
 
-                    mt1 = h5readatt(fullpath,dn,"mt1"); % mostly thickness, but can be changed
-                    mt2 = h5readatt(fullpath,dn,"mt2"); % mostly temperature, but can be changed
-                    mt3 = h5readatt(fullpath,dn,"mt3"); % optional metadata 3
-                    mt4 = h5readatt(fullpath,dn,"mt4"); % optional metadata 4
+                    md1 = h5readatt(fullpath,dn,"md1"); % mostly thickness, but can be changed
+                    md2 = h5readatt(fullpath,dn,"md2"); % mostly temperature, but can be changed
+                    md3 = h5readatt(fullpath,dn,"md3"); % optional metadata 3
+                    md4 = h5readatt(fullpath,dn,"md4"); % optional metadata 4
 
                     % time delay and effective refractive index calculation
                     % if the array in the dataset has the referecne 1 datasets 
-                    thickness = mt1;
+                    thickness = md1;
 
                     if ~isempty(ds2)
                         timeDelay = getTimeDelay(app,ds1,ds2);
@@ -3270,18 +3270,18 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     TD_data.metadata{idxCap+idx-1}.scanLength = size(ds1,2);
                     TD_data.metadata{idxCap+idx-1}.xSpacing = mean(diff(ds1(1,:)));
                     TD_data.metadata{idxCap+idx-1}.description = h5readatt(fullpath,dn,"description");
-                    %TD_data.metadata{idxCap+idx-1}.mtDescription = h5readatt(fullpath,dn,"mtDescription");
+                    %TD_data.metadata{idxCap+idx-1}.mdDescription = h5readatt(fullpath,dn,"mdDescription");
                     %TD_data.metadata{idxCap+idx-1}.dsDescription = h5readatt(fullpath,dn,"dsDescription");
                     TD_data.metadata{idxCap+idx-1}.date = h5readatt(fullpath,dn,"date");
                     TD_data.metadata{idxCap+idx-1}.time = h5readatt(fullpath,dn,"time");
                     TD_data.metadata{idxCap+idx-1}.refOption = refOption;
                     
                     TD_data.metadata{idxCap+idx-1}.thickness = thickness; 
-                    % while 'thickness' can be redundant due to mt1, this is to make thickness information more obivous in the subsequential processes.
-                    TD_data.metadata{idxCap+idx-1}.mt1 = mt1; % metadata 1
-                    TD_data.metadata{idxCap+idx-1}.mt2 = mt2; % metadata 2
-                    TD_data.metadata{idxCap+idx-1}.mt3 = mt3; % metadata 3
-                    TD_data.metadata{idxCap+idx-1}.mt4 = mt4; % metadata 4
+                    % while 'thickness' can be redundant due to md1, this is to make thickness information more obivous in the subsequential processes.
+                    TD_data.metadata{idxCap+idx-1}.md1 = md1; % metadata 1
+                    TD_data.metadata{idxCap+idx-1}.md2 = md2; % metadata 2
+                    TD_data.metadata{idxCap+idx-1}.md3 = md3; % metadata 3
+                    TD_data.metadata{idxCap+idx-1}.md4 = md4; % metadata 4
     
                     % extract the name of the instrument model
                     insProfile = extractBefore(h5readatt(fullpath,dn,"instrument"),'/');
@@ -3377,14 +3377,14 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 case 1
                     app.TD_data.metadata{MeasNum}.description = newData;
                 case 6
-                    app.TD_data.metadata{MeasNum}.mt1 = newData;
+                    app.TD_data.metadata{MeasNum}.md1 = newData;
                     app.TD_data.metadata{MeasNum}.thickness = newData;
                 case 7
-                    app.TD_data.metadata{MeasNum}.mt2 = newData;
+                    app.TD_data.metadata{MeasNum}.md2 = newData;
                 case 8
-                    app.TD_data.metadata{MeasNum}.mt3 = newData;
+                    app.TD_data.metadata{MeasNum}.md3 = newData;
                 case 9
-                    app.TD_data.metadata{MeasNum}.mt4 = newData;
+                    app.TD_data.metadata{MeasNum}.md4 = newData;
                 otherwise
                     app.UITable_MeasDetail.Data = cell2table(app.Tcell_measDetails);
             end
