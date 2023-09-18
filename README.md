@@ -18,3 +18,5 @@ Please follow the instructions below.
  - dotTHz_logo.png : logo image
 3. Unzip the package file into the folder where you'd like to keep them.
 4. Double click 'CaTSper.mlapp' to launch the software.
+
+For detailed descriptions for CaTSper and step-by-step tutorial, please visit [dotTHz documentation](https://github.com/dotTHzTAG/Documentation).
