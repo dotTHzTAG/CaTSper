@@ -2254,8 +2254,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             value = app.JetColormapButton_2.Value;
             idxNum = length(app.TD_select);
             if isequal(value,1)
-                app.UIAxes1.ColorOrder = flipud(jet(idxNum));
-                app.UIAxes2.ColorOrder = flipud(jet(idxNum));
+                app.UIAxes1.ColorOrder = jet(idxNum);
+                app.UIAxes2.ColorOrder = jet(idxNum);
             else
                 app.UIAxes1.ColorOrder = lines(idxNum);
                 app.UIAxes2.ColorOrder = lines(idxNum);
@@ -2286,8 +2286,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             value = app.JetColormapButton.Value;
             idxNum = length(app.FD_select_2);
             if isequal(value,1)
-                app.UIAxes3.ColorOrder = flipud(jet(idxNum));
-                app.UIAxes4.ColorOrder = flipud(jet(idxNum));
+                app.UIAxes3.ColorOrder = jet(idxNum);
+                app.UIAxes4.ColorOrder = jet(idxNum);
             else
                 app.UIAxes3.ColorOrder = lines(idxNum);
                 app.UIAxes4.ColorOrder = lines(idxNum);
