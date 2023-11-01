@@ -223,7 +223,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
 
         end
 
-        % Callback function: not associated with a component
+        % Callback function
         function ApplyButtonPushed(app, event)
             % APPLYButtonPushed updates the upper limit frequency value as
             % specified by the user on the edit field, runs the updateFreqRange function from the
@@ -242,7 +242,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             delete(app)
         end
 
-        % Callback function: not associated with a component
+        % Callback function
         function APPLYALLButtonPushed(app, event)
             % APPLYALLButtonPushed updates the upper limit frequency value as
             % specified by the user on the edit field, runs the updateFreqRange function from the
@@ -357,7 +357,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             ylabel(app.UIAxes1, 'Dynamic Range')
             app.UIAxes1.PlotBoxAspectRatio = [1.80656934306569 1 1];
             app.UIAxes1.FontWeight = 'bold';
-            app.UIAxes1.XLim = [0 5];
+            app.UIAxes1.XLim = [0 7];
             app.UIAxes1.YLim = [0 3000];
             app.UIAxes1.XTickLabelRotation = 0;
             app.UIAxes1.YTickLabelRotation = 0;
@@ -366,6 +366,8 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             app.UIAxes1.ZTickLabelRotation = 0;
             app.UIAxes1.LineWidth = 1;
             app.UIAxes1.Box = 'on';
+            app.UIAxes1.XGrid = 'on';
+            app.UIAxes1.YGrid = 'on';
             app.UIAxes1.Position = [279 347 550 330];
 
             % Create UIAxes2
@@ -375,13 +377,15 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             ylabel(app.UIAxes2, 'Absorption coefficient [cm^{-1}]')
             app.UIAxes2.PlotBoxAspectRatio = [1.80656934306569 1 1];
             app.UIAxes2.FontWeight = 'bold';
-            app.UIAxes2.XLim = [0 5];
+            app.UIAxes2.XLim = [0 7];
             app.UIAxes2.YLim = [-100 500];
             app.UIAxes2.XTickLabelRotation = 0;
             app.UIAxes2.YTickLabelRotation = 0;
             app.UIAxes2.ZTickLabelRotation = 0;
             app.UIAxes2.LineWidth = 1;
             app.UIAxes2.Box = 'on';
+            app.UIAxes2.XGrid = 'on';
+            app.UIAxes2.YGrid = 'on';
             app.UIAxes2.Position = [279 11 550 330];
 
             % Create DynamicRangeCheckerLabel
@@ -395,7 +399,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             % Create CutoffSettingPanel
             app.CutoffSettingPanel = uipanel(app.DynamicRangeCheckerUIFigure);
             app.CutoffSettingPanel.Title = 'Cutoff Setting';
-            app.CutoffSettingPanel.Position = [23 358 234 167];
+            app.CutoffSettingPanel.Position = [24 359 234 167];
 
             % Create CutoffFrequencyLabel
             app.CutoffFrequencyLabel = uilabel(app.CutoffSettingPanel);
@@ -429,7 +433,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
 
             % Create CutoffFrequencySlider
             app.CutoffFrequencySlider = uislider(app.CutoffSettingPanel);
-            app.CutoffFrequencySlider.Limits = [1 5];
+            app.CutoffFrequencySlider.Limits = [1 7];
             app.CutoffFrequencySlider.ValueChangedFcn = createCallbackFcn(app, @CutoffFrequencySliderValueChanged, true);
             app.CutoffFrequencySlider.Position = [24 103 195 3];
             app.CutoffFrequencySlider.Value = 3.5;
@@ -437,7 +441,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             % Create SampleInformationPanel
             app.SampleInformationPanel = uipanel(app.DynamicRangeCheckerUIFigure);
             app.SampleInformationPanel.Title = 'Sample Information';
-            app.SampleInformationPanel.Position = [24 153 234 195];
+            app.SampleInformationPanel.Position = [25 154 234 195];
 
             % Create ThicknessmmEditFieldLabel
             app.ThicknessmmEditFieldLabel = uilabel(app.SampleInformationPanel);
@@ -471,7 +475,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
 
             % Create UpperlimitFrequencySlider
             app.UpperlimitFrequencySlider = uislider(app.SampleInformationPanel);
-            app.UpperlimitFrequencySlider.Limits = [1 5];
+            app.UpperlimitFrequencySlider.Limits = [1 7];
             app.UpperlimitFrequencySlider.ValueChangedFcn = createCallbackFcn(app, @UpperlimitFrequencySliderValueChanged, true);
             app.UpperlimitFrequencySlider.Position = [24 136 195 3];
             app.UpperlimitFrequencySlider.Value = 3.5;
@@ -481,6 +485,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             app.AbsorptionYaxisfittingCheckBox.ValueChangedFcn = createCallbackFcn(app, @AbsorptionYaxisfittingCheckBoxValueChanged, true);
             app.AbsorptionYaxisfittingCheckBox.Text = 'Absorption Y-axis fitting';
             app.AbsorptionYaxisfittingCheckBox.Position = [81 12 147 22];
+            app.AbsorptionYaxisfittingCheckBox.Value = true;
 
             % Create MeasurementTypeButtonGroup
             app.MeasurementTypeButtonGroup = uibuttongroup(app.DynamicRangeCheckerUIFigure);

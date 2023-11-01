@@ -416,7 +416,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
                 refIdx = refOption*2-1;
                 % extracting time data
-                td_base = app.TD_data.references{idx,refIdx};
+                td_time = app.TD_data.references{idx,refIdx};
                 % extracting corresponding electric field intensity values
                 % for reference measurement
                 td_reference = app.TD_data.references{idx,refIdx+1};
@@ -432,15 +432,15 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 switch plotType
                     % plotting sample measurements only
                     case 'Sample'
-                      plot(ax,td_base,td_sample,'linewidth',1);
+                      plot(ax,td_time,td_sample,'linewidth',1);
                       lgd{cnt} = sampleID;
                       cnt = cnt + 1;
                     % plotting reference measurments only
                     case 'Reference'
-                      plot(ax,td_base,td_reference,'linewidth',1);
+                      plot(ax,td_time,td_reference,'linewidth',1);
                     % plotting both sample and reference measurements
                     otherwise
-                      plot(ax,td_base,td_reference,td_base,td_sample,...
+                      plot(ax,td_time,td_reference,td_time,td_sample,...
                           'linewidth',1);
                 end
             end
@@ -1106,6 +1106,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
         % Code that executes after component creation
         function startupFcn(app)
+            mPath = fileparts(which(mfilename));
+            addpath(genpath(mPath));            
+            
             app.PRJ_count = 0;
             app.filename = [];
             Tcell_measDetails = {"Description","Instrument","Date","Time","Metadata","md1","md2","md3","md4","Datasets","Time Delay","Refractive Index","1st Etalon";...
@@ -1114,6 +1117,29 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.Tcell_measDetails = Tcell_measDetails;
             app.Tcell_measDetailsDefault = Tcell_measDetails;
             %app.DEBUGMsgLabel.Text = app.CatsperUIFigure.Tag;
+
+            %Read the configuration file
+            try
+                configFile = 'config_default.json';
+           catch ME
+                fig = app.CatsperUIFigure;
+                uialert(fig,'config_default.json file is missing.','warning');
+                return;
+            end
+
+            % Apply default configuration settings
+            configData = jsondecode(fileread(configFile));
+
+            % Default FFT_Settings
+            app.FromFreqEditField.Value = configData.FFT_Settings.Frequency_Range(1);
+            app.ToFreqEditField.Value = configData.FFT_Settings.Frequency_Range(2);
+            app.ZeroFillingpowerofSpinner.Value = configData.FFT_Settings.FFT_Upsampling;
+            app.StartFrequencyTHzEditField.Value = configData.FFT_Settings.Unwrapping_Start_Frequency;
+            app.FromEpolFreqEditField.Value = configData.FFT_Settings.Extrapolation_Frequency_Range(1);
+            app.ToEpolFreqEditField.Value = configData.FFT_Settings.Extrapolation_Frequency_Range(2);
+            app.FromTimeEditField.Value = configData.FFT_Settings.Window_Function_Range(1);
+            app.ToTimeEditField.Value = configData.FFT_Settings.Window_Function_Range(2);
+
         end
 
         % Value changed function: MeasurementListBox
@@ -1445,7 +1471,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     app.TD_data.metadata{TDindex};
                 app.FD_data.metadata{FDindex}.thickness = ...
                     app.TD_data.metadata{TDindex}.thickness;
-                app.FD_data.metadata{FDindex}.refThickness = 0;
+                app.FD_data.metadata{FDindex}.refThickness = ...
+                    app.TD_data.metadata{TDindex}.refThickness;
                 app.FD_data.metadata{FDindex}.timeWindow = [td_min td_max];
                 app.FD_data.metadata{FDindex}.windowFunction = funcName;
                 app.FD_data.metadata{FDindex}.etlNum_ref = etlNum_ref;
@@ -2309,7 +2336,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % display warning message if no items are selected
             if isempty(measNum)
                 fig = app.CatsperUIFigure;
-                uialert(fig,'Select an item in the the list','Warning');
+                uialert(fig,'Select item in the the list','Warning');
                 return;
             end
 
@@ -2383,7 +2410,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             cutoff_low = sum(freqs < 0.2*10^12) + 1;
             % find the first index that has a frequency
             % less than 5 THz
-            cutoff_high = sum(freqs < 5*10^12); 
+            cutoff_high = sum(freqs < 7*10^12); 
                 
             % trim the frequency, reference and sample data values
             % using the upper cutoff limit
@@ -3238,12 +3265,18 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
                     md1 = h5readatt(fullpath,dn,"md1"); % mostly thickness, but can be changed
                     md2 = h5readatt(fullpath,dn,"md2"); % mostly temperature, but can be changed
-                    md3 = h5readatt(fullpath,dn,"md3"); % optional metadata 3
+                    md3 = h5readatt(fullpath,dn,"md3"); % optional reference thickness
                     md4 = h5readatt(fullpath,dn,"md4"); % optional metadata 4
 
                     % time delay and effective refractive index calculation
                     % if the array in the dataset has the referecne 1 datasets 
                     thickness = md1;
+
+                    if ~isempty(md3)
+                        refThickness = md3;
+                    else
+                        refThickness = 0;
+                    end
 
                     if ~isempty(ds2)
                         timeDelay = getTimeDelay(app,ds1,ds2);
@@ -3277,7 +3310,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     TD_data.metadata{idxCap+idx-1}.refOption = refOption;
                     
                     TD_data.metadata{idxCap+idx-1}.thickness = thickness; 
-                    % while 'thickness' can be redundant due to md1, this is to make thickness information more obivous in the subsequential processes.
+                    TD_data.metadata{idxCap+idx-1}.refThickness = refThickness;
+                    % while 'thickness' and 'refThickness' are redundant, these are to make thickness information more obivous for the subsequential processes.
+
                     TD_data.metadata{idxCap+idx-1}.md1 = md1; % metadata 1
                     TD_data.metadata{idxCap+idx-1}.md2 = md2; % metadata 2
                     TD_data.metadata{idxCap+idx-1}.md3 = md3; % metadata 3
@@ -4042,6 +4077,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create DescriptionEditField_FD
             app.DescriptionEditField_FD = uieditfield(app.FDDataAnalysisPanel, 'text');
+            app.DescriptionEditField_FD.Editable = 'off';
             app.DescriptionEditField_FD.Position = [191 240 143 22];
 
             % Create ThicknessmmPanel
@@ -4057,6 +4093,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create RefEditField
             app.RefEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
+            app.RefEditField.Limits = [0 Inf];
+            app.RefEditField.ValueDisplayFormat = '%5.2g';
+            app.RefEditField.Editable = 'off';
             app.RefEditField.Position = [83 33 42 22];
 
             % Create SampleEditFieldLabel
@@ -4067,6 +4106,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create SampleEditField
             app.SampleEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
+            app.SampleEditField.Limits = [0 Inf];
+            app.SampleEditField.ValueDisplayFormat = '%5.2g';
+            app.SampleEditField.Editable = 'off';
             app.SampleEditField.Position = [83 6 42 22];
 
             % Create MultipleReflectionCountPanel
@@ -4082,6 +4124,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create RefNMREditField
             app.RefNMREditField = uieditfield(app.MultipleReflectionCountPanel, 'numeric');
+            app.RefNMREditField.Limits = [0 Inf];
+            app.RefNMREditField.ValueDisplayFormat = '%.0f';
+            app.RefNMREditField.Editable = 'off';
             app.RefNMREditField.Position = [83 29 42 22];
 
             % Create SampleEditField_2Label
@@ -4092,6 +4137,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create SampleNMREditField
             app.SampleNMREditField = uieditfield(app.MultipleReflectionCountPanel, 'numeric');
+            app.SampleNMREditField.Limits = [0 Inf];
+            app.SampleNMREditField.ValueDisplayFormat = '%.0f';
+            app.SampleNMREditField.Editable = 'off';
             app.SampleNMREditField.Position = [83 4 42 22];
 
             % Create CalculateOpticalParametersButton
