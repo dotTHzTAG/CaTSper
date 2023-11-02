@@ -1,19 +1,18 @@
 {
     "FFT_Settings":{
-        "Frequency_Range":[0.2,7.0],
+        "Frequency_Range":[0.2,3.0],
         "FFT_Upsampling":2,
         "Unwrapping_Start_Frequency":0.8,
         "Extrapolation_Frequency_Range":[0.20,0.40],
         "Window_Function_Range":[-10,25]
     },    
     "Metadata_Settings":{
-        "Sample_Thickness":"ds1",
-        "Reference_Thickness":"ds3"
+        "Sample_Thickness":"md1",
+        "Reference_Thickness":"md3"
     },
     "Dataset_Settings":{
-        "Sample_waveform":"ds1",
-        "Reference_waveform1":"ds2",
-        "Reference_waveform2":"ds3",
-        "Reference_default":1
-    }
+        "Sample":"ds1",
+        "Reference":"ds2"
+    },
+    "ThicknessSwitch":"Sample"
 }
