@@ -14,13 +14,27 @@ classdef CaTSper_exported < matlab.apps.AppBase
         SystemStatusLabel               matlab.ui.control.Label
         TabGroup                        matlab.ui.container.TabGroup
         TimeDomainTDTab                 matlab.ui.container.Tab
-        ResetConfigurationsButton       matlab.ui.control.Button
         DatasetInformationPanel         matlab.ui.container.Panel
+        dsPumpedDropDown                matlab.ui.control.DropDown
+        PumpedLabel                     matlab.ui.control.Label
+        ds4DesEditField                 matlab.ui.control.EditField
+        ds4EditFieldLabel               matlab.ui.control.Label
+        ds3DesEditField                 matlab.ui.control.EditField
+        ds3EditFieldLabel               matlab.ui.control.Label
+        ds2DesEditField                 matlab.ui.control.EditField
+        ds2EditFieldLabel               matlab.ui.control.Label
+        ds1DesEditField                 matlab.ui.control.EditField
+        ds1EditFieldLabel               matlab.ui.control.Label
         dsReferenceDropDown             matlab.ui.control.DropDown
         ReferenceDropDownLabel          matlab.ui.control.Label
         dsSampleDropDown                matlab.ui.control.DropDown
         SampleDropDownLabel             matlab.ui.control.Label
+        ResetConfigurationsButton       matlab.ui.control.Button
         MetadataInformationPanel        matlab.ui.container.Panel
+        md4DesEditField                 matlab.ui.control.EditField
+        md3DesEditField                 matlab.ui.control.EditField
+        md2DesEditField                 matlab.ui.control.EditField
+        md1DesEditField                 matlab.ui.control.EditField
         ThicknessmmLabel                matlab.ui.control.Label
         md4EditField                    matlab.ui.control.NumericEditField
         md4EditFieldLabel               matlab.ui.control.Label
@@ -34,9 +48,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
         ReferenceLabel                  matlab.ui.control.Label
         mdSampleThicknessDropDown       matlab.ui.control.DropDown
         SampleLabel                     matlab.ui.control.Label
-        mdDescriptionEditField          matlab.ui.control.EditField
-        DescriptionEditFieldLabel       matlab.ui.control.Label
         GeneralInformationPanel         matlab.ui.container.Panel
+        stEtalonEditField               matlab.ui.control.NumericEditField
+        stEtalonEditFieldLabel          matlab.ui.control.Label
+        RefractiveIndexEditField        matlab.ui.control.NumericEditField
+        RefractiveIndexEditFieldLabel   matlab.ui.control.Label
         GeneralUserEditField            matlab.ui.control.EditField
         UserEditFieldLabel              matlab.ui.control.Label
         GeneralInstrumentEditField      matlab.ui.control.EditField
@@ -60,39 +76,34 @@ classdef CaTSper_exported < matlab.apps.AppBase
         ALLButton                       matlab.ui.control.Button
         Plot2TDButton                   matlab.ui.control.Button
         FFTSettingsPanel                matlab.ui.container.Panel
-        THzLabel_5                      matlab.ui.control.Label
         ToEpolFreqEditField             matlab.ui.control.NumericEditField
-        ToEditFieldLabel_2              matlab.ui.control.Label
+        toLabel_2                       matlab.ui.control.Label
         FromEpolFreqEditField           matlab.ui.control.NumericEditField
-        FromEditFieldLabel_2            matlab.ui.control.Label
-        ExtrapolationFrequencyRangeLabel  matlab.ui.control.Label
-        DetailedInformationinListNameCheckBox  matlab.ui.control.CheckBox
+        fromLabel_2                     matlab.ui.control.Label
+        ExtrapolationRangeTHzLabel      matlab.ui.control.Label
+        FulllistnamingCheckBox          matlab.ui.control.CheckBox
         UnwrappingLabel                 matlab.ui.control.Label
         StartFrequencyTHzEditField      matlab.ui.control.NumericEditField
         StartFrequencyTHzEditFieldLabel  matlab.ui.control.Label
-        SpectralResolutionTHzLabel      matlab.ui.control.Label
-        Label                           matlab.ui.control.Label
         FromTimeEditField               matlab.ui.control.NumericEditField
-        FromEditFieldLabel              matlab.ui.control.Label
-        psLabel_4                       matlab.ui.control.Label
+        fromLabel_3                     matlab.ui.control.Label
         WindowFunctionLabel             matlab.ui.control.Label
-        FFTUpsamplingLabel              matlab.ui.control.Label
-        FrequencyRangeLabel             matlab.ui.control.Label
+        UpsamplingLabel                 matlab.ui.control.Label
+        FrequencyRangeTHzLabel          matlab.ui.control.Label
         AutoWindowButton                matlab.ui.control.StateButton
-        ManualWindowLabel               matlab.ui.control.Label
+        ManualWindowpsLabel             matlab.ui.control.Label
         ZeroFillingpowerofSpinner       matlab.ui.control.Spinner
         ZeroFillingpowerofSpinnerLabel  matlab.ui.control.Label
         ApodisationFunctionDropDown     matlab.ui.control.DropDown
         ApodisationFunctionDropDownLabel  matlab.ui.control.Label
         TransformButton                 matlab.ui.control.Button
-        truncatebefore1stetalonLabel    matlab.ui.control.Label
+        truncatebasedon1stetalonLabel   matlab.ui.control.Label
         ToTimeEditField                 matlab.ui.control.NumericEditField
         MaxTimeLabel                    matlab.ui.control.Label
-        THzLabel_4                      matlab.ui.control.Label
         ToFreqEditField                 matlab.ui.control.NumericEditField
-        ToEditFieldLabel                matlab.ui.control.Label
+        toLabel                         matlab.ui.control.Label
         FromFreqEditField               matlab.ui.control.NumericEditField
-        FromEditField_2Label            matlab.ui.control.Label
+        fromLabel                       matlab.ui.control.Label
         Plot1TDButton                   matlab.ui.control.Button
         SelectionListBox                matlab.ui.control.ListBox
         SelectionListBoxLabel           matlab.ui.control.Label
@@ -118,7 +129,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
         linearButton                    matlab.ui.control.RadioButton
         logButton                       matlab.ui.control.RadioButton
         FDDataAnalysisPanel             matlab.ui.container.Panel
-        ThicknessSwitch                 matlab.ui.control.Switch
         GridOffButton_2                 matlab.ui.control.StateButton
         RealImagButtonGroup             matlab.ui.container.ButtonGroup
         ImaginaryButton                 matlab.ui.control.RadioButton
@@ -139,6 +149,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         SampleNMREditField              matlab.ui.control.NumericEditField
         SampleEditField_2Label          matlab.ui.control.Label
         ThicknessmmPanel                matlab.ui.container.Panel
+        ThicknessSwitch                 matlab.ui.control.Switch
         SampleEditField                 matlab.ui.control.NumericEditField
         SampleEditFieldLabel            matlab.ui.control.Label
         ReferenceEditField              matlab.ui.control.NumericEditField
@@ -277,9 +288,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
         DM_count % the number of data manipulation data
         DM_data % data manipluation data
         DM_peaks % data MAnipulation peaks 
+        DR_boundary % dynamic range checker freqeuncy boundary
         PRJ_count % the number of project files imported
-        Tcell_measDetails % cell array for measurement detail table
-        Tcell_measDetailsDefault; % default cell array for measuerement detail table
     end
     
     properties (Access = private)
@@ -430,19 +440,19 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % reference only or both sample and reference, depends on what one
             % selects) in time domain
             for idx = plotList
-                refOption = app.TD_data.metadata{idx}.refOption;
-
-                if isequal(refOption,0)
-                    warning('No available reference dataset')
-                    return;
-                end
-
-                refIdx = refOption*2-1;
+                % refOption = app.TD_data.metadata{idx}.refOption;
+                % 
+                % if isequal(refOption,0)
+                %     warning('No available reference dataset')
+                %     return;
+                % end
+                % 
+                % refIdx = refOption*2-1;
                 % extracting time data
-                td_time = app.TD_data.references{idx,refIdx};
+                td_time = app.TD_data.references{idx,1};
                 % extracting corresponding electric field intensity values
                 % for reference measurement
-                td_reference = app.TD_data.references{idx,refIdx+1};
+                td_reference = app.TD_data.references{idx,2};
                 % extracting corresponding electric field intensity values
                 % for sample measurement
                 td_sample = app.TD_data.samples{idx,2};
@@ -1012,6 +1022,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Apply default configuration settings
             configData = jsondecode(fileread(configFile));
+            app.DR_boundary = configData.FFT_Settings.DR_boundary; % dynamic range frequency boundary
 
             % Default FFT_Settings
             app.FromFreqEditField.Value = configData.FFT_Settings.Frequency_Range(1);
@@ -1023,9 +1034,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FromTimeEditField.Value = configData.FFT_Settings.Window_Function_Range(1);
             app.ToTimeEditField.Value = configData.FFT_Settings.Window_Function_Range(2);
 
-            % Default Thickness Swich
-            app.ThicknessSwitch.Value = configData.ThicknessSwitch;
-
             % Default thickness metadata
             app.mdSampleThicknessDropDown.Value = configData.Metadata_Settings.Sample_Thickness;
             app.mdReferenceThicknessDropDown.Value = configData.Metadata_Settings.Reference_Thickness;
@@ -1033,6 +1041,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Default sample and referenece dataset
             app.dsSampleDropDown.Value = configData.Dataset_Settings.Sample;
             app.dsReferenceDropDown.Value = configData.Dataset_Settings.Reference;
+            app.dsPumpedDropDown.Value = configData.Dataset_Settings.Pump;
 
         end
     end
@@ -1041,14 +1050,14 @@ classdef CaTSper_exported < matlab.apps.AppBase
         
         % updateThickness calculates the tablet thickness in time domain
         % using a new method
-        function updateThickness(app,thickness,pksProm,loc,All,refMdm,maxPer)
-            Tcell_measDetails = app.Tcell_measDetails;
+        function updateThickness(app,sam_thickness,pksProm,loc,All,refMdm,maxPer)
+            %Tcell_measDetails = app.Tcell_measDetails;
             
             % extracting the measurements selected
             TDselected = app.MeasurementListBox.Value;
             % updating thickness value based on input
-            app.ThicknessmmEditField.Value = thickness;
-            app.TD_data.metadata{TDselected}.thickness = thickness;
+            app.ThicknessmmEditField.Value = sam_thickness;
+            app.TD_data.metadata{TDselected}.thickness = sam_thickness;
             
             % execute the following if function input 'All' does not equal
             % to zero
@@ -1134,11 +1143,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
                         
                         del_t = del_t*10^-12;
                         % calculate the resulting thickness to 4 s.f.
-                        thickness = floor((mrt - 3*del_t)*3e8/2*10^3*1000)/1000;
+                        sam_thickness = floor((mrt - 3*del_t)*3e8/2*10^3*1000)/1000;
                     end
                     
                     % updating thickness
-                    app.TD_data.metadata{TDindex}.thickness = thickness;
+                    app.TD_data.metadata{TDindex}.sam_thickness = sam_thickness;
                     TDanalysisUpdate(app,TDindex);
                 end
             end
@@ -1148,16 +1157,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         
         % updateFreqRange updates the list of data sets selected for the
         % FD Data Analysis section in the frequency domain tab and empties
-        % certain data from matrices
-        
-        % updateThickness2 calculates and updates sample thickness of
-        % selected measurements
-        function updateThickness2(app,thicknesses,updateList)
-            for idx = updateList
-                app.TD_data.metadata{idx}.thickness = thicknesses(idx);
-                TDanalysisUpdate(app,idx);
-            end
-        end
+        % certain data from matrices       
         
     end
     
@@ -1182,19 +1182,17 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
         % Value changed function: MeasurementListBox
         function MeasurementListBoxValueChanged(app, event)
-
-            % Tcell_measDetails = app.Tcell_measDetails;
-
             % MeasurementListBoxValueChanged extracts and displays relevant values 
             MeasNum = app.MeasurementListBox.Value;
             timeDelay = app.TD_data.metadata{MeasNum}.timeDelay;
             n_eff = app.TD_data.metadata{MeasNum}.refractiveIndex;
             etl_t = app.TD_data.metadata{MeasNum}.internalReflection;
-            refOption = app.TD_data.metadata{MeasNum}.refOption;
             refNum = sum(~cellfun("isempty",app.TD_data.references(MeasNum,:)))/2;
             
             description = app.TD_data.metadata{MeasNum}.description;
             mdDescription = app.TD_data.metadata{MeasNum}.mdDescription;
+            dsDescription = app.TD_data.metadata{MeasNum}.dsDescription;
+
             md1 = app.TD_data.metadata{MeasNum}.md1;
             md2 = app.TD_data.metadata{MeasNum}.md2;
             md3 = app.TD_data.metadata{MeasNum}.md3;
@@ -1209,7 +1207,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.GeneralInstrumentEditField.Value = insProfile;
             app.GeneralUserEditField.Value = userProfile;
 
-            app.mdDescriptionEditField.Value = mdDescription;
+            mdList = strsplit(mdDescription,',');
+            mdSize = size(mdList,2);
+
+            if mdSize >= 1 , app.md1DesEditField.Value = mdList{1}; , end;
+            if mdSize >= 2 , app.md2DesEditField.Value = mdList{2}; , end;
+            if mdSize >= 3 , app.md3DesEditField.Value = mdList{3}; , end;
+            if mdSize >= 4 , app.md4DesEditField.Value = mdList{4}; , end;
 
             % display sample and reference thickness
             app.md1EditField.AllowEmpty = "on";
@@ -1221,34 +1225,15 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.md2EditField.Value = md2;
             app.md3EditField.Value = md3;
             app.md4EditField.Value = md4;                
-            
-            %display measurement setting
-            % Tcell_measDetails([1,2,3,4,6,7,8,9,11,12,13],2) = {description,insProfile,scanDate,scanTime,md1,md2,md3,md4,timeDelay,n_eff,etl_t}';
-            % app.UITable_MeasDetail.Data = cell2table(Tcell_measDetails);
-            % app.Tcell_measDetails = Tcell_measDetails;
 
-            % reference option
-            % switch refOption
-            %     case 0
-            %         app.Ref1Lamp.Color = "white";
-            %         app.Ref2Lamp.Color = "white";
-            %     case 1
-            %         app.Ref1Lamp.Color = "green";
-            %         app.Ref2Lamp.Color = "white";
-            %     otherwise
-            %         app.Ref1Lamp.Color = "white";
-            %         app.Ref2Lamp.Color = "green";
-            % end
-            % 
-            % switch refNum
-            %     case 0
-            %         app.RefSwitchButton.Enable = "off";
-            %     case 1
-            %         app.RefSwitchButton.Enable = "off";
-            %     otherwise
-            %         app.RefSwitchButton.Enable = "on";
-            % end
-                    
+            dsList = strsplit(dsDescription,',');
+            dsSize = size(dsList,2);
+
+            if dsSize >= 1 , app.ds1DesEditField.Value = dsList{1}; , end;
+            if dsSize >= 2 , app.ds2DesEditField.Value = dsList{2}; , end;
+            if dsSize >= 3 , app.ds3DesEditField.Value = dsList{3}; , end;
+            if dsSize >= 4 , app.ds4DesEditField.Value = dsList{4}; , end;
+                      
         end
 
         % Button pushed function: ADDButton
@@ -1331,19 +1316,19 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % extract the time spacing between logged values
                 TDindex = addFDList(cnt);
 
-                refOption = app.TD_data.metadata{TDindex}.refOption;
-                if isequal(refOption,0)
-                    warning('No available reference dataset')
-                    return;
-                end
-                refIdx = refOption*2-1;                
+                % refOption = app.TD_data.metadata{TDindex}.refOption;
+                % if isequal(refOption,0)
+                %     warning('No available reference dataset')
+                %     return;
+                % end
+                % refIdx = refOption*2-1;                
                 
                 % reference waveform 
                 xSpacing = app.TD_data.metadata{TDindex}.xSpacing;
                 % convert the time spacing into frequency spacing
                 fs = 1/(xSpacing*10^-12); % obtain sampling frequency based on xSpacing value
-                t_reference = app.TD_data.references{TDindex,refIdx};
-                E_reference = app.TD_data.references{TDindex,refIdx+1};
+                t_reference = app.TD_data.references{TDindex,1};
+                E_reference = app.TD_data.references{TDindex,2};
                 
                 % sample waveform
                 t_sample = app.TD_data.samples{TDindex,1};
@@ -1479,7 +1464,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 freqRes = fs/(N*10^12);
                 % converting the spectral resolution to a string with 3
                 % significant figures displayed
-                app.Label.Text = num2str(freqRes,'%.3f');
+                app.DEBUGMsgLabel.Text = strcat("Spectral resolution (THz): ", num2str(freqRes,'%.3f'));
                 
                 % find the first index that has a frequency equal to or
                 % greater than the minimum frequency specified by the user
@@ -1500,13 +1485,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 FDindex = cnt + FDindexNum;
                 
                 % FTsetting description - more detailed or simpler
-                if app.DetailedInformationinListNameCheckBox.Value
+                if app.FulllistnamingCheckBox.Value
                     FTsetting = strcat(' (',num2str(td_min,3),'-',num2str(td_max,3),'ps,'...
                         ,num2str(min_freq,3),'-',num2str(max_freq,3),'THz,'...
-                        ,(funcName),',',num2str(upscale),'upscale,','Ref.',num2str(refOption),')');
+                        ,(funcName),',',num2str(upscale),'upscale,',')');
                 else
                     FTsetting = strcat(' (',num2str(td_min,3),'-',num2str(td_max,3),' ps,'...
-                        ,(funcName),',','Ref.',num2str(refOption),')');
+                        ,(funcName),')');
                 end
                 
                 sampleID = strjoin(app.TD_data.sampleList{TDindex});
@@ -1519,21 +1504,19 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % calculate the number of etalon oscillations in the data
                 % number of etalon oscillations is default to be one if
                 % auto window is selected
-                etlNum_sam = floor((td_max - delta_t)/(etl_t-delta_t));
-                etlNum_ref = 0;
+                %etlNum_sam = floor((td_max - delta_t)/(etl_t-delta_t));
                 
                 % input FD_data structure
                 sampleID = matlab.lang.makeValidName(sampleID);
                 app.FD_data.metadata{FDindex} = ...
                     app.TD_data.metadata{TDindex};
-                app.FD_data.metadata{FDindex}.thickness = ...
-                    app.TD_data.metadata{TDindex}.thickness;
-                app.FD_data.metadata{FDindex}.refThickness = ...
-                    app.TD_data.metadata{TDindex}.refThickness;
+                app.FD_data.metadata{FDindex}.sam_thickness = ...
+                    app.TD_data.metadata{TDindex}.sam_thickness;
+                app.FD_data.metadata{FDindex}.ref_thickness = ...
+                    app.TD_data.metadata{TDindex}.ref_thickness;
                 app.FD_data.metadata{FDindex}.timeWindow = [td_min td_max];
                 app.FD_data.metadata{FDindex}.windowFunction = funcName;
-                app.FD_data.metadata{FDindex}.etlNum_ref = etlNum_ref;
-                app.FD_data.metadata{FDindex}.etlNum_sam = etlNum_sam;
+                %app.FD_data.metadata{FDindex}.etlNum_sam = etlNum_sam;
                 
                 % unwrap phase data (calling TDSunwrap function)
                 % unwrapping phase values for reference and sample
@@ -2166,19 +2149,14 @@ classdef CaTSper_exported < matlab.apps.AppBase
             description = app.FD_data.metadata{idx}.description;
             
             % extract the input values
-            % thickness->FD_data.metadata(idx).thickness=[sam ref]
-            sam_thickness = app.FD_data.metadata{idx}.thickness;
-            ref_thickness = app.FD_data.metadata{idx}.refThickness;
-            etlNum_ref = app.FD_data.metadata{idx}.etlNum_ref;
-            etlNum_sam= app.FD_data.metadata{idx}.etlNum_sam;
+            sam_thickness = app.FD_data.metadata{idx}.sam_thickness;
+            ref_thickness = app.FD_data.metadata{idx}.ref_thickness;
+            %etlNum_sam= app.FD_data.metadata{idx}.etlNum_sam;
                        
             % display in EditTextFields
             app.DescriptionEditField_FD.Value = description;
             app.ReferenceEditField.Value = ref_thickness;
-            app.SampleEditField.Value = sam_thickness;
-            app.RefNMREditField.Value = etlNum_ref;
-            app.SampleNMREditField.Value = etlNum_sam;
-                        
+            app.SampleEditField.Value = sam_thickness;                  
         end
 
         % Button pushed function: CalculateOpticalParametersButton
@@ -2189,9 +2167,10 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
             % if no items are in the FD selection box (under FD data
             % analysis), display warning message
+            fig = app.CatsperUIFigure;
+
             if isempty(app.FD_select_2)
-                fig = app.CatsperUIFigure;
-                uialert(fig,'There is no item to calcate in the list','Warning');
+                uialert(fig,'No items','Warning');
                 return;
             end
             
@@ -2200,36 +2179,37 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % thickness information can be either the sample thickness
                 % or the offset between the reference and sample thickness,
                 % which can be determined by ThicknessSwitch on the GUI.
-                
-                if isequal(app.ThicknessSwitch.Value,"Sample")
-                    thickness = app.FD_data.metadata{FDindex}.thickness;
+
+                sam_thickness = app.FD_data.metadata{FDindex}.sam_thickness;
+                ref_thickness = app.FD_data.metadata{FDindex}.ref_thickness;
+
+                if isequal(app.ThicknessSwitch.Value,"Offset")
+                    eff_thickness = sam_thickness - ref_thickness;
                 else
-                    thickness = abs(app.FD_data.metadata{FDindex}.thickness -...
-                    app.FD_data.metadata{FDindex}.refThickness);
-                    if thickness <= 0
-                        fig = app.CatsperUIFigure;
-                        uialert(fig,'Zero or Negative Thickness: Calculaton Aborted','Warning');
-                        return;
-                    end
-                end                
+                    eff_thickness = sam_thickness;
+                end
                 
                 % if there is no data on the measured thickness, display
                 % error message and do not continue to perform the function
-                if isempty(app.FD_data.metadata{FDindex}.thickness)
-                    fig = app.CatsperUIFigure;
+                if isempty(app.FD_data.metadata{FDindex}.eff_thickness)
                     ID = app.FD_data.sampleList{FDindex};
-                    msg = strcat((ID)," doesn't have the thickness information.");
-                    uialert(fig,(msg),'Calculation Aborted');
+                    msg = strcat((ID)," doesn't have thickness information.");
+                    uialert(fig,(msg),'Abort Calculation');
                     return;
                 end
                 
                 c = 299792458; % the speed of light
                 n_medium = 1; % refractive index of medium
                 n_reference = 1; % refractive indx of the reference
+
+                % if ~isequal(app.mdReferenceThicknessDropDown.Value,"air")
+                %     uialert(fig,'n_reference is set to 1. Please confirm this','Warning');
+                % end
+
                 % calculate the refractive index of the sample using values
                 % extracted from frequency domain calculations
                 n_sample = c.*app.FD_data.transmit_phase{FDindex}./...
-                    (2*pi*app.FD_data.frequency{FDindex}.*thickness*10^-3) + 1;
+                    (2*pi*app.FD_data.frequency{FDindex}.*eff_thickness*10^-3) + 1;
                 
                 % calculate the absorption coefficient, the logartihm base is e.
                 % the following procedures references equation two in the work by Jepsen
@@ -2244,7 +2224,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 scaledTransmitMag = ...
                     app.FD_data.transmit_amplitude{FDindex}.*scaleFactor;
                 
-                absorption = -2./(thickness*0.1).*log(scaledTransmitMag); % unit: cm^-1
+                absorption = -2./(eff_thickness*0.1).*log(scaledTransmitMag); % unit: cm^-1
                 % calcuate extinction coefficients
                 % 100 is for compensating cm to m in absorption calculation
                 % absorption = 4pi*f*k/c -> k = c*absorption/4pi*f
@@ -2475,10 +2455,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
             % find the first index that has a frequency
             % less than 0.2 THz
-            cutoff_low = sum(freqs < 0.2*10^12) + 1;
+            DR_boundary = app.DR_boundary;
+            cutoff_low = sum(freqs < DR_boundary(1)*10^12) + 1;
             % find the first index that has a frequency
             % less than 5 THz
-            cutoff_high = sum(freqs < 7*10^12); 
+            cutoff_high = sum(freqs < DR_boundary(2)*10^12); 
                 
             % trim the frequency, reference and sample data values
             % using the upper cutoff limit
@@ -2513,14 +2494,14 @@ classdef CaTSper_exported < matlab.apps.AppBase
             c = 299792458; % the speed of light
             n_medium = 1; % refractive index of medium
             n_reference = 1; % refractive indx of the reference
-            thickness = app.TD_data.metadata{measNum}.thickness;
-            n_sample = c.*transmPha./(2*pi*FD_frequency.*thickness*10^-3) + 1;
+            eff_thickness = app.TD_data.metadata{measNum}.eff_thickness;
+            n_sample = c.*transmPha./(2*pi*FD_frequency.*eff_thickness*10^-3) + 1;
             ref_factor = 4*n_medium*n_reference/((n_medium + n_reference).^2);
             sam_factor = 4*n_medium*n_sample/((n_medium + n_sample).^2);
             scaleFactor = ref_factor/sam_factor;
             scaledTransmitMag = transmAmp*scaleFactor;
                 
-            absorption = -2./(thickness*0.1).*log(scaledTransmitMag); % unit: cm^-1
+            absorption = -2./(eff_thickness*0.1).*log(scaledTransmitMag); % unit: cm^-1
   
             % Find the selected item in the list box
             refF = abs(FD_frequency);
@@ -2530,7 +2511,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             n_eff = app.TD_data.metadata{measNum}.refractiveIndex;
             
             % open the DR checker app with the calculated values
-            app.DialogApp = DR_Checker(app,refF,refE,samA,n_eff,thickness,sampleID);
+            app.DialogApp = DR_Checker(app,refF,refE,samA,n_eff,eff_thickness,sampleID);
         end
 
         % Button pushed function: PlotForCustomisationButton_FD2
@@ -2875,7 +2856,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 answer = questdlg(question,'Warning');
                 
             % if 'yes' is selected, empty the following arrays and parameters
-            if answer == 'Yes'
+            if answer == "Yes"
                 app.TD_data = [];
                 app.FD_data = [];
                 app.DM_data = [];
@@ -3237,12 +3218,15 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
         % Button pushed function: DeployButton
         function DeployButtonPushed(app, event)
+            
+            question = "Select effective thickness";
+            thicknessOption = questdlg('Select Effective Thickness','Thickness Information','Sample','Sample-Reference Offset','Cancel');
+            
             idxCap = 1;
             % run the TDdataDel function
             TDdataDel(app);
             allListItems = {};
             newDataset = 1;
-            Tcell_measDetails = app.Tcell_measDetails;
 
             for PRJcnt = 1:app.PRJ_count
                 % import .thz file to the workspace
@@ -3271,86 +3255,62 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     % create a string for reading data for the dataset
                     %dn = strcat('/',ListItems{idx});
                     dn = ListItems{idx};
-                    dn1 = strcat(dn,'/ds1');
-                    dn2 = strcat(dn,'/ds2');
-                    dn3 = strcat(dn,'/ds3');
+                    sam_dn = strcat(dn,'/',app.dsSampleDropDown.Value);
+                    ref_dn = strcat(dn,'/',app.dsReferenceDropDown.Value);
 
                     % read measurement datasets
-                    try 
-                        ds1 = h5read(fullpath,dn1); % sample datasets
-                        TD_data.samples{idxCap+idx-1,1}= ds1(1,:);
-                        % first row is taken as the sample measurement time
-                        TD_data.samples{idxCap+idx-1,2}= ds1(2,:);
-                        % second row is taken as the sample measurement amplitude
-                        refOption = 0;
-                    catch ME
-                        ds1 =[];
+                    sam_ds = h5read(fullpath,sam_dn); % read sample dataset
+                    TD_data.samples{idxCap+idx-1,1}= sam_ds(1,:); % time vector
+                    TD_data.samples{idxCap+idx-1,2}= sam_ds(2,:); % amplitude vector
+
+                    ref_ds = h5read(fullpath,ref_dn); % read reference dataset
+                    TD_data.references{idxCap+idx-1,1}= ref_ds(1,:); % time vector
+                    TD_data.references{idxCap+idx-1,2}= ref_ds(2,:); % amplitude vector
+
+
+                    if ~isequal(app.dsPumpedDropDown.Value,"n/a")
+                        pum_dn = strcat(dn,'/',app.dsPumpedDropDown.Value);
+                        try
+                            pum_ds = h5read(fullpath,pum_dn); % read pump dataset
+                            TD_data.pumps{idxCap+idx-1,1}= pum_ds(1,:); % time vector
+                            TD_data.pumps{idxCap+idx-1,2}= pum_ds(2,:); % amplitude vector
+                        catch ME
+                            fig = app.CaTSperUIFigure;
+                            uialert(fig,'Deploy Aborted','Invalid Pump Dataset');
+                            return;
+                        end
+
                     end
 
-                    try
-                        ds2 = h5read(fullpath,dn2); % reference 1 datasets
-                        TD_data.references{idxCap+idx-1,1}= ds2(1,:);
-                        % first row is taken as the reference measurement time
-                        TD_data.references{idxCap+idx-1,2}= ds2(2,:);
-                        % second row is taken as the reference measurement amplitude
-                        refOption = 1;
-                    catch ME
-                        ds2 = []; 
-                    end
-
-                    try
-                        ds3 = h5read(fullpath,dn3); % reference 2 datasets
-                        TD_data.references{idxCap+idx-1,3}= ds3(1,:);
-                        % first row is taken as the reference 2 measurement time
-                        TD_data.references{idxCap+idx-1,4}= ds3(2,:);
-                        % second row is taken as the reference 2 measurement amplitude
-                    catch ME
-                        ds3 = [];
-                    end
-
-                    % metadata retrieving
-                    % if newDataset
-                    %     mdDescription = h5readatt(fullpath,dn,"mdDescription");
-                    %     Tcell_measDetails{5,2} = mdDescription;
-                    %     mdList = split(mdDescription,',');
-                    %     TD_data.metadataList = mdList';
-                    %     for mdIdx = 1:4
-                    %         mdDRow = 5; % metadata description row
-                    %         if mdIdx<=size(mdList,1)
-                    %             Tcell_measDetails{mdIdx+mdDRow,1} = mdList(mdIdx);
-                    %         else
-                    %             Tcell_measDetails{mdIdx+mdDRow,1} = "-";
-                    %         end
-                    %     end
-                    % 
-                    %     dsDescription = h5readatt(fullpath,dn,"dsDescription");
-                    %     Tcell_measDetails{10,2} = dsDescription;
-                    %     dsList = split(dsDescription,',');
-                    %     TD_data.datasetList = dsList';
-                    % else
-                    %     newDataset = 0;
-                    % end
-
-                    md1 = h5readatt(fullpath,dn,"md1"); % mostly thickness, but can be changed
-                    md2 = h5readatt(fullpath,dn,"md2"); % mostly temperature, but can be changed
-                    md3 = h5readatt(fullpath,dn,"md3"); % optional reference thickness
-                    md4 = h5readatt(fullpath,dn,"md4"); % optional metadata 4
+                    md1 = h5readatt(fullpath,dn,"md1");
+                    md2 = h5readatt(fullpath,dn,"md2"); 
+                    md3 = h5readatt(fullpath,dn,"md3"); 
+                    md4 = h5readatt(fullpath,dn,"md4"); 
+                    md5 = h5readatt(fullpath,dn,"md5");
 
                     % time delay and effective refractive index calculation
-                    % if the array in the dataset has the referecne 1 datasets 
-                    thickness = md1;
-
-                    if ~isempty(md3)
-                        refThickness = md3;
+                    % if the array in the dataset has the referecne 1 datasets
+                    sam_thickness = h5readatt(fullpath,dn,app.mdSampleThicknessDropDown.Value);
+                    
+                    if isequal(app.mdReferenceThicknessDropDown.Value,"air")
+                        ref_thickness = 0;
                     else
-                        refThickness = 0;
+                        ref_thickness = h5readatt(fullpath,dn,app.mdReferenceThicknessDropDown.Value);
                     end
 
-                    if ~isempty(ds2)
-                        timeDelay = getTimeDelay(app,ds1,ds2);
-                        if ~isequal(thickness,0)
-                            n_eff = timeDelay*10^-12*3e8/(thickness*10^-3) + 1;
-                            etl_t = timeDelay + (2*thickness*10^-3*n_eff/3e8)*10^12;
+                    if isequal(thicknessOption,"Sample")
+                        eff_thickness = sam_thickness;
+                        app.ThicknessSwitch.Value = "Sample";
+                    else
+                        eff_thickness = abs(sam_thickness - ref_thickness);
+                        app.ThicknessSwitch.Value = "Offset";
+                    end
+
+                    if ~isempty(ref_ds)
+                        timeDelay = getTimeDelay(app,sam_ds,ref_ds);
+                        if ~isequal(eff_thickness,0)
+                            n_eff = timeDelay*10^-12*3e8/(eff_thickness*10^-3) + 1;
+                            etl_t = timeDelay + (2*eff_thickness*10^-3*n_eff/3e8)*10^12;
                         else
                             n_eff = [];
                             etl_t = [];
@@ -3368,23 +3328,22 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     allListItems{idxCap+idx-1} = dn(2:end);
                     TD_data.sampleList{idxCap+idx-1}={dn(2:end)};
                     TD_data.metadata{idxCap+idx-1}.sampleName = dn(2:end);
-                    TD_data.metadata{idxCap+idx-1}.scanLength = size(ds1,2);
-                    TD_data.metadata{idxCap+idx-1}.xSpacing = mean(diff(ds1(1,:)));
+                    TD_data.metadata{idxCap+idx-1}.scanLength = size(sam_ds,2);
+                    TD_data.metadata{idxCap+idx-1}.xSpacing = mean(diff(sam_ds(1,:)));
                     TD_data.metadata{idxCap+idx-1}.description = h5readatt(fullpath,dn,"description");
                     TD_data.metadata{idxCap+idx-1}.mdDescription = h5readatt(fullpath,dn,"mdDescription");
                     TD_data.metadata{idxCap+idx-1}.dsDescription = h5readatt(fullpath,dn,"dsDescription");
-                    TD_data.metadata{idxCap+idx-1}.date = h5readatt(fullpath,dn,"date");
                     TD_data.metadata{idxCap+idx-1}.time = h5readatt(fullpath,dn,"time");
-                    TD_data.metadata{idxCap+idx-1}.refOption = refOption;
                     
-                    TD_data.metadata{idxCap+idx-1}.thickness = thickness; 
-                    TD_data.metadata{idxCap+idx-1}.refThickness = refThickness;
-                    % while 'thickness' and 'refThickness' are redundant, these are to make thickness information more obivous for the subsequential processes.
+                    TD_data.metadata{idxCap+idx-1}.sam_thickness = sam_thickness; 
+                    TD_data.metadata{idxCap+idx-1}.ref_thickness = ref_thickness;
+                    TD_data.metadata{idxCap+idx-1}.eff_thickness = eff_thickness;
 
                     TD_data.metadata{idxCap+idx-1}.md1 = md1; % metadata 1
                     TD_data.metadata{idxCap+idx-1}.md2 = md2; % metadata 2
                     TD_data.metadata{idxCap+idx-1}.md3 = md3; % metadata 3
                     TD_data.metadata{idxCap+idx-1}.md4 = md4; % metadata 4
+                    TD_data.metadata{idxCap+idx-1}.md5 = md5; % metadata 4
     
                     % extract the name of the instrument model
                     % insProfile = extractBefore(h5readatt(fullpath,dn,"instrument"),'/');
@@ -3442,22 +3401,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             plotFD_data(app,"NEW");
         end
 
-        % Callback function: not associated with a component
-        function RefSwitchButtonPushed(app, event)
-            MeasNum = app.MeasurementListBox.Value;
-            refOption = app.TD_data.metadata{MeasNum}.refOption;
-
-            if isequal(refOption,1)
-                refOption = 2;
-            else
-                refOption = 1;
-            end
-
-            app.TD_data.metadata{MeasNum}.refOption = refOption;
-            MeasurementListBoxValueChanged(app);
-            
-        end
-
         % Button pushed function: ImportAllDataInverseSequenceButton
         function ImportAllDataInverseSequenceButtonPushed(app, event)
             % IMPORTALLDATA (Inverse Sequence) ButtonPushed imports all
@@ -3468,40 +3411,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             dataList = fliplr(dataList);
             dataList = num2str(dataList);
             app.SourceDataSetEditField.Value = dataList;
-        end
-
-        % Callback function
-        function UITable_MeasDetailCellEdit(app, event)
-            % extract the value of the selected item
-            MeasNum = app.MeasurementListBox.Value;
-            
-            % if there are no items selected, do not continue to perform
-            % the the function
-            if isempty(MeasNum)
-                return;
-            end
-
-            indices = event.Indices;
-            newData = event.NewData;
-            
-            % update description
-            % and store the description into the data structure
-
-            switch indices(1)
-                case 1
-                    app.TD_data.metadata{MeasNum}.description = newData;
-                case 6
-                    app.TD_data.metadata{MeasNum}.md1 = newData;
-                    app.TD_data.metadata{MeasNum}.thickness = newData;
-                case 7
-                    app.TD_data.metadata{MeasNum}.md2 = newData;
-                case 8
-                    app.TD_data.metadata{MeasNum}.md3 = newData;
-                case 9
-                    app.TD_data.metadata{MeasNum}.md4 = newData;
-                otherwise
-                    app.UITable_MeasDetail.Data = cell2table(app.Tcell_measDetails);
-            end
         end
 
         % Value changed function: ToEpolFreqEditField
@@ -3538,6 +3447,66 @@ classdef CaTSper_exported < matlab.apps.AppBase
         function ResetConfigurationsButtonPushed(app, event)
             loadDefaultSettings(app);
         end
+
+        % Value changed function: md1EditField
+        function md1EditFieldValueChanged(app, event)
+            value = app.md1EditField.Value;
+
+            if value <= 0
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'Invalid Input','Warning');
+                return;
+            end
+            
+            TDIdx = app.MeasurementListBox.Value;
+            
+            if isempty(TDIdx)
+                return;
+            end
+
+            % update
+            app.TD_data.metadata{TDIdx}.md1 = value;
+        end
+
+        % Value changed function: md2EditField
+        function md2EditFieldValueChanged(app, event)
+            value = app.md2EditField.Value;
+
+            if value < 0
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'Invalid Input','Warning');
+                return;
+            end
+            
+            TDIdx = app.MeasurementListBox.Value;
+            
+            if isempty(TDIdx)
+                return;
+            end
+
+            % update
+            app.TD_data.metadata{TDIdx}.md2 = value;
+        end
+
+        % Value changed function: md3EditField
+        function md3EditFieldValueChanged(app, event)
+            value = app.md3EditField.Value;
+            
+            if value < 0
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'Invalid Input','Warning');
+                return;
+            end
+            
+            TDIdx = app.MeasurementListBox.Value;
+            
+            if isempty(TDIdx)
+                return;
+            end
+
+            % update
+            app.TD_data.metadata{TDIdx}.md3 = value;
+        end
     end
 
     % Component initialization
@@ -3567,7 +3536,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.UIAxes2 = uiaxes(app.TimeDomainTDTab);
             title(app.UIAxes2, 'PLOT 2')
             xlabel(app.UIAxes2, 'Time (ps)')
-            ylabel(app.UIAxes2, 'E_{field intensity} (a.u.)')
+            ylabel(app.UIAxes2, 'E_{field amplitude} (a.u.)')
             app.UIAxes2.FontWeight = 'bold';
             app.UIAxes2.XLim = [-5 15];
             app.UIAxes2.XTickLabelRotation = 0;
@@ -3581,7 +3550,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.UIAxes1 = uiaxes(app.TimeDomainTDTab);
             title(app.UIAxes1, 'PLOT 1')
             xlabel(app.UIAxes1, 'Time (ps)')
-            ylabel(app.UIAxes1, 'E_{field intensity} (a.u.)')
+            ylabel(app.UIAxes1, 'E_{field amplitude} (a.u.)')
             app.UIAxes1.FontWeight = 'bold';
             app.UIAxes1.XLim = [-5 15];
             app.UIAxes1.XTickLabelRotation = 0;
@@ -3601,7 +3570,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.MeasurementListBox = uilistbox(app.TimeDomainTDTab);
             app.MeasurementListBox.Items = {};
             app.MeasurementListBox.ValueChangedFcn = createCallbackFcn(app, @MeasurementListBoxValueChanged, true);
-            app.MeasurementListBox.Position = [18 489 278 344];
+            app.MeasurementListBox.Position = [18 500 278 333];
             app.MeasurementListBox.Value = {};
 
             % Create ADDButton
@@ -3624,106 +3593,103 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create SelectionListBox
             app.SelectionListBox = uilistbox(app.TimeDomainTDTab);
             app.SelectionListBox.Items = {};
-            app.SelectionListBox.Position = [367 489 193 344];
+            app.SelectionListBox.Position = [367 500 193 333];
             app.SelectionListBox.Value = {};
 
             % Create Plot1TDButton
             app.Plot1TDButton = uibutton(app.TimeDomainTDTab, 'push');
             app.Plot1TDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot1TDButtonPushed, true);
-            app.Plot1TDButton.Position = [574 663 105 45];
+            app.Plot1TDButton.Position = [574 664 105 45];
             app.Plot1TDButton.Text = 'Plot 1';
 
             % Create FFTSettingsPanel
             app.FFTSettingsPanel = uipanel(app.TimeDomainTDTab);
             app.FFTSettingsPanel.Title = 'FFT Settings';
             app.FFTSettingsPanel.FontWeight = 'bold';
-            app.FFTSettingsPanel.Position = [366 88 312 384];
+            app.FFTSettingsPanel.Position = [353 57 328 305];
 
-            % Create FromEditField_2Label
-            app.FromEditField_2Label = uilabel(app.FFTSettingsPanel);
-            app.FromEditField_2Label.HorizontalAlignment = 'right';
-            app.FromEditField_2Label.Position = [68 317 59 23];
-            app.FromEditField_2Label.Text = 'From ';
+            % Create fromLabel
+            app.fromLabel = uilabel(app.FFTSettingsPanel);
+            app.fromLabel.HorizontalAlignment = 'right';
+            app.fromLabel.Position = [143 254 59 23];
+            app.fromLabel.Text = ' from ';
 
             % Create FromFreqEditField
             app.FromFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
             app.FromFreqEditField.Limits = [0 5];
             app.FromFreqEditField.ValueDisplayFormat = '%.1f';
-            app.FromFreqEditField.Position = [129 318 45 22];
+            app.FromFreqEditField.Position = [206 255 40 22];
             app.FromFreqEditField.Value = 0.2;
 
-            % Create ToEditFieldLabel
-            app.ToEditFieldLabel = uilabel(app.FFTSettingsPanel);
-            app.ToEditFieldLabel.HorizontalAlignment = 'right';
-            app.ToEditFieldLabel.Position = [178 317 23 23];
-            app.ToEditFieldLabel.Text = 'To';
+            % Create toLabel
+            app.toLabel = uilabel(app.FFTSettingsPanel);
+            app.toLabel.HorizontalAlignment = 'right';
+            app.toLabel.Position = [242 254 25 23];
+            app.toLabel.Text = 'to';
 
             % Create ToFreqEditField
             app.ToFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
             app.ToFreqEditField.Limits = [1 10];
             app.ToFreqEditField.ValueDisplayFormat = '%.1f';
-            app.ToFreqEditField.Position = [206 318 45 22];
+            app.ToFreqEditField.Position = [272 255 40 22];
             app.ToFreqEditField.Value = 2.8;
-
-            % Create THzLabel_4
-            app.THzLabel_4 = uilabel(app.FFTSettingsPanel);
-            app.THzLabel_4.Position = [256 317 27 22];
-            app.THzLabel_4.Text = 'THz';
 
             % Create MaxTimeLabel
             app.MaxTimeLabel = uilabel(app.FFTSettingsPanel);
             app.MaxTimeLabel.HorizontalAlignment = 'right';
-            app.MaxTimeLabel.Position = [188 116 22 23];
-            app.MaxTimeLabel.Text = 'To';
+            app.MaxTimeLabel.Position = [219 84 25 23];
+            app.MaxTimeLabel.Text = 'to';
 
             % Create ToTimeEditField
             app.ToTimeEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
             app.ToTimeEditField.Limits = [0 100];
-            app.ToTimeEditField.ValueDisplayFormat = '%.2f';
+            app.ToTimeEditField.ValueDisplayFormat = '%5.2f';
             app.ToTimeEditField.Tooltip = {'set the maximum value of the sample waveform(s)'};
-            app.ToTimeEditField.Position = [214 117 45 22];
+            app.ToTimeEditField.Position = [248 85 45 22];
             app.ToTimeEditField.Value = 20;
 
-            % Create truncatebefore1stetalonLabel
-            app.truncatebefore1stetalonLabel = uilabel(app.FFTSettingsPanel);
-            app.truncatebefore1stetalonLabel.Position = [122 141 149 22];
-            app.truncatebefore1stetalonLabel.Text = '(truncate before 1st etalon)';
+            % Create truncatebasedon1stetalonLabel
+            app.truncatebasedon1stetalonLabel = uilabel(app.FFTSettingsPanel);
+            app.truncatebasedon1stetalonLabel.Position = [121 108 164 22];
+            app.truncatebasedon1stetalonLabel.Text = '(truncate based on 1st etalon)';
 
             % Create TransformButton
             app.TransformButton = uibutton(app.FFTSettingsPanel, 'push');
             app.TransformButton.ButtonPushedFcn = createCallbackFcn(app, @TransformButtonPushed, true);
             app.TransformButton.FontWeight = 'bold';
             app.TransformButton.Enable = 'off';
-            app.TransformButton.Position = [21 9 264 30];
+            app.TransformButton.Position = [118 11 192 34];
             app.TransformButton.Text = 'Transform';
 
             % Create ApodisationFunctionDropDownLabel
             app.ApodisationFunctionDropDownLabel = uilabel(app.FFTSettingsPanel);
-            app.ApodisationFunctionDropDownLabel.Position = [18 86 119 23];
+            app.ApodisationFunctionDropDownLabel.FontWeight = 'bold';
+            app.ApodisationFunctionDropDownLabel.Position = [18 56 128 23];
             app.ApodisationFunctionDropDownLabel.Text = 'Apodisation Function';
 
             % Create ApodisationFunctionDropDown
             app.ApodisationFunctionDropDown = uidropdown(app.FFTSettingsPanel);
             app.ApodisationFunctionDropDown.Items = {'Boxcar', 'Hamming', 'Bartlett', 'Blackman', 'Rectangular window', 'Hann', 'Taylor', 'Triang'};
             app.ApodisationFunctionDropDown.ItemsData = {'Boxcar', 'hamming', 'bartlett', 'blackman', 'rectwin', 'hann', 'taylorwin', 'triang'};
-            app.ApodisationFunctionDropDown.Position = [139 87 137 22];
+            app.ApodisationFunctionDropDown.Position = [151 57 149 22];
             app.ApodisationFunctionDropDown.Value = 'Boxcar';
 
             % Create ZeroFillingpowerofSpinnerLabel
             app.ZeroFillingpowerofSpinnerLabel = uilabel(app.FFTSettingsPanel);
-            app.ZeroFillingpowerofSpinnerLabel.Position = [60 273 129 23];
+            app.ZeroFillingpowerofSpinnerLabel.Position = [124 222 129 23];
             app.ZeroFillingpowerofSpinnerLabel.Text = 'Zero Filling, + power of';
 
             % Create ZeroFillingpowerofSpinner
             app.ZeroFillingpowerofSpinner = uispinner(app.FFTSettingsPanel);
             app.ZeroFillingpowerofSpinner.Limits = [1 4];
-            app.ZeroFillingpowerofSpinner.Position = [198 274 65 22];
+            app.ZeroFillingpowerofSpinner.Position = [252 223 65 22];
             app.ZeroFillingpowerofSpinner.Value = 2;
 
-            % Create ManualWindowLabel
-            app.ManualWindowLabel = uilabel(app.FFTSettingsPanel);
-            app.ManualWindowLabel.Position = [20 117 97 22];
-            app.ManualWindowLabel.Text = 'Manual Window: ';
+            % Create ManualWindowpsLabel
+            app.ManualWindowpsLabel = uilabel(app.FFTSettingsPanel);
+            app.ManualWindowpsLabel.FontWeight = 'bold';
+            app.ManualWindowpsLabel.Position = [18 85 128 22];
+            app.ManualWindowpsLabel.Text = 'Manual Window (ps): ';
 
             % Create AutoWindowButton
             app.AutoWindowButton = uibutton(app.FFTSettingsPanel, 'state');
@@ -3731,122 +3697,102 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.AutoWindowButton.Tooltip = {'set the time_max 1st multiple reflection time'};
             app.AutoWindowButton.Text = 'Auto Window';
             app.AutoWindowButton.BackgroundColor = [1 1 1];
-            app.AutoWindowButton.Position = [15 139 103 23];
+            app.AutoWindowButton.Position = [11 108 105 23];
 
-            % Create FrequencyRangeLabel
-            app.FrequencyRangeLabel = uilabel(app.FFTSettingsPanel);
-            app.FrequencyRangeLabel.FontWeight = 'bold';
-            app.FrequencyRangeLabel.Position = [15 338 106 22];
-            app.FrequencyRangeLabel.Text = 'Frequency Range';
+            % Create FrequencyRangeTHzLabel
+            app.FrequencyRangeTHzLabel = uilabel(app.FFTSettingsPanel);
+            app.FrequencyRangeTHzLabel.FontWeight = 'bold';
+            app.FrequencyRangeTHzLabel.Position = [11 255 139 22];
+            app.FrequencyRangeTHzLabel.Text = 'Frequency Range (THz)';
 
-            % Create FFTUpsamplingLabel
-            app.FFTUpsamplingLabel = uilabel(app.FFTSettingsPanel);
-            app.FFTUpsamplingLabel.FontWeight = 'bold';
-            app.FFTUpsamplingLabel.Position = [16 294 99 22];
-            app.FFTUpsamplingLabel.Text = 'FFT Upsampling';
+            % Create UpsamplingLabel
+            app.UpsamplingLabel = uilabel(app.FFTSettingsPanel);
+            app.UpsamplingLabel.FontWeight = 'bold';
+            app.UpsamplingLabel.Position = [11 224 74 22];
+            app.UpsamplingLabel.Text = 'Upsampling';
 
             % Create WindowFunctionLabel
             app.WindowFunctionLabel = uilabel(app.FFTSettingsPanel);
             app.WindowFunctionLabel.FontWeight = 'bold';
-            app.WindowFunctionLabel.Position = [15 164 105 22];
+            app.WindowFunctionLabel.Position = [11 135 105 22];
             app.WindowFunctionLabel.Text = 'Window Function';
 
-            % Create psLabel_4
-            app.psLabel_4 = uilabel(app.FFTSettingsPanel);
-            app.psLabel_4.Position = [264 119 16 22];
-            app.psLabel_4.Text = 'ps';
-
-            % Create FromEditFieldLabel
-            app.FromEditFieldLabel = uilabel(app.FFTSettingsPanel);
-            app.FromEditFieldLabel.HorizontalAlignment = 'right';
-            app.FromEditFieldLabel.Position = [113 117 33 22];
-            app.FromEditFieldLabel.Text = 'From';
+            % Create fromLabel_3
+            app.fromLabel_3 = uilabel(app.FFTSettingsPanel);
+            app.fromLabel_3.HorizontalAlignment = 'right';
+            app.fromLabel_3.Position = [150 85 29 22];
+            app.fromLabel_3.Text = 'from';
 
             % Create FromTimeEditField
             app.FromTimeEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
             app.FromTimeEditField.Limits = [-30 50];
-            app.FromTimeEditField.ValueDisplayFormat = '%.2f';
+            app.FromTimeEditField.ValueDisplayFormat = '%5.2f';
             app.FromTimeEditField.Tooltip = {'Set the minimum value of the sample waveform(s)'};
-            app.FromTimeEditField.Position = [150 117 37 22];
+            app.FromTimeEditField.Position = [183 85 45 22];
             app.FromTimeEditField.Value = -10;
-
-            % Create Label
-            app.Label = uilabel(app.FFTSettingsPanel);
-            app.Label.Position = [168 63 51 22];
-            app.Label.Text = '0';
-
-            % Create SpectralResolutionTHzLabel
-            app.SpectralResolutionTHzLabel = uilabel(app.FFTSettingsPanel);
-            app.SpectralResolutionTHzLabel.Position = [18 63 146 22];
-            app.SpectralResolutionTHzLabel.Text = 'Spectral Resolution (THz):';
 
             % Create StartFrequencyTHzEditFieldLabel
             app.StartFrequencyTHzEditFieldLabel = uilabel(app.FFTSettingsPanel);
             app.StartFrequencyTHzEditFieldLabel.HorizontalAlignment = 'right';
-            app.StartFrequencyTHzEditFieldLabel.Position = [54 233 124 22];
+            app.StartFrequencyTHzEditFieldLabel.Position = [143 193 124 22];
             app.StartFrequencyTHzEditFieldLabel.Text = 'Start Frequency (THz)';
 
             % Create StartFrequencyTHzEditField
             app.StartFrequencyTHzEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
             app.StartFrequencyTHzEditField.Limits = [0.2 1.5];
             app.StartFrequencyTHzEditField.ValueDisplayFormat = '%5.1f';
-            app.StartFrequencyTHzEditField.Position = [202 233 41 22];
+            app.StartFrequencyTHzEditField.Position = [272 193 41 22];
             app.StartFrequencyTHzEditField.Value = 0.8;
 
             % Create UnwrappingLabel
             app.UnwrappingLabel = uilabel(app.FFTSettingsPanel);
             app.UnwrappingLabel.FontWeight = 'bold';
-            app.UnwrappingLabel.Position = [15 252 75 22];
+            app.UnwrappingLabel.Position = [11 193 75 22];
             app.UnwrappingLabel.Text = 'Unwrapping';
 
-            % Create DetailedInformationinListNameCheckBox
-            app.DetailedInformationinListNameCheckBox = uicheckbox(app.FFTSettingsPanel);
-            app.DetailedInformationinListNameCheckBox.Text = 'Detailed Information in List Name';
-            app.DetailedInformationinListNameCheckBox.Position = [25 41 200 22];
+            % Create FulllistnamingCheckBox
+            app.FulllistnamingCheckBox = uicheckbox(app.FFTSettingsPanel);
+            app.FulllistnamingCheckBox.Text = 'Full list naming';
+            app.FulllistnamingCheckBox.Position = [15 14 102 22];
 
-            % Create ExtrapolationFrequencyRangeLabel
-            app.ExtrapolationFrequencyRangeLabel = uilabel(app.FFTSettingsPanel);
-            app.ExtrapolationFrequencyRangeLabel.FontWeight = 'bold';
-            app.ExtrapolationFrequencyRangeLabel.Position = [14 209 186 22];
-            app.ExtrapolationFrequencyRangeLabel.Text = 'Extrapolation Frequency Range';
+            % Create ExtrapolationRangeTHzLabel
+            app.ExtrapolationRangeTHzLabel = uilabel(app.FFTSettingsPanel);
+            app.ExtrapolationRangeTHzLabel.FontWeight = 'bold';
+            app.ExtrapolationRangeTHzLabel.Position = [11 162 155 22];
+            app.ExtrapolationRangeTHzLabel.Text = 'Extrapolation Range (THz)';
 
-            % Create FromEditFieldLabel_2
-            app.FromEditFieldLabel_2 = uilabel(app.FFTSettingsPanel);
-            app.FromEditFieldLabel_2.HorizontalAlignment = 'right';
-            app.FromEditFieldLabel_2.Position = [88 185 33 22];
-            app.FromEditFieldLabel_2.Text = 'From';
+            % Create fromLabel_2
+            app.fromLabel_2 = uilabel(app.FFTSettingsPanel);
+            app.fromLabel_2.HorizontalAlignment = 'right';
+            app.fromLabel_2.Position = [173 162 29 22];
+            app.fromLabel_2.Text = 'from';
 
             % Create FromEpolFreqEditField
             app.FromEpolFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
             app.FromEpolFreqEditField.Limits = [0 5];
             app.FromEpolFreqEditField.ValueDisplayFormat = '%5.2f';
             app.FromEpolFreqEditField.ValueChangedFcn = createCallbackFcn(app, @FromEpolFreqEditFieldValueChanged, true);
-            app.FromEpolFreqEditField.Position = [126 185 45 22];
+            app.FromEpolFreqEditField.Position = [207 162 40 22];
             app.FromEpolFreqEditField.Value = 0.2;
 
-            % Create ToEditFieldLabel_2
-            app.ToEditFieldLabel_2 = uilabel(app.FFTSettingsPanel);
-            app.ToEditFieldLabel_2.HorizontalAlignment = 'right';
-            app.ToEditFieldLabel_2.Position = [176 184 25 22];
-            app.ToEditFieldLabel_2.Text = 'To';
+            % Create toLabel_2
+            app.toLabel_2 = uilabel(app.FFTSettingsPanel);
+            app.toLabel_2.HorizontalAlignment = 'right';
+            app.toLabel_2.Position = [243 162 25 22];
+            app.toLabel_2.Text = 'to';
 
             % Create ToEpolFreqEditField
             app.ToEpolFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
             app.ToEpolFreqEditField.Limits = [0 5];
             app.ToEpolFreqEditField.ValueDisplayFormat = '%5.2f';
             app.ToEpolFreqEditField.ValueChangedFcn = createCallbackFcn(app, @ToEpolFreqEditFieldValueChanged, true);
-            app.ToEpolFreqEditField.Position = [208 184 45 22];
+            app.ToEpolFreqEditField.Position = [273 162 40 22];
             app.ToEpolFreqEditField.Value = 0.4;
-
-            % Create THzLabel_5
-            app.THzLabel_5 = uilabel(app.FFTSettingsPanel);
-            app.THzLabel_5.Position = [257 184 27 22];
-            app.THzLabel_5.Text = 'THz';
 
             % Create Plot2TDButton
             app.Plot2TDButton = uibutton(app.TimeDomainTDTab, 'push');
             app.Plot2TDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot2TDButtonPushed, true);
-            app.Plot2TDButton.Position = [574 610 105 45];
+            app.Plot2TDButton.Position = [574 613 105 45];
             app.Plot2TDButton.Text = 'Plot 2';
 
             % Create ALLButton
@@ -3928,186 +3874,275 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create PlotForCustomisationButton_TD
             app.PlotForCustomisationButton_TD = uibutton(app.TimeDomainTDTab, 'push');
             app.PlotForCustomisationButton_TD.ButtonPushedFcn = createCallbackFcn(app, @PlotForCustomisationButton_TDPushed, true);
-            app.PlotForCustomisationButton_TD.FontSize = 11;
-            app.PlotForCustomisationButton_TD.Position = [574 568 105 35];
+            app.PlotForCustomisationButton_TD.Position = [574 567 105 40];
             app.PlotForCustomisationButton_TD.Text = {'Plot For'; 'Customisation'};
 
             % Create GeneralInformationPanel
             app.GeneralInformationPanel = uipanel(app.TimeDomainTDTab);
             app.GeneralInformationPanel.Title = 'General Information';
             app.GeneralInformationPanel.FontWeight = 'bold';
-            app.GeneralInformationPanel.Position = [18 323 329 150];
+            app.GeneralInformationPanel.Position = [18 323 316 163];
 
             % Create DescriptionEditField_2Label_2
             app.DescriptionEditField_2Label_2 = uilabel(app.GeneralInformationPanel);
             app.DescriptionEditField_2Label_2.HorizontalAlignment = 'right';
-            app.DescriptionEditField_2Label_2.Position = [5 100 65 22];
+            app.DescriptionEditField_2Label_2.Position = [8 113 65 22];
             app.DescriptionEditField_2Label_2.Text = 'Description';
 
             % Create GeneralDescriptionEditField
             app.GeneralDescriptionEditField = uieditfield(app.GeneralInformationPanel, 'text');
             app.GeneralDescriptionEditField.Editable = 'off';
-            app.GeneralDescriptionEditField.Position = [97 100 224 22];
+            app.GeneralDescriptionEditField.Position = [96 113 210 22];
 
             % Create DateandTimeEditFieldLabel
             app.DateandTimeEditFieldLabel = uilabel(app.GeneralInformationPanel);
             app.DateandTimeEditFieldLabel.HorizontalAlignment = 'right';
-            app.DateandTimeEditFieldLabel.Position = [4 69 83 22];
+            app.DateandTimeEditFieldLabel.Position = [7 87 83 22];
             app.DateandTimeEditFieldLabel.Text = 'Date and Time';
 
             % Create GeneralDateandTimeEditField
             app.GeneralDateandTimeEditField = uieditfield(app.GeneralInformationPanel, 'text');
             app.GeneralDateandTimeEditField.Editable = 'off';
-            app.GeneralDateandTimeEditField.Position = [97 69 224 22];
+            app.GeneralDateandTimeEditField.Position = [96 87 210 22];
 
             % Create InstrumentEditFieldLabel
             app.InstrumentEditFieldLabel = uilabel(app.GeneralInformationPanel);
             app.InstrumentEditFieldLabel.HorizontalAlignment = 'right';
-            app.InstrumentEditFieldLabel.Position = [4 39 62 22];
+            app.InstrumentEditFieldLabel.Position = [7 61 62 22];
             app.InstrumentEditFieldLabel.Text = 'Instrument';
 
             % Create GeneralInstrumentEditField
             app.GeneralInstrumentEditField = uieditfield(app.GeneralInformationPanel, 'text');
             app.GeneralInstrumentEditField.Editable = 'off';
-            app.GeneralInstrumentEditField.Position = [97 39 224 22];
+            app.GeneralInstrumentEditField.Position = [96 61 210 22];
 
             % Create UserEditFieldLabel
             app.UserEditFieldLabel = uilabel(app.GeneralInformationPanel);
             app.UserEditFieldLabel.HorizontalAlignment = 'right';
-            app.UserEditFieldLabel.Position = [4 9 30 22];
+            app.UserEditFieldLabel.Position = [7 36 30 22];
             app.UserEditFieldLabel.Text = 'User';
 
             % Create GeneralUserEditField
             app.GeneralUserEditField = uieditfield(app.GeneralInformationPanel, 'text');
             app.GeneralUserEditField.Editable = 'off';
-            app.GeneralUserEditField.Position = [98 9 223 22];
+            app.GeneralUserEditField.Position = [96 36 210 22];
+
+            % Create RefractiveIndexEditFieldLabel
+            app.RefractiveIndexEditFieldLabel = uilabel(app.GeneralInformationPanel);
+            app.RefractiveIndexEditFieldLabel.HorizontalAlignment = 'right';
+            app.RefractiveIndexEditFieldLabel.Position = [7 9 92 22];
+            app.RefractiveIndexEditFieldLabel.Text = 'Refractive Index';
+
+            % Create RefractiveIndexEditField
+            app.RefractiveIndexEditField = uieditfield(app.GeneralInformationPanel, 'numeric');
+            app.RefractiveIndexEditField.ValueDisplayFormat = '%5.2f';
+            app.RefractiveIndexEditField.Position = [109 9 48 22];
+
+            % Create stEtalonEditFieldLabel
+            app.stEtalonEditFieldLabel = uilabel(app.GeneralInformationPanel);
+            app.stEtalonEditFieldLabel.HorizontalAlignment = 'right';
+            app.stEtalonEditFieldLabel.Position = [171 9 58 22];
+            app.stEtalonEditFieldLabel.Text = '1st Etalon';
+
+            % Create stEtalonEditField
+            app.stEtalonEditField = uieditfield(app.GeneralInformationPanel, 'numeric');
+            app.stEtalonEditField.ValueDisplayFormat = '%5.2f';
+            app.stEtalonEditField.Position = [241 9 57 22];
 
             % Create MetadataInformationPanel
             app.MetadataInformationPanel = uipanel(app.TimeDomainTDTab);
             app.MetadataInformationPanel.Title = 'Metadata Information';
             app.MetadataInformationPanel.FontWeight = 'bold';
-            app.MetadataInformationPanel.Position = [18 133 329 181];
-
-            % Create DescriptionEditFieldLabel
-            app.DescriptionEditFieldLabel = uilabel(app.MetadataInformationPanel);
-            app.DescriptionEditFieldLabel.HorizontalAlignment = 'right';
-            app.DescriptionEditFieldLabel.Position = [4 131 65 22];
-            app.DescriptionEditFieldLabel.Text = 'Description';
-
-            % Create mdDescriptionEditField
-            app.mdDescriptionEditField = uieditfield(app.MetadataInformationPanel, 'text');
-            app.mdDescriptionEditField.Editable = 'off';
-            app.mdDescriptionEditField.Position = [74 131 248 22];
+            app.MetadataInformationPanel.Position = [18 113 316 201];
 
             % Create SampleLabel
             app.SampleLabel = uilabel(app.MetadataInformationPanel);
             app.SampleLabel.HorizontalAlignment = 'right';
-            app.SampleLabel.Position = [14 10 49 22];
+            app.SampleLabel.Position = [21 11 49 22];
             app.SampleLabel.Text = 'Sample ';
 
             % Create mdSampleThicknessDropDown
             app.mdSampleThicknessDropDown = uidropdown(app.MetadataInformationPanel);
             app.mdSampleThicknessDropDown.Items = {'md1', 'md2', 'md3', 'md4'};
-            app.mdSampleThicknessDropDown.Position = [84 10 60 22];
+            app.mdSampleThicknessDropDown.Position = [79 11 60 22];
             app.mdSampleThicknessDropDown.Value = 'md1';
 
             % Create ReferenceLabel
             app.ReferenceLabel = uilabel(app.MetadataInformationPanel);
             app.ReferenceLabel.HorizontalAlignment = 'right';
-            app.ReferenceLabel.Position = [174 10 60 22];
+            app.ReferenceLabel.Position = [164 11 60 22];
             app.ReferenceLabel.Text = 'Reference';
 
             % Create mdReferenceThicknessDropDown
             app.mdReferenceThicknessDropDown = uidropdown(app.MetadataInformationPanel);
-            app.mdReferenceThicknessDropDown.Items = {'md1', 'md2', 'md3', 'md4'};
-            app.mdReferenceThicknessDropDown.Position = [256 10 60 22];
+            app.mdReferenceThicknessDropDown.Items = {'air', 'md1', 'md2', 'md3', 'md4'};
+            app.mdReferenceThicknessDropDown.Position = [234 11 60 22];
             app.mdReferenceThicknessDropDown.Value = 'md3';
 
             % Create md1EditFieldLabel
             app.md1EditFieldLabel = uilabel(app.MetadataInformationPanel);
             app.md1EditFieldLabel.HorizontalAlignment = 'right';
-            app.md1EditFieldLabel.Position = [31 99 28 22];
+            app.md1EditFieldLabel.Position = [10 149 28 22];
             app.md1EditFieldLabel.Text = 'md1';
 
             % Create md1EditField
             app.md1EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
             app.md1EditField.ValueDisplayFormat = '%5.2f';
-            app.md1EditField.Position = [74 99 68 22];
+            app.md1EditField.ValueChangedFcn = createCallbackFcn(app, @md1EditFieldValueChanged, true);
+            app.md1EditField.Position = [54 149 50 22];
 
             % Create md2EditFieldLabel
             app.md2EditFieldLabel = uilabel(app.MetadataInformationPanel);
             app.md2EditFieldLabel.HorizontalAlignment = 'right';
-            app.md2EditFieldLabel.Position = [203 99 28 22];
+            app.md2EditFieldLabel.Position = [10 123 28 22];
             app.md2EditFieldLabel.Text = 'md2';
 
             % Create md2EditField
             app.md2EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
             app.md2EditField.ValueDisplayFormat = '%5.2f';
-            app.md2EditField.Position = [246 99 68 22];
+            app.md2EditField.ValueChangedFcn = createCallbackFcn(app, @md2EditFieldValueChanged, true);
+            app.md2EditField.Position = [54 123 50 22];
 
             % Create md3EditFieldLabel
             app.md3EditFieldLabel = uilabel(app.MetadataInformationPanel);
             app.md3EditFieldLabel.HorizontalAlignment = 'right';
-            app.md3EditFieldLabel.Position = [31 70 28 22];
+            app.md3EditFieldLabel.Position = [10 98 28 22];
             app.md3EditFieldLabel.Text = 'md3';
 
             % Create md3EditField
             app.md3EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
             app.md3EditField.ValueDisplayFormat = '%5.2f';
-            app.md3EditField.Position = [74 70 68 22];
+            app.md3EditField.ValueChangedFcn = createCallbackFcn(app, @md3EditFieldValueChanged, true);
+            app.md3EditField.Position = [54 98 50 22];
 
             % Create md4EditFieldLabel
             app.md4EditFieldLabel = uilabel(app.MetadataInformationPanel);
             app.md4EditFieldLabel.HorizontalAlignment = 'right';
-            app.md4EditFieldLabel.Position = [203 69 28 22];
+            app.md4EditFieldLabel.Position = [10 73 28 22];
             app.md4EditFieldLabel.Text = 'md4';
 
             % Create md4EditField
             app.md4EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
             app.md4EditField.ValueDisplayFormat = '%5.2f';
-            app.md4EditField.Position = [246 69 68 22];
+            app.md4EditField.Position = [54 73 50 22];
 
             % Create ThicknessmmLabel
             app.ThicknessmmLabel = uilabel(app.MetadataInformationPanel);
             app.ThicknessmmLabel.FontWeight = 'bold';
-            app.ThicknessmmLabel.Position = [9 40 96 22];
+            app.ThicknessmmLabel.Position = [9 46 96 22];
             app.ThicknessmmLabel.Text = 'Thickness (mm)';
+
+            % Create md1DesEditField
+            app.md1DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
+            app.md1DesEditField.Editable = 'off';
+            app.md1DesEditField.Position = [111 149 195 22];
+
+            % Create md2DesEditField
+            app.md2DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
+            app.md2DesEditField.Editable = 'off';
+            app.md2DesEditField.Position = [111 123 195 22];
+
+            % Create md3DesEditField
+            app.md3DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
+            app.md3DesEditField.Editable = 'off';
+            app.md3DesEditField.Position = [111 98 195 22];
+
+            % Create md4DesEditField
+            app.md4DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
+            app.md4DesEditField.Editable = 'off';
+            app.md4DesEditField.Position = [111 73 195 22];
+
+            % Create ResetConfigurationsButton
+            app.ResetConfigurationsButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.ResetConfigurationsButton.ButtonPushedFcn = createCallbackFcn(app, @ResetConfigurationsButtonPushed, true);
+            app.ResetConfigurationsButton.Position = [190 75 133 28];
+            app.ResetConfigurationsButton.Text = 'Reset Configurations';
 
             % Create DatasetInformationPanel
             app.DatasetInformationPanel = uipanel(app.TimeDomainTDTab);
             app.DatasetInformationPanel.Title = 'Dataset Information';
             app.DatasetInformationPanel.FontWeight = 'bold';
-            app.DatasetInformationPanel.Position = [19 62 329 62];
+            app.DatasetInformationPanel.Position = [354 372 327 115];
 
             % Create SampleDropDownLabel
             app.SampleDropDownLabel = uilabel(app.DatasetInformationPanel);
             app.SampleDropDownLabel.HorizontalAlignment = 'right';
-            app.SampleDropDownLabel.Position = [10 9 46 22];
+            app.SampleDropDownLabel.Position = [5 7 46 22];
             app.SampleDropDownLabel.Text = 'Sample';
 
             % Create dsSampleDropDown
             app.dsSampleDropDown = uidropdown(app.DatasetInformationPanel);
-            app.dsSampleDropDown.Items = {'ds1', 'ds2', 'ds3'};
-            app.dsSampleDropDown.Position = [83 9 60 22];
+            app.dsSampleDropDown.Items = {'ds1', 'ds2', 'ds3', 'ds4'};
+            app.dsSampleDropDown.Position = [54 7 52 22];
             app.dsSampleDropDown.Value = 'ds1';
 
             % Create ReferenceDropDownLabel
             app.ReferenceDropDownLabel = uilabel(app.DatasetInformationPanel);
             app.ReferenceDropDownLabel.HorizontalAlignment = 'right';
-            app.ReferenceDropDownLabel.Position = [174 9 60 22];
+            app.ReferenceDropDownLabel.Position = [106 7 60 22];
             app.ReferenceDropDownLabel.Text = 'Reference';
 
             % Create dsReferenceDropDown
             app.dsReferenceDropDown = uidropdown(app.DatasetInformationPanel);
-            app.dsReferenceDropDown.Items = {'ds1', 'ds2', 'ds3'};
-            app.dsReferenceDropDown.Position = [255 9 60 22];
+            app.dsReferenceDropDown.Items = {'ds1', 'ds2', 'ds3', 'ds4'};
+            app.dsReferenceDropDown.Position = [170 7 52 22];
             app.dsReferenceDropDown.Value = 'ds2';
 
-            % Create ResetConfigurationsButton
-            app.ResetConfigurationsButton = uibutton(app.TimeDomainTDTab, 'push');
-            app.ResetConfigurationsButton.ButtonPushedFcn = createCallbackFcn(app, @ResetConfigurationsButtonPushed, true);
-            app.ResetConfigurationsButton.Position = [385 59 262 23];
-            app.ResetConfigurationsButton.Text = 'Reset Configurations';
+            % Create ds1EditFieldLabel
+            app.ds1EditFieldLabel = uilabel(app.DatasetInformationPanel);
+            app.ds1EditFieldLabel.HorizontalAlignment = 'right';
+            app.ds1EditFieldLabel.Position = [10 67 25 22];
+            app.ds1EditFieldLabel.Text = 'ds1';
+
+            % Create ds1DesEditField
+            app.ds1DesEditField = uieditfield(app.DatasetInformationPanel, 'text');
+            app.ds1DesEditField.Editable = 'off';
+            app.ds1DesEditField.Position = [38 67 120 22];
+
+            % Create ds2EditFieldLabel
+            app.ds2EditFieldLabel = uilabel(app.DatasetInformationPanel);
+            app.ds2EditFieldLabel.HorizontalAlignment = 'right';
+            app.ds2EditFieldLabel.Position = [165 67 25 22];
+            app.ds2EditFieldLabel.Text = 'ds2';
+
+            % Create ds2DesEditField
+            app.ds2DesEditField = uieditfield(app.DatasetInformationPanel, 'text');
+            app.ds2DesEditField.Editable = 'off';
+            app.ds2DesEditField.Position = [195 67 120 22];
+
+            % Create ds3EditFieldLabel
+            app.ds3EditFieldLabel = uilabel(app.DatasetInformationPanel);
+            app.ds3EditFieldLabel.HorizontalAlignment = 'right';
+            app.ds3EditFieldLabel.Position = [8 38 25 22];
+            app.ds3EditFieldLabel.Text = 'ds3';
+
+            % Create ds3DesEditField
+            app.ds3DesEditField = uieditfield(app.DatasetInformationPanel, 'text');
+            app.ds3DesEditField.Editable = 'off';
+            app.ds3DesEditField.Position = [38 38 120 22];
+
+            % Create ds4EditFieldLabel
+            app.ds4EditFieldLabel = uilabel(app.DatasetInformationPanel);
+            app.ds4EditFieldLabel.HorizontalAlignment = 'right';
+            app.ds4EditFieldLabel.Position = [165 38 25 22];
+            app.ds4EditFieldLabel.Text = 'ds4';
+
+            % Create ds4DesEditField
+            app.ds4DesEditField = uieditfield(app.DatasetInformationPanel, 'text');
+            app.ds4DesEditField.Editable = 'off';
+            app.ds4DesEditField.Position = [195 38 120 22];
+
+            % Create PumpedLabel
+            app.PumpedLabel = uilabel(app.DatasetInformationPanel);
+            app.PumpedLabel.HorizontalAlignment = 'right';
+            app.PumpedLabel.Position = [224 7 36 22];
+            app.PumpedLabel.Text = 'Pump';
+
+            % Create dsPumpedDropDown
+            app.dsPumpedDropDown = uidropdown(app.DatasetInformationPanel);
+            app.dsPumpedDropDown.Items = {'n/a', 'ds1', 'ds2', 'ds3', 'ds4'};
+            app.dsPumpedDropDown.Position = [263 7 52 22];
+            app.dsPumpedDropDown.Value = 'n/a';
 
             % Create FrequencyDomainFDTab
             app.FrequencyDomainFDTab = uitab(app.TabGroup);
@@ -4117,7 +4152,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.UIAxes3 = uiaxes(app.FrequencyDomainFDTab);
             title(app.UIAxes3, 'PLOT 1')
             xlabel(app.UIAxes3, 'Frequency (THz)')
-            ylabel(app.UIAxes3, 'E_{field intensity} (a.u.)')
+            ylabel(app.UIAxes3, 'E_{field amplitude} (a.u.)')
             app.UIAxes3.FontWeight = 'bold';
             app.UIAxes3.XTickLabelRotation = 0;
             app.UIAxes3.YTickLabelRotation = 0;
@@ -4132,7 +4167,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.UIAxes4 = uiaxes(app.FrequencyDomainFDTab);
             title(app.UIAxes4, 'PLOT 2')
             xlabel(app.UIAxes4, 'Frequency (THz)')
-            ylabel(app.UIAxes4, 'E_{field intensity} (a.u.)')
+            ylabel(app.UIAxes4, 'E_{field amplitude} (a.u.)')
             app.UIAxes4.FontWeight = 'bold';
             app.UIAxes4.XTickLabelRotation = 0;
             app.UIAxes4.YTickLabelRotation = 0;
@@ -4146,13 +4181,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create Plot1FDButton
             app.Plot1FDButton = uibutton(app.FrequencyDomainFDTab, 'push');
             app.Plot1FDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot1FDButtonPushed, true);
-            app.Plot1FDButton.Position = [593 561 100 40];
+            app.Plot1FDButton.Position = [593 556 100 45];
             app.Plot1FDButton.Text = 'Plot 1';
 
             % Create Plot2FDButton
             app.Plot2FDButton = uibutton(app.FrequencyDomainFDTab, 'push');
             app.Plot2FDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot2FDButtonPushed, true);
-            app.Plot2FDButton.Position = [593 515 100 40];
+            app.Plot2FDButton.Position = [593 505 100 45];
             app.Plot2FDButton.Text = 'Plot 2';
 
             % Create FDListListBoxLabel
@@ -4239,23 +4274,23 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FDDataAnalysisPanel = uipanel(app.FrequencyDomainFDTab);
             app.FDDataAnalysisPanel.Title = 'FD Data Analysis';
             app.FDDataAnalysisPanel.FontWeight = 'bold';
-            app.FDDataAnalysisPanel.Position = [12 99 675 337];
+            app.FDDataAnalysisPanel.Position = [12 92 675 344];
 
             % Create Plot1FDButton_2
             app.Plot1FDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
             app.Plot1FDButton_2.ButtonPushedFcn = createCallbackFcn(app, @Plot1FDButton_2Pushed, true);
-            app.Plot1FDButton_2.Position = [554 117 109 40];
+            app.Plot1FDButton_2.Position = [554 118 104 45];
             app.Plot1FDButton_2.Text = 'Plot 1';
 
             % Create Plot2FDButton_2
             app.Plot2FDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
             app.Plot2FDButton_2.ButtonPushedFcn = createCallbackFcn(app, @Plot2FDButton_2Pushed, true);
-            app.Plot2FDButton_2.Position = [554 73 109 40];
+            app.Plot2FDButton_2.Position = [554 65 104 45];
             app.Plot2FDButton_2.Text = 'Plot 2';
 
             % Create MagPhaseButtonGroup_2
             app.MagPhaseButtonGroup_2 = uibuttongroup(app.FDDataAnalysisPanel);
-            app.MagPhaseButtonGroup_2.Position = [555 194 100 50];
+            app.MagPhaseButtonGroup_2.Position = [555 201 100 50];
 
             % Create AmplitudeButton_2
             app.AmplitudeButton_2 = uiradiobutton(app.MagPhaseButtonGroup_2);
@@ -4271,40 +4306,40 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create ALLFDButton_2
             app.ALLFDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
             app.ALLFDButton_2.ButtonPushedFcn = createCallbackFcn(app, @ALLFDButton_2Pushed, true);
-            app.ALLFDButton_2.Position = [8 222 45 45];
+            app.ALLFDButton_2.Position = [8 229 45 45];
             app.ALLFDButton_2.Text = 'ALL';
 
             % Create ADDFDButton_2
             app.ADDFDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
             app.ADDFDButton_2.ButtonPushedFcn = createCallbackFcn(app, @ADDFDButton_2Pushed, true);
-            app.ADDFDButton_2.Position = [8 164 45 45];
+            app.ADDFDButton_2.Position = [8 171 45 45];
             app.ADDFDButton_2.Text = 'ADD';
 
             % Create DELFDButton_2
             app.DELFDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
             app.DELFDButton_2.ButtonPushedFcn = createCallbackFcn(app, @DELFDButton_2Pushed, true);
-            app.DELFDButton_2.Position = [8 107 45 45];
+            app.DELFDButton_2.Position = [8 114 45 45];
             app.DELFDButton_2.Text = 'DEL';
 
             % Create DescriptionEditField_2Label
             app.DescriptionEditField_2Label = uilabel(app.FDDataAnalysisPanel);
-            app.DescriptionEditField_2Label.Position = [232 280 66 22];
+            app.DescriptionEditField_2Label.Position = [230 287 66 22];
             app.DescriptionEditField_2Label.Text = 'Description';
 
             % Create DescriptionEditField_FD
             app.DescriptionEditField_FD = uieditfield(app.FDDataAnalysisPanel, 'text');
             app.DescriptionEditField_FD.Editable = 'off';
-            app.DescriptionEditField_FD.Position = [229 258 143 22];
+            app.DescriptionEditField_FD.Position = [227 265 143 22];
 
             % Create ThicknessmmPanel
             app.ThicknessmmPanel = uipanel(app.FDDataAnalysisPanel);
             app.ThicknessmmPanel.Title = 'Thickness(mm)';
-            app.ThicknessmmPanel.Position = [229 140 143 113];
+            app.ThicknessmmPanel.Position = [227 146 143 113];
 
             % Create ReferenceEditFieldLabel
             app.ReferenceEditFieldLabel = uilabel(app.ThicknessmmPanel);
             app.ReferenceEditFieldLabel.HorizontalAlignment = 'right';
-            app.ReferenceEditFieldLabel.Position = [8 63 60 22];
+            app.ReferenceEditFieldLabel.Position = [7 35 60 22];
             app.ReferenceEditFieldLabel.Text = 'Reference';
 
             % Create ReferenceEditField
@@ -4312,12 +4347,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ReferenceEditField.Limits = [0 Inf];
             app.ReferenceEditField.ValueDisplayFormat = '%5.2g';
             app.ReferenceEditField.Editable = 'off';
-            app.ReferenceEditField.Position = [91 63 42 22];
+            app.ReferenceEditField.Position = [92 35 42 22];
 
             % Create SampleEditFieldLabel
             app.SampleEditFieldLabel = uilabel(app.ThicknessmmPanel);
             app.SampleEditFieldLabel.HorizontalAlignment = 'right';
-            app.SampleEditFieldLabel.Position = [7 38 46 22];
+            app.SampleEditFieldLabel.Position = [7 64 46 22];
             app.SampleEditFieldLabel.Text = 'Sample';
 
             % Create SampleEditField
@@ -4325,12 +4360,18 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.SampleEditField.Limits = [0 Inf];
             app.SampleEditField.ValueDisplayFormat = '%5.2g';
             app.SampleEditField.Editable = 'off';
-            app.SampleEditField.Position = [92 36 42 22];
+            app.SampleEditField.Position = [92 62 42 22];
+
+            % Create ThicknessSwitch
+            app.ThicknessSwitch = uiswitch(app.ThicknessmmPanel, 'slider');
+            app.ThicknessSwitch.Items = {'Sample', 'Offset'};
+            app.ThicknessSwitch.Position = [53 8 43 19];
+            app.ThicknessSwitch.Value = 'Sample';
 
             % Create MultipleReflectionCountPanel
             app.MultipleReflectionCountPanel = uipanel(app.FDDataAnalysisPanel);
             app.MultipleReflectionCountPanel.Title = 'Multiple Reflection Count';
-            app.MultipleReflectionCountPanel.Position = [229 78 144 54];
+            app.MultipleReflectionCountPanel.Position = [227 84 144 54];
 
             % Create SampleEditField_2Label
             app.SampleEditField_2Label = uilabel(app.MultipleReflectionCountPanel);
@@ -4348,56 +4389,55 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create CalculateOpticalParametersButton
             app.CalculateOpticalParametersButton = uibutton(app.FDDataAnalysisPanel, 'push');
             app.CalculateOpticalParametersButton.ButtonPushedFcn = createCallbackFcn(app, @CalculateOpticalParametersButtonPushed, true);
-            app.CalculateOpticalParametersButton.FontSize = 11;
             app.CalculateOpticalParametersButton.FontWeight = 'bold';
-            app.CalculateOpticalParametersButton.Position = [231 19 140 50];
+            app.CalculateOpticalParametersButton.Position = [229 21 140 55];
             app.CalculateOpticalParametersButton.Text = {'Calculate'; 'Optical Parameters'};
 
             % Create FDSelectionListBox_2Label
             app.FDSelectionListBox_2Label = uilabel(app.FDDataAnalysisPanel);
-            app.FDSelectionListBox_2Label.Position = [61 283 79 22];
+            app.FDSelectionListBox_2Label.Position = [61 290 79 22];
             app.FDSelectionListBox_2Label.Text = 'FD Selection';
 
             % Create FDSelectionListBox_2
             app.FDSelectionListBox_2 = uilistbox(app.FDDataAnalysisPanel);
             app.FDSelectionListBox_2.Items = {};
             app.FDSelectionListBox_2.ValueChangedFcn = createCallbackFcn(app, @FDSelectionListBox_2ValueChanged, true);
-            app.FDSelectionListBox_2.Position = [61 17 155 267];
+            app.FDSelectionListBox_2.Position = [61 14 155 277];
             app.FDSelectionListBox_2.Value = {};
 
             % Create PlotDataButtonGroup
             app.PlotDataButtonGroup = uibuttongroup(app.FDDataAnalysisPanel);
             app.PlotDataButtonGroup.SelectionChangedFcn = createCallbackFcn(app, @PlotDataButtonGroupSelectionChanged, true);
             app.PlotDataButtonGroup.Title = 'Plot Data';
-            app.PlotDataButtonGroup.Position = [383 33 159 267];
+            app.PlotDataButtonGroup.Position = [383 14 159 293];
 
             % Create TransmittanceButton
             app.TransmittanceButton = uitogglebutton(app.PlotDataButtonGroup);
             app.TransmittanceButton.Text = 'Transmittance';
-            app.TransmittanceButton.Position = [8 193 140 44];
+            app.TransmittanceButton.Position = [9 208 140 55];
 
             % Create AbsorptionButton
             app.AbsorptionButton = uitogglebutton(app.PlotDataButtonGroup);
             app.AbsorptionButton.Enable = 'off';
             app.AbsorptionButton.Text = 'Absorption';
-            app.AbsorptionButton.Position = [8 133 140 44];
+            app.AbsorptionButton.Position = [9 142 140 55];
 
             % Create RefractiveIndexButton
             app.RefractiveIndexButton = uitogglebutton(app.PlotDataButtonGroup);
             app.RefractiveIndexButton.Enable = 'off';
             app.RefractiveIndexButton.Text = 'Refractive Index';
-            app.RefractiveIndexButton.Position = [8 73 140 44];
+            app.RefractiveIndexButton.Position = [9 77 140 55];
             app.RefractiveIndexButton.Value = true;
 
             % Create DielectricConstantButton
             app.DielectricConstantButton = uitogglebutton(app.PlotDataButtonGroup);
             app.DielectricConstantButton.Enable = 'off';
             app.DielectricConstantButton.Text = 'Dielectric Constant';
-            app.DielectricConstantButton.Position = [8 14 140 44];
+            app.DielectricConstantButton.Position = [9 12 140 55];
 
             % Create YscaleButtonGroup_2
             app.YscaleButtonGroup_2 = uibuttongroup(app.FDDataAnalysisPanel);
-            app.YscaleButtonGroup_2.Position = [555 249 100 50];
+            app.YscaleButtonGroup_2.Position = [555 256 100 50];
 
             % Create logButton_2
             app.logButton_2 = uiradiobutton(app.YscaleButtonGroup_2);
@@ -4413,14 +4453,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create PlotForCustomisationButton_FD2
             app.PlotForCustomisationButton_FD2 = uibutton(app.FDDataAnalysisPanel, 'push');
             app.PlotForCustomisationButton_FD2.ButtonPushedFcn = createCallbackFcn(app, @PlotForCustomisationButton_FD2Pushed, true);
-            app.PlotForCustomisationButton_FD2.FontSize = 11;
-            app.PlotForCustomisationButton_FD2.Position = [554 32 109 35];
+            app.PlotForCustomisationButton_FD2.Position = [554 14 103 45];
             app.PlotForCustomisationButton_FD2.Text = {'Plot For'; 'Customisation'};
 
             % Create RealImagButtonGroup
             app.RealImagButtonGroup = uibuttongroup(app.FDDataAnalysisPanel);
             app.RealImagButtonGroup.Visible = 'off';
-            app.RealImagButtonGroup.Position = [555 193 100 50];
+            app.RealImagButtonGroup.Position = [555 200 100 50];
 
             % Create RealButton
             app.RealButton = uiradiobutton(app.RealImagButtonGroup);
@@ -4436,13 +4475,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create GridOffButton_2
             app.GridOffButton_2 = uibutton(app.FDDataAnalysisPanel, 'state');
             app.GridOffButton_2.Text = 'Grid Off';
-            app.GridOffButton_2.Position = [554 162 109 25];
-
-            % Create ThicknessSwitch
-            app.ThicknessSwitch = uiswitch(app.FDDataAnalysisPanel, 'slider');
-            app.ThicknessSwitch.Items = {'Sample', 'Offset'};
-            app.ThicknessSwitch.Position = [282 149 43 19];
-            app.ThicknessSwitch.Value = 'Sample';
+            app.GridOffButton_2.Position = [554 169 103 25];
 
             % Create YscaleButtonGroup
             app.YscaleButtonGroup = uibuttongroup(app.FrequencyDomainFDTab);
@@ -4525,8 +4558,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create PlotForCustomisationButton_FD1
             app.PlotForCustomisationButton_FD1 = uibutton(app.FrequencyDomainFDTab, 'push');
             app.PlotForCustomisationButton_FD1.ButtonPushedFcn = createCallbackFcn(app, @PlotForCustomisationButton_FD1Pushed, true);
-            app.PlotForCustomisationButton_FD1.FontSize = 11;
-            app.PlotForCustomisationButton_FD1.Position = [593 468 100 41];
+            app.PlotForCustomisationButton_FD1.Position = [593 458 100 41];
             app.PlotForCustomisationButton_FD1.Text = {'Plot For'; 'Customisation'};
 
             % Create DataManipulationDMTab
