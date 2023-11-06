@@ -2,7 +2,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
     % Properties that correspond to app components
     properties (Access = public)
-        CatsperUIFigure                 matlab.ui.Figure
+        CaTSperUIFigure                 matlab.ui.Figure
         DeployButton                    matlab.ui.control.Button
         Image                           matlab.ui.control.Image
         ProjectsEditField               matlab.ui.control.EditField
@@ -31,6 +31,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         SampleDropDownLabel             matlab.ui.control.Label
         ResetConfigurationsButton       matlab.ui.control.Button
         MetadataInformationPanel        matlab.ui.container.Panel
+        ThicknessSwitch_TD              matlab.ui.control.Switch
         md4DesEditField                 matlab.ui.control.EditField
         md3DesEditField                 matlab.ui.control.EditField
         md2DesEditField                 matlab.ui.control.EditField
@@ -49,9 +50,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
         mdSampleThicknessDropDown       matlab.ui.control.DropDown
         SampleLabel                     matlab.ui.control.Label
         GeneralInformationPanel         matlab.ui.container.Panel
-        stEtalonEditField               matlab.ui.control.NumericEditField
-        stEtalonEditFieldLabel          matlab.ui.control.Label
-        RefractiveIndexEditField        matlab.ui.control.NumericEditField
+        GeneralEtalonEditField          matlab.ui.control.NumericEditField
+        stEtalonpsLabel                 matlab.ui.control.Label
+        GeneralRefractiveIndexEditField  matlab.ui.control.NumericEditField
         RefractiveIndexEditFieldLabel   matlab.ui.control.Label
         GeneralUserEditField            matlab.ui.control.EditField
         UserEditFieldLabel              matlab.ui.control.Label
@@ -149,7 +150,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         SampleNMREditField              matlab.ui.control.NumericEditField
         SampleEditField_2Label          matlab.ui.control.Label
         ThicknessmmPanel                matlab.ui.container.Panel
-        ThicknessSwitch                 matlab.ui.control.Switch
+        ThicknessSwitch_FD              matlab.ui.control.Switch
         SampleEditField                 matlab.ui.control.NumericEditField
         SampleEditFieldLabel            matlab.ui.control.Label
         ReferenceEditField              matlab.ui.control.NumericEditField
@@ -337,7 +338,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.TD_data.metadata{TDindex}.internalReflection = etl_t;
             
             % display update
-            app.RefractiveIndexEditField.Value = n_eff;
+            app.GeneralRefractiveIndexEditField.Value = n_eff;
             app.stinternalreflectionpsEditField.Value = etl_t;
         end
         
@@ -345,7 +346,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % different parameters associated with the frequency domain (FD) tab
         % when certain conditions are met
         function FDdataDel(app,FDindex)
-            app.FD_data.sampleList(FDindex) = [];
+            app.FD_data.measList(FDindex) = [];
             app.FD_data.metadata(FDindex) = [];
             app.FD_data.frequency(FDindex) = [];
             app.FD_data.ffd_references(FDindex) = [];
@@ -377,6 +378,29 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.TD_data = [];
             app.MeasurementListBox.Items(:) = [];
             app.SelectionListBox.Items(:) = [];
+
+            app.md1DesEditField.Value = '';
+            app.md2DesEditField.Value = '';
+            app.md3DesEditField.Value = '';
+            app.md4DesEditField.Value = '';
+            app.md1EditField.AllowEmpty = "on";
+            app.md2EditField.AllowEmpty = "on";
+            app.md3EditField.AllowEmpty = "on";
+            app.md4EditField.AllowEmpty = "on";
+            app.md1EditField.Value = [];
+            app.md2EditField.Value = [];
+            app.md3EditField.Value = [];
+            app.md4EditField.Value = [];
+            app.ds1DesEditField.Value = '';
+            app.ds2DesEditField.Value = '';
+            app.ds3DesEditField.Value = '';
+            app.ds3DesEditField.Value = '';
+            app.GeneralDateandTimeEditField.Value = '';
+            app.GeneralDescriptionEditField.Value = '';
+            app.GeneralInstrumentEditField.Value = '';
+            app.GeneralUserEditField.Value = '';
+            app.GeneralRefractiveIndexEditField.Value = 0;
+            app.GeneralEtalonEditField.Value = 0;
         end
         
         % plotTD_data plots the time domain data, choices can be made on plotting reference measurements only,
@@ -440,24 +464,19 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % reference only or both sample and reference, depends on what one
             % selects) in time domain
             for idx = plotList
-                % refOption = app.TD_data.metadata{idx}.refOption;
-                % 
-                % if isequal(refOption,0)
-                %     warning('No available reference dataset')
-                %     return;
-                % end
-                % 
-                % refIdx = refOption*2-1;
-                % extracting time data
-                td_time = app.TD_data.references{idx,1};
+
+                dsNum_Sample = app.TD_data.dsNum_Sample{idx};
+                dsNum_Reference = app.TD_data.dsNum_Reference{idx};
+                
+                td_time = app.TD_data.ds{idx,dsNum_Reference}(1,:);
                 % extracting corresponding electric field intensity values
                 % for reference measurement
-                td_reference = app.TD_data.references{idx,2};
+                td_reference = app.TD_data.ds{idx,dsNum_Reference}(2,:);
                 % extracting corresponding electric field intensity values
                 % for sample measurement
-                td_sample = app.TD_data.samples{idx,2};
+                td_sample = app.TD_data.ds{idx,dsNum_Sample}(2,:);
                 % extracting sample name
-                sampleID = strjoin(app.TD_data.sampleList{idx});
+                sampleID = strjoin(app.TD_data.measList{idx});
 %                 assignin('base',"td_Base",td_base);
 %                 assignin('base',"td_sample",td_sample);
                 
@@ -552,7 +571,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % plotting all selected measurements in frequency domain
             for idx = plotList
                 fd_base = app.FD_data.frequency{idx} * 10^-12;
-                sampleID = app.FD_data.sampleList{idx};
+                sampleID = app.FD_data.measList{idx};
                 
                 % if amplitude is selected for plotting, extract the
                 % amplitude values for reference and sample measurements,
@@ -662,7 +681,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % converting frequency values to THz
                 fd_base = app.FD_data.frequency{idx} * 10^-12;
                 % extracting sample name for legend
-                sampleID = app.FD_data.sampleList{idx};
+                sampleID = app.FD_data.measList{idx};
                 lgd{cnt} = sampleID;
                 cnt = cnt + 1;
 
@@ -799,7 +818,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             for idx = plotList
                 fd_base = app.FD_data.frequency{idx} * 10^-12;
                 % extracting sample name for legend
-                sampleID = app.FD_data.sampleList{idx};
+                sampleID = app.FD_data.measList{idx};
                 lgd{cnt} = sampleID;
                 cnt = cnt + 1;
 %                 pause(1);
@@ -918,7 +937,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             lowLimit = app.LowerLimitTHzEditField.Value *10^12;
             % extract peak number
             pkNum = app.PeakNumSpinner.Value;
-            fig = app.CatsperUIFigure;
+            fig = app.CaTSperUIFigure;
             ax = app.UIAxes9;
             hold(ax,"on")
             heightMat  = [];
@@ -1015,7 +1034,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 configFile = 'config_default.json';
            catch ME
-                fig = app.CatsperUIFigure;
+                fig = app.CaTSperUIFigure;
                 uialert(fig,'config_default.json file is missing.','warning');
                 return;
             end
@@ -1051,8 +1070,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % updateThickness calculates the tablet thickness in time domain
         % using a new method
         function updateThickness(app,sam_thickness,pksProm,loc,All,refMdm,maxPer)
-            %Tcell_measDetails = app.Tcell_measDetails;
-            
+
             % extracting the measurements selected
             TDselected = app.MeasurementListBox.Value;
             % updating thickness value based on input
@@ -1170,13 +1188,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.PRJ_count = 0;
             app.filename = [];
             loadDefaultSettings(app);
-            
-            % Tcell_measDetails = {"Description","Instrument","Date","Time","Metadata","md1","md2","md3","md4","Datasets","Time Delay","Refractive Index","1st Etalon";...
-            %     "","","","","","","","","","","","",""}';
-            % app.UITable_MeasDetail.Data = cell2table(Tcell_measDetails);
-            % app.Tcell_measDetails = Tcell_measDetails;
-            % app.Tcell_measDetailsDefault = Tcell_measDetails;
-            % app.DEBUGMsgLabel.Text = app.CatsperUIFigure.Tag
 
         end
 
@@ -1187,17 +1198,65 @@ classdef CaTSper_exported < matlab.apps.AppBase
             timeDelay = app.TD_data.metadata{MeasNum}.timeDelay;
             n_eff = app.TD_data.metadata{MeasNum}.refractiveIndex;
             etl_t = app.TD_data.metadata{MeasNum}.internalReflection;
-            refNum = sum(~cellfun("isempty",app.TD_data.references(MeasNum,:)))/2;
-            
+
+            % display sample, reference, and pump datasets on the GUI
+            % dropdown handler
+            dsNum_Sample = app.TD_data.dsNum_Sample{MeasNum};
+            dsNum_Reference = app.TD_data.dsNum_Reference{MeasNum};
+            dsNum_Pump = app.TD_data.dsNum_Pump{MeasNum};
+            app.dsSampleDropDown.Value = strcat("ds",num2str(dsNum_Sample));            
+            if dsNum_Reference % for non-zero dsNum_Reference
+                app.dsReferenceDropDown.Value = strcat("ds",num2str(dsNum_Reference));
+            else
+                app.dsReferenceDropDown.Value = "no";
+            end
+            if dsNum_Pump % for non-zero dsNum_Pump
+                app.dsPumpedDropDown.Value = strcat("ds",num2str(dsNum_Pump));
+            else
+                app.dsPumpedDropDown.Value = "no";
+            end
+
+            % display sample and reference thicknesses on the GUI dropdown
+            % handler
+            mdNum_SampleThickness = app.TD_data.metadata{MeasNum}.mdNum_SampleThickness;
+            mdNum_ReferenceThickness = app.TD_data.metadata{MeasNum}.mdNum_ReferenceThickness;          
+
+            if mdNum_SampleThickness
+                app.mdSampleThicknessDropDown.Value = strcat("md",num2str(mdNum_SampleThickness));
+            else
+                app.mdSampleThicknessDropDown.Value = "no";
+            end
+
+            if mdNum_ReferenceThickness
+                app.mdReferenceThicknessDropDown.Value = strcat("md",num2str(mdNum_ReferenceThickness));
+            else
+                app.mdReferenceThicknessDropDown.Value = "no";
+            end
+
             description = app.TD_data.metadata{MeasNum}.description;
             mdDescription = app.TD_data.metadata{MeasNum}.mdDescription;
             dsDescription = app.TD_data.metadata{MeasNum}.dsDescription;
 
-            md1 = app.TD_data.metadata{MeasNum}.md1;
-            md2 = app.TD_data.metadata{MeasNum}.md2;
-            md3 = app.TD_data.metadata{MeasNum}.md3;
-            md4 = app.TD_data.metadata{MeasNum}.md4;
+            % display metadata values
+            md1 = app.TD_data.metadata{MeasNum}.md{1};
+            md2 = app.TD_data.metadata{MeasNum}.md{2};
+            md3 = app.TD_data.metadata{MeasNum}.md{3};
+            md4 = app.TD_data.metadata{MeasNum}.md{4};
 
+            try
+                app.md1EditField.Value = md1;
+            end
+            try 
+                app.md2EditField.Value = md2;
+            end
+            try
+                app.md3EditField.Value = md3;
+            end
+            try
+                app.md4EditField.Value = md4;    
+            end
+
+            % display general information
             scanTime = app.TD_data.metadata{MeasNum}.time;
             insProfile = app.TD_data.metadata{MeasNum}.instrument;
             userProfile = app.TD_data.metadata{MeasNum}.user;
@@ -1206,7 +1265,10 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.GeneralDateandTimeEditField.Value = scanTime;
             app.GeneralInstrumentEditField.Value = insProfile;
             app.GeneralUserEditField.Value = userProfile;
+            app.GeneralRefractiveIndexEditField.Value = n_eff;
+            app.GeneralEtalonEditField.Value = etl_t;
 
+            % display metadata descriptions
             mdList = strsplit(mdDescription,',');
             mdSize = size(mdList,2);
 
@@ -1215,17 +1277,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             if mdSize >= 3 , app.md3DesEditField.Value = mdList{3}; , end;
             if mdSize >= 4 , app.md4DesEditField.Value = mdList{4}; , end;
 
-            % display sample and reference thickness
-            app.md1EditField.AllowEmpty = "on";
-            app.md2EditField.AllowEmpty = "on";
-            app.md3EditField.AllowEmpty = "on";
-            app.md4EditField.AllowEmpty = "on";
-
-            app.md1EditField.Value = md1;
-            app.md2EditField.Value = md2;
-            app.md3EditField.Value = md3;
-            app.md4EditField.Value = md4;                
-
+            % display dataset descriptions
             dsList = strsplit(dsDescription,',');
             dsSize = size(dsList,2);
 
@@ -1263,7 +1315,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % list
                 for ListNo = 1:length(app.TD_select)
                    ItemNo = app.TD_select(ListNo);
-                   AddItem = strjoin(app.TD_data.sampleList{ItemNo});
+                   AddItem = strjoin(app.TD_data.measList{ItemNo});
                    ListBoxItem{ListNo} = AddItem;
                 end
                    
@@ -1296,8 +1348,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % such as choosing window functions are possible.    
         
             % checking the current FD list number
-            % extracting the column size of 'app.FD_data.sampleList'
-            FDindexNum = size(app.FD_data.sampleList,2);
+            % extracting the column size of 'app.FD_data.measList'
+            FDindexNum = size(app.FD_data.measList,2);
             FDindex = 0;
             
             % extracting the values that were specified by the user
@@ -1316,23 +1368,19 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % extract the time spacing between logged values
                 TDindex = addFDList(cnt);
 
-                % refOption = app.TD_data.metadata{TDindex}.refOption;
-                % if isequal(refOption,0)
-                %     warning('No available reference dataset')
-                %     return;
-                % end
-                % refIdx = refOption*2-1;                
+                dsNum_Sample = app.TD_data.dsNum_Sample{TDindex};
+                dsNum_Reference = app.TD_data.dsNum_Reference{TDindex};
                 
                 % reference waveform 
                 xSpacing = app.TD_data.metadata{TDindex}.xSpacing;
                 % convert the time spacing into frequency spacing
                 fs = 1/(xSpacing*10^-12); % obtain sampling frequency based on xSpacing value
-                t_reference = app.TD_data.references{TDindex,1};
-                E_reference = app.TD_data.references{TDindex,2};
+                t_reference = app.TD_data.ds{TDindex,dsNum_Reference}(1,:);
+                E_reference = app.TD_data.ds{TDindex,dsNum_Reference}(2,:);
                 
                 % sample waveform
-                t_sample = app.TD_data.samples{TDindex,1};
-                E_sample = app.TD_data.samples{TDindex,2};
+                t_sample = app.TD_data.ds{TDindex,dsNum_Sample}(1,:);
+                E_sample = app.TD_data.ds{TDindex,dsNum_Sample}(2,:);
                 
                 % time delay between reference and sample measurement
                 delta_t = app.TD_data.metadata{TDindex}.timeDelay;
@@ -1494,10 +1542,10 @@ classdef CaTSper_exported < matlab.apps.AppBase
                         ,(funcName),')');
                 end
                 
-                sampleID = strjoin(app.TD_data.sampleList{TDindex});
+                sampleID = strjoin(app.TD_data.measList{TDindex});
                 FDsampleName = strcat(num2str(FDindex),':',sampleID);
                 AddItem = strcat(FDsampleName,FTsetting);
-                app.FD_data.sampleList{FDindex} = FDsampleName;
+                app.FD_data.measList{FDindex} = FDsampleName;
                 app.FD_data.metadata{FDindex} = FTsetting;
                 ListBoxItem{FDindex} = AddItem;
                 
@@ -1614,7 +1662,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     % updating the numbers displayed on the selection list
                     for ListNo = 1:length(app.TD_select)
                         ItemNo = app.TD_select(ListNo);
-                        AddItem = strjoin(app.TD_data.sampleList{ItemNo});
+                        AddItem = strjoin(app.TD_data.measList{ItemNo});
                         ListBoxItem{ListNo} = AddItem;
                     end
          
@@ -1685,10 +1733,10 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % inside the string has not been updated yet
             % this loop updates the number inside the string such that it
             % matches the index number in the array
-            for idx = delItem:length(app.FD_data.sampleList)
+            for idx = delItem:length(app.FD_data.measList)
                 % extracting the strings
                 ListBoxID = ListBoxItems{idx};
-                sampleID = app.FD_data.sampleList{idx};
+                sampleID = app.FD_data.measList{idx};
                 % extracting the old number, which is one greater than the
                 % index number in the structure, and converting it with the ':' sign into a string                
                 repOld = strcat(num2str(idx+1),':');
@@ -1701,7 +1749,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 ListBoxID = replace(ListBoxID,repOld, repNew);
                 
                 % update the information stored in the array
-                app.FD_data.sampleList{idx} = sampleID;
+                app.FD_data.measList{idx} = sampleID;
                 ListBoxItems{idx} = ListBoxID;
             end
             
@@ -1736,7 +1784,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % extracting the value
                 ItemNo = app.FD_select(ListNo);
                 % extracting the string located at the corresponding index
-                AddItem = app.FD_data.sampleList{ItemNo};
+                AddItem = app.FD_data.measList{ItemNo};
                 % storing the string into an array
                 ListBoxItem{ListNo} = AddItem;
             end
@@ -1777,7 +1825,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                    % extracting the value
                    ItemNo = app.FD_select(ListNo);
                    % extracting the string stored with an index of the same value
-                   AddItem = app.FD_data.sampleList{ItemNo};
+                   AddItem = app.FD_data.measList{ItemNo};
                    % storing the string into an array
                    ListBoxItem{ListNo} = AddItem;
                 end
@@ -1825,7 +1873,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                    % extracting the value
                    ItemNo = app.FD_select(ListNo);
                    % extracting the string stored with an index of the same value
-                   AddItem = app.FD_data.sampleList{ItemNo};
+                   AddItem = app.FD_data.measList{ItemNo};
                    % storing the string into an array
                    ListBoxItem{ListNo} = AddItem;
                 end
@@ -1934,7 +1982,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                    TD_data.samples{cnt,2} = app.TD_data.samples{Idx,2};
                    TD_data.references{cnt,1} = app.TD_data.references{Idx,1};
                    TD_data.references{cnt,2} = app.TD_data.references{Idx,2};
-                   TD_data.sampleList{cnt} = app.TD_data.sampleList{Idx};
+                   TD_data.measList{cnt} = app.TD_data.measList{Idx};
                    TD_data.metadata{cnt} = app.TD_data.metadata{Idx};
                    %TD_data.analysis{cnt} = app.TD_data.analysis{Idx}; %[Re_max, delta_t, n_eff, elt_t]
                  
@@ -1944,8 +1992,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             end
 
-            % save TD data in a structure and all item names as a
-            % list in a cell
             save(fullfile,'TD_data','ListItems');
         end
 
@@ -1977,7 +2023,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.TransformButton.Enable = true;
             
             % empties the sample list and settings in the frequency domain tab
-            app.FD_data.sampleList = {};
+            app.FD_data.measList = {};
             app.FD_data.metadata = {};
         end
 
@@ -2024,7 +2070,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % extract all items from the FD List
             for ListNo = 1:length(app.FD_select_2)
                 ItemNo = app.FD_select_2(ListNo);
-                AddItem = app.FD_data.sampleList{ItemNo};
+                AddItem = app.FD_data.measList{ItemNo};
                 ListBoxItem{ListNo} = AddItem;
             end
                        
@@ -2065,7 +2111,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % extract all items from the selection list
                 for ListNo = 1:length(app.FD_select_2)
                    ItemNo = app.FD_select_2(ListNo);
-                   AddItem = app.FD_data.sampleList{ItemNo};
+                   AddItem = app.FD_data.measList{ItemNo};
                    ListBoxItem{ListNo} = AddItem;
                 end
                        
@@ -2113,7 +2159,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % extract all items from the selection list
                 for ListNo = 1:length(app.FD_select_2)
                    ItemNo = app.FD_select_2(ListNo);
-                   AddItem = app.FD_data.sampleList{ItemNo};
+                   AddItem = app.FD_data.measList{ItemNo};
                    ListBoxItem{ListNo} = AddItem;
                 end
                        
@@ -2167,7 +2213,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
             % if no items are in the FD selection box (under FD data
             % analysis), display warning message
-            fig = app.CatsperUIFigure;
+            fig = app.CaTSperUIFigure;
 
             if isempty(app.FD_select_2)
                 uialert(fig,'No items','Warning');
@@ -2183,7 +2229,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 sam_thickness = app.FD_data.metadata{FDindex}.sam_thickness;
                 ref_thickness = app.FD_data.metadata{FDindex}.ref_thickness;
 
-                if isequal(app.ThicknessSwitch.Value,"Offset")
+                if isequal(app.ThicknessSwitch_FD.Value,"Offset")
                     eff_thickness = sam_thickness - ref_thickness;
                 else
                     eff_thickness = sam_thickness;
@@ -2192,7 +2238,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % if there is no data on the measured thickness, display
                 % error message and do not continue to perform the function
                 if isempty(app.FD_data.metadata{FDindex}.eff_thickness)
-                    ID = app.FD_data.sampleList{FDindex};
+                    ID = app.FD_data.measList{FDindex};
                     msg = strcat((ID)," doesn't have thickness information.");
                     uialert(fig,(msg),'Abort Calculation');
                     return;
@@ -2376,29 +2422,32 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % open the DR checker app together with these values 
 
             % extract input value            
-            measNum = app.SelectionListBox.Value;
+            TDindex = app.SelectionListBox.Value;
             td_max = app.ToTimeEditField.Value;
             td_min = app.FromTimeEditField.Value;
             upscale = app.ZeroFillingpowerofSpinner.Value; 
 
             % display warning message if no items are selected
-            if isempty(measNum)
-                fig = app.CatsperUIFigure;
+            if isempty(TDindex)
+                fig = app.CaTSperUIFigure;
                 uialert(fig,'Select item in the the list','Warning');
                 return;
             end
 
+            dsNum_Sample = app.TD_data.dsNum_Sample{TDindex};
+            dsNum_Reference = app.TD_data.dsNum_Reference{TDindex};
+
             % reference waveform
             % extract the time spacing between logged values
-            xSpacing = app.TD_data.metadata{measNum}.xSpacing;
+            xSpacing = app.TD_data.metadata{TDindex}.xSpacing;
             % convert the time spacing into frequency spacing
             fs = 1/(xSpacing*10^-12); % obtain sampling frequency based on xSpacing value
-            t_reference = app.TD_data.references{measNum,1};
-            E_reference = app.TD_data.references{measNum,2};
+            t_reference = app.TD_data.ds{TDindex,dsNum_Reference}(1,:);
+            E_reference = app.TD_data.ds{TDindex,dsNum_Reference}(2,:);
                 
             % sample waveform
-            t_sample = app.TD_data.samples{measNum,1};
-            E_sample = app.TD_data.samples{measNum,2};
+            t_sample = app.TD_data.ds{TDindex,dsNum_Sample}(1,:);
+            E_sample = app.TD_data.ds{TDindex,dsNum_Sample}(2,:);
                           
             % finding the first index that has a time equal or greater than the
             % minimum time delay    
@@ -2494,7 +2543,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             c = 299792458; % the speed of light
             n_medium = 1; % refractive index of medium
             n_reference = 1; % refractive indx of the reference
-            eff_thickness = app.TD_data.metadata{measNum}.eff_thickness;
+            eff_thickness = app.TD_data.metadata{TDindex}.eff_thickness;
             n_sample = c.*transmPha./(2*pi*FD_frequency.*eff_thickness*10^-3) + 1;
             ref_factor = 4*n_medium*n_reference/((n_medium + n_reference).^2);
             sam_factor = 4*n_medium*n_sample/((n_medium + n_sample).^2);
@@ -2507,8 +2556,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             refF = abs(FD_frequency);
             refE = abs(FD_reference);
             samA = absorption;
-            sampleID = strjoin(app.TD_data.sampleList{measNum});
-            n_eff = app.TD_data.metadata{measNum}.refractiveIndex;
+            sampleID = strjoin(app.TD_data.measList{TDindex});
+            n_eff = app.TD_data.metadata{TDindex}.refractiveIndex;
             
             % open the DR checker app with the calculated values
             app.DialogApp = DR_Checker(app,refF,refE,samA,n_eff,eff_thickness,sampleID);
@@ -2695,7 +2744,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     
                     % extract the common name for the set of data and the
                     % individual measurement identifiers
-                    xList = app.FD_data.sampleList{idx};
+                    xList = app.FD_data.measList{idx};
                     comLoc = strfind(xList,':');
                     % common name for the set of data
                     barLoc = strfind(xList,'_');
@@ -2791,7 +2840,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % extract the common name for the set of data and the
             % individual measurement identifiers
             for idx = dataList
-                xList = app.FD_data.sampleList{idx};
+                xList = app.FD_data.measList{idx};
                 comLoc = strfind(xList,':');
                 barLoc = strfind(xList,'_');
                 % common name for the set of data
@@ -2857,6 +2906,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 
             % if 'yes' is selected, empty the following arrays and parameters
             if answer == "Yes"
+                TDdataDel(app)
+
                 app.TD_data = [];
                 app.FD_data = [];
                 app.DM_data = [];
@@ -2873,7 +2924,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 app.PRJ_count = 0;
                 app.DEBUGMsgLabel.Text = '';
                 app.ProjectsEditField.Value = '';
-                app.UITable_MeasDetail.Data = cell2table(app.Tcell_measDetailsDefault);
             end
         end
 
@@ -2954,7 +3004,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % if there is no available data for running the function,
             % display warning message
             if isequal(idx,'noavailabledata')
-                fig = app.CatsperUIFigure;
+                fig = app.CaTSperUIFigure;
                 uialert(fig,'Import data set before using this function.','Warning');
                 return;
             end
@@ -3041,7 +3091,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                    TD_data.samples{cnt,2} = app.TD_data.samples{Idx,2};
                    TD_data.references{cnt,1} = app.TD_data.references{Idx,1};
                    TD_data.references{cnt,2} = app.TD_data.references{Idx,2};
-                   TD_data.sampleList{cnt} = app.TD_data.sampleList{Idx};
+                   TD_data.measList{cnt} = app.TD_data.measList{Idx};
                    TD_data.metadata{cnt} = app.TD_data.metadata{Idx};
                  
                    cnt = cnt + 1;
@@ -3170,7 +3220,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % and assigns the data to corresponding fields in the app
 
             % open a dialouge box for user to select a *.thz file from a folder
-            [filename, filepath] = uigetfile('*.thz');figure(app.CatsperUIFigure);
+            [filename, filepath] = uigetfile('*.thz');figure(app.CaTSperUIFigure);
             
             % if either the file name or file path has a value of 0, do not
             % continue to execute the function
@@ -3219,14 +3269,32 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % Button pushed function: DeployButton
         function DeployButtonPushed(app, event)
             
+            if ~app.PRJ_count
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'No THz Files','Warning');
+                return;
+            end
+
             question = "Select effective thickness";
             thicknessOption = questdlg('Select Effective Thickness','Thickness Information','Sample','Sample-Reference Offset','Cancel');
+
+            if isequal(thicknessOption,'Sample-Reference Offset')
+                question = "Select metadata";
+                referenceThicknessMn = questdlg('Select Reference Thickness Metadata','Thickness Information','md2','md3','md4','Cancel');
+                app.mdReferenceThicknessDropDown.Value = referenceThicknessMn;
+            else
+                app.mdReferenceThicknessDropDown.Value = "no";
+                referenceThicknessMn = "no";
+            end
+            sampleThicknessMn = app.mdSampleThicknessDropDown.Value;
             
             idxCap = 1;
             % run the TDdataDel function
             TDdataDel(app);
             allListItems = {};
             newDataset = 1;
+
+
 
             for PRJcnt = 1:app.PRJ_count
                 % import .thz file to the workspace
@@ -3252,62 +3320,91 @@ classdef CaTSper_exported < matlab.apps.AppBase
     
                 % for each dataset/measurement
                 for idx = 1:measNum
-                    % create a string for reading data for the dataset
-                    %dn = strcat('/',ListItems{idx});
+                    
+                    % dataset extraction
                     dn = ListItems{idx};
-                    sam_dn = strcat(dn,'/',app.dsSampleDropDown.Value);
-                    ref_dn = strcat(dn,'/',app.dsReferenceDropDown.Value);
+                    dsList = ["ds1","ds2","ds3","ds4"];
 
-                    % read measurement datasets
-                    sam_ds = h5read(fullpath,sam_dn); % read sample dataset
-                    TD_data.samples{idxCap+idx-1,1}= sam_ds(1,:); % time vector
-                    TD_data.samples{idxCap+idx-1,2}= sam_ds(2,:); % amplitude vector
+                    for dsNum = 1:4
+                        dnTemp = strcat(dn,'/',dsList(dsNum));                        
 
-                    ref_ds = h5read(fullpath,ref_dn); % read reference dataset
-                    TD_data.references{idxCap+idx-1,1}= ref_ds(1,:); % time vector
-                    TD_data.references{idxCap+idx-1,2}= ref_ds(2,:); % amplitude vector
-
-
-                    if ~isequal(app.dsPumpedDropDown.Value,"n/a")
-                        pum_dn = strcat(dn,'/',app.dsPumpedDropDown.Value);
                         try
-                            pum_ds = h5read(fullpath,pum_dn); % read pump dataset
-                            TD_data.pumps{idxCap+idx-1,1}= pum_ds(1,:); % time vector
-                            TD_data.pumps{idxCap+idx-1,2}= pum_ds(2,:); % amplitude vector
-                        catch ME
-                            fig = app.CaTSperUIFigure;
-                            uialert(fig,'Deploy Aborted','Invalid Pump Dataset');
-                            return;
+                           dsTemp = h5read(fullpath,dnTemp);
+                           TD_data.ds{idxCap+idx-1,dsNum} = dsTemp;
+                        catch
                         end
 
                     end
 
-                    md1 = h5readatt(fullpath,dn,"md1");
-                    md2 = h5readatt(fullpath,dn,"md2"); 
-                    md3 = h5readatt(fullpath,dn,"md3"); 
-                    md4 = h5readatt(fullpath,dn,"md4"); 
-                    md5 = h5readatt(fullpath,dn,"md5");
+                    sampleDn = app.dsSampleDropDown.Value; % sample dataset name
+                    referenceDn = app.dsReferenceDropDown.Value; % reference dataset name
+                    pumpDn = app.dsPumpedDropDown.Value; % pump dataset name
+
+
+                    sampleDsNum = str2num(sampleDn(3));
+                    try
+                        referenceDsNum = str2num(referenceDn(3));
+                    catch
+                        referenceDsNum = 0;
+                    end
+
+                    try
+                        pumpDsNum = str2num(pumpDn(3))
+                    catch
+                        pumpDsNum = 0;
+                    end
+
+                    TD_data.dsNum_Sample{idxCap+idx-1} = sampleDsNum;
+                    TD_data.dsNum_Reference{idxCap+idx-1} = referenceDsNum;
+                    TD_data.dsNum_Pump{idxCap+idx-1} = pumpDsNum;
+
+                    % metadata extraction
+                    mdList = ["md1","md2","md3","md4","md5","md5","md6","md7"];
+
+                    for mdNum = 1:7
+                        mdTemp = h5readatt(fullpath,dn,mdList(mdNum));
+                        try
+                            TD_data.metadata{idxCap+idx-1}.md{mdNum} = mdTemp;
+                        catch
+                        end
+                    end
+
+                    try
+                        mdNum_SampleThickness = str2num(sampleThicknessMn(3));
+                    catch
+                        mdNum_SampleThickness = 0;
+                    end
+
+                    try
+                        mdNum_ReferecenThickness = str2num(referenceThicknessMn(3));
+                    catch
+                        mdNum_ReferecenThickness = 0;
+                    end
 
                     % time delay and effective refractive index calculation
                     % if the array in the dataset has the referecne 1 datasets
-                    sam_thickness = h5readatt(fullpath,dn,app.mdSampleThicknessDropDown.Value);
+                     % sam_thickness = h5readatt(fullpath,dn,sampleThicknessMn);
+                    sam_thickness = TD_data.metadata{idxCap+idx-1}.md{mdNum_SampleThickness};
                     
-                    if isequal(app.mdReferenceThicknessDropDown.Value,"air")
+                    if isequal(referenceThicknessMn,"no")
                         ref_thickness = 0;
                     else
-                        ref_thickness = h5readatt(fullpath,dn,app.mdReferenceThicknessDropDown.Value);
+                        ref_thickness = TD_data.metadata{idxCap+idx-1}.md{mdNum_ReferecenThickness};
                     end
 
                     if isequal(thicknessOption,"Sample")
                         eff_thickness = sam_thickness;
-                        app.ThicknessSwitch.Value = "Sample";
+                        app.ThicknessSwitch_TD.Value = "Sample";
+                        app.ThicknessSwitch_FD.Value = "Sample";
                     else
+                        thicknessOption = "Offset";
                         eff_thickness = abs(sam_thickness - ref_thickness);
-                        app.ThicknessSwitch.Value = "Offset";
+                        app.ThicknessSwitch_TD.Value = "Offset";
+                        app.ThicknessSwitch_FD.Value = "Offset";
                     end
 
-                    if ~isempty(ref_ds)
-                        timeDelay = getTimeDelay(app,sam_ds,ref_ds);
+                    if ~isequal(referenceDsNum,0)
+                        timeDelay = getTimeDelay(app,TD_data.ds{idxCap+idx-1,sampleDsNum},TD_data.ds{idxCap+idx-1,referenceDsNum});
                         if ~isequal(eff_thickness,0)
                             n_eff = timeDelay*10^-12*3e8/(eff_thickness*10^-3) + 1;
                             etl_t = timeDelay + (2*eff_thickness*10^-3*n_eff/3e8)*10^12;
@@ -3318,18 +3415,15 @@ classdef CaTSper_exported < matlab.apps.AppBase
                         TD_data.metadata{idxCap+idx-1}.timeDelay = timeDelay;
                         TD_data.metadata{idxCap+idx-1}.refractiveIndex = n_eff;
                         TD_data.metadata{idxCap+idx-1}.internalReflection = etl_t;
-                    else
-                        TD_data.references{idxCap+idx-1,1} = [];
-                        TD_data.references{idxCap+idx-1,2} = [];
                     end
 
                     % extract other data and information relating to the
                     % measurement from the dataset or from the attributes
                     allListItems{idxCap+idx-1} = dn(2:end);
-                    TD_data.sampleList{idxCap+idx-1}={dn(2:end)};
+                    TD_data.measList{idxCap+idx-1}={dn(2:end)};
                     TD_data.metadata{idxCap+idx-1}.sampleName = dn(2:end);
-                    TD_data.metadata{idxCap+idx-1}.scanLength = size(sam_ds,2);
-                    TD_data.metadata{idxCap+idx-1}.xSpacing = mean(diff(sam_ds(1,:)));
+                    TD_data.metadata{idxCap+idx-1}.scanLength = size(TD_data.ds{idxCap+idx-1,sampleDsNum},2);
+                    TD_data.metadata{idxCap+idx-1}.xSpacing = mean(diff(TD_data.ds{idxCap+idx-1,sampleDsNum}(1,:)));
                     TD_data.metadata{idxCap+idx-1}.description = h5readatt(fullpath,dn,"description");
                     TD_data.metadata{idxCap+idx-1}.mdDescription = h5readatt(fullpath,dn,"mdDescription");
                     TD_data.metadata{idxCap+idx-1}.dsDescription = h5readatt(fullpath,dn,"dsDescription");
@@ -3338,12 +3432,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     TD_data.metadata{idxCap+idx-1}.sam_thickness = sam_thickness; 
                     TD_data.metadata{idxCap+idx-1}.ref_thickness = ref_thickness;
                     TD_data.metadata{idxCap+idx-1}.eff_thickness = eff_thickness;
-
-                    TD_data.metadata{idxCap+idx-1}.md1 = md1; % metadata 1
-                    TD_data.metadata{idxCap+idx-1}.md2 = md2; % metadata 2
-                    TD_data.metadata{idxCap+idx-1}.md3 = md3; % metadata 3
-                    TD_data.metadata{idxCap+idx-1}.md4 = md4; % metadata 4
-                    TD_data.metadata{idxCap+idx-1}.md5 = md5; % metadata 4
+                    TD_data.metadata{idxCap+idx-1}.effThickness = thicknessOption;
+                    TD_data.metadata{idxCap+idx-1}.mdNum_SampleThickness = mdNum_SampleThickness;
+                    TD_data.metadata{idxCap+idx-1}.mdNum_ReferenceThickness = mdNum_ReferecenThickness;
     
                     % extract the name of the instrument model
                     % insProfile = extractBefore(h5readatt(fullpath,dn,"instrument"),'/');
@@ -3378,16 +3469,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.MeasurementListBox.Items = allListItems;
             app.MeasurementListBox.ItemsData = (1:length(allListItems));
 
-            % measurement detail table update
-            % app.UITable_MeasDetail.Data = cell2table(Tcell_measDetails);
-            % app.Tcell_measDetails = Tcell_measDetails;
-            %app.Tcell_measDetailsDefault = Tcell_measDetails;
-
             % enable the Fourier transform button
             app.TransformButton.Enable = true;
             
             % empty arrays associated with frequency domain
-            app.FD_data.sampleList = {};
+            app.FD_data.measList = {};
             app.FD_data.metadata = {};
         end
 
@@ -3417,7 +3503,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         function ToEpolFreqEditFieldValueChanged(app, event)
             value = app.ToEpolFreqEditField.Value;
             epolStartFreq = app.FromEpolFreqEditField.Value;
-            fig = app.CatsperUIFigure;
+            fig = app.CaTSperUIFigure;
 
             if le(value,epolStartFreq)
                 msg = strcat("Invalid value, input value should be larger than the start frequency.");
@@ -3432,7 +3518,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         function FromEpolFreqEditFieldValueChanged(app, event)
             value = app.FromEpolFreqEditField.Value;
             epolEndFreq = app.ToEpolFreqEditField.Value;
-            fig = app.CatsperUIFigure;            
+            fig = app.CaTSperUIFigure;            
 
             if ge(value,epolEndFreq)
                 msg = strcat("Invalid value, input value should be smaller than the end frequency.");
@@ -3507,6 +3593,51 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % update
             app.TD_data.metadata{TDIdx}.md3 = value;
         end
+
+        % Value changed function: ThicknessSwitch_TD
+        function ThicknessSwitch_TDValueChanged(app, event)
+            value = app.ThicknessSwitch_TD.Value;
+            TDIdx = app.MeasurementListBox.Value;
+            app.TD_data.metadata{TDIdx}.effThickness = value;            
+        end
+
+        % Value changed function: mdSampleThicknessDropDown
+        function mdSampleThicknessDropDownValueChanged(app, event)
+            value = app.mdSampleThicknessDropDown.Value;
+
+            try
+                TDIdx = app.MeasurementListBox.Value;
+            catch
+                return;
+            end
+
+            try
+                mdNum_SampleThickness = str2num(value(3));
+            catch
+                mdNum_SampleThickness = 0;
+            end
+
+            app.TD_data.metadata{TDIdx}.mdNum_SampleThickness = mdNum_SampleThickness;
+        end
+
+        % Value changed function: mdReferenceThicknessDropDown
+        function mdReferenceThicknessDropDownValueChanged(app, event)
+            value = app.mdReferenceThicknessDropDown.Value;
+
+            try
+                TDIdx = app.MeasurementListBox.Value;
+            catch
+                return;
+            end
+
+            try
+                mdNum_ReferenceThickness = str2num(value(3));
+            catch
+                mdNum_ReferenceThickness = 0;
+            end
+
+            app.TD_data.metadata{TDIdx}.mdNum_ReferenceThickness = mdNum_ReferenceThickness;
+        end
     end
 
     % Component initialization
@@ -3518,14 +3649,14 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Get the file path for locating images
             pathToMLAPP = fileparts(mfilename('fullpath'));
 
-            % Create CatsperUIFigure and hide until all components are created
-            app.CatsperUIFigure = uifigure('Visible', 'off');
-            app.CatsperUIFigure.Position = [100 100 1518 992];
-            app.CatsperUIFigure.Name = 'Catsper';
-            app.CatsperUIFigure.Icon = fullfile(pathToMLAPP, 'CaT_logo.png');
+            % Create CaTSperUIFigure and hide until all components are created
+            app.CaTSperUIFigure = uifigure('Visible', 'off');
+            app.CaTSperUIFigure.Position = [100 100 1518 992];
+            app.CaTSperUIFigure.Name = 'Catsper';
+            app.CaTSperUIFigure.Icon = fullfile(pathToMLAPP, 'CaT_logo.png');
 
             % Create TabGroup
-            app.TabGroup = uitabgroup(app.CatsperUIFigure);
+            app.TabGroup = uitabgroup(app.CaTSperUIFigure);
             app.TabGroup.Position = [25 20 1470 889];
 
             % Create TimeDomainTDTab
@@ -3933,21 +4064,21 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.RefractiveIndexEditFieldLabel.Position = [7 9 92 22];
             app.RefractiveIndexEditFieldLabel.Text = 'Refractive Index';
 
-            % Create RefractiveIndexEditField
-            app.RefractiveIndexEditField = uieditfield(app.GeneralInformationPanel, 'numeric');
-            app.RefractiveIndexEditField.ValueDisplayFormat = '%5.2f';
-            app.RefractiveIndexEditField.Position = [109 9 48 22];
+            % Create GeneralRefractiveIndexEditField
+            app.GeneralRefractiveIndexEditField = uieditfield(app.GeneralInformationPanel, 'numeric');
+            app.GeneralRefractiveIndexEditField.ValueDisplayFormat = '%5.2f';
+            app.GeneralRefractiveIndexEditField.Position = [103 9 48 22];
 
-            % Create stEtalonEditFieldLabel
-            app.stEtalonEditFieldLabel = uilabel(app.GeneralInformationPanel);
-            app.stEtalonEditFieldLabel.HorizontalAlignment = 'right';
-            app.stEtalonEditFieldLabel.Position = [171 9 58 22];
-            app.stEtalonEditFieldLabel.Text = '1st Etalon';
+            % Create stEtalonpsLabel
+            app.stEtalonpsLabel = uilabel(app.GeneralInformationPanel);
+            app.stEtalonpsLabel.HorizontalAlignment = 'right';
+            app.stEtalonpsLabel.Position = [150 9 86 22];
+            app.stEtalonpsLabel.Text = '1st Etalon  (ps)';
 
-            % Create stEtalonEditField
-            app.stEtalonEditField = uieditfield(app.GeneralInformationPanel, 'numeric');
-            app.stEtalonEditField.ValueDisplayFormat = '%5.2f';
-            app.stEtalonEditField.Position = [241 9 57 22];
+            % Create GeneralEtalonEditField
+            app.GeneralEtalonEditField = uieditfield(app.GeneralInformationPanel, 'numeric');
+            app.GeneralEtalonEditField.ValueDisplayFormat = '%5.2f';
+            app.GeneralEtalonEditField.Position = [241 9 57 22];
 
             % Create MetadataInformationPanel
             app.MetadataInformationPanel = uipanel(app.TimeDomainTDTab);
@@ -3963,7 +4094,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create mdSampleThicknessDropDown
             app.mdSampleThicknessDropDown = uidropdown(app.MetadataInformationPanel);
-            app.mdSampleThicknessDropDown.Items = {'md1', 'md2', 'md3', 'md4'};
+            app.mdSampleThicknessDropDown.Items = {'no', 'md1', 'md2', 'md3', 'md4'};
+            app.mdSampleThicknessDropDown.ValueChangedFcn = createCallbackFcn(app, @mdSampleThicknessDropDownValueChanged, true);
             app.mdSampleThicknessDropDown.Position = [79 11 60 22];
             app.mdSampleThicknessDropDown.Value = 'md1';
 
@@ -3975,7 +4107,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create mdReferenceThicknessDropDown
             app.mdReferenceThicknessDropDown = uidropdown(app.MetadataInformationPanel);
-            app.mdReferenceThicknessDropDown.Items = {'air', 'md1', 'md2', 'md3', 'md4'};
+            app.mdReferenceThicknessDropDown.Items = {'no', 'md1', 'md2', 'md3', 'md4'};
+            app.mdReferenceThicknessDropDown.ValueChangedFcn = createCallbackFcn(app, @mdReferenceThicknessDropDownValueChanged, true);
             app.mdReferenceThicknessDropDown.Position = [234 11 60 22];
             app.mdReferenceThicknessDropDown.Value = 'md3';
 
@@ -4052,6 +4185,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.md4DesEditField.Editable = 'off';
             app.md4DesEditField.Position = [111 73 195 22];
 
+            % Create ThicknessSwitch_TD
+            app.ThicknessSwitch_TD = uiswitch(app.MetadataInformationPanel, 'slider');
+            app.ThicknessSwitch_TD.Items = {'Sample', 'Offset'};
+            app.ThicknessSwitch_TD.ValueChangedFcn = createCallbackFcn(app, @ThicknessSwitch_TDValueChanged, true);
+            app.ThicknessSwitch_TD.Position = [162 45 45 20];
+            app.ThicknessSwitch_TD.Value = 'Sample';
+
             % Create ResetConfigurationsButton
             app.ResetConfigurationsButton = uibutton(app.TimeDomainTDTab, 'push');
             app.ResetConfigurationsButton.ButtonPushedFcn = createCallbackFcn(app, @ResetConfigurationsButtonPushed, true);
@@ -4084,7 +4224,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create dsReferenceDropDown
             app.dsReferenceDropDown = uidropdown(app.DatasetInformationPanel);
-            app.dsReferenceDropDown.Items = {'ds1', 'ds2', 'ds3', 'ds4'};
+            app.dsReferenceDropDown.Items = {'no', 'ds1', 'ds2', 'ds3', 'ds4'};
             app.dsReferenceDropDown.Position = [170 7 52 22];
             app.dsReferenceDropDown.Value = 'ds2';
 
@@ -4140,9 +4280,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create dsPumpedDropDown
             app.dsPumpedDropDown = uidropdown(app.DatasetInformationPanel);
-            app.dsPumpedDropDown.Items = {'n/a', 'ds1', 'ds2', 'ds3', 'ds4'};
+            app.dsPumpedDropDown.Items = {'no', 'ds1', 'ds2', 'ds3', 'ds4'};
             app.dsPumpedDropDown.Position = [263 7 52 22];
-            app.dsPumpedDropDown.Value = 'n/a';
+            app.dsPumpedDropDown.Value = 'no';
 
             % Create FrequencyDomainFDTab
             app.FrequencyDomainFDTab = uitab(app.TabGroup);
@@ -4362,11 +4502,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.SampleEditField.Editable = 'off';
             app.SampleEditField.Position = [92 62 42 22];
 
-            % Create ThicknessSwitch
-            app.ThicknessSwitch = uiswitch(app.ThicknessmmPanel, 'slider');
-            app.ThicknessSwitch.Items = {'Sample', 'Offset'};
-            app.ThicknessSwitch.Position = [53 8 43 19];
-            app.ThicknessSwitch.Value = 'Sample';
+            % Create ThicknessSwitch_FD
+            app.ThicknessSwitch_FD = uiswitch(app.ThicknessmmPanel, 'slider');
+            app.ThicknessSwitch_FD.Items = {'Sample', 'Offset'};
+            app.ThicknessSwitch_FD.Position = [53 8 43 19];
+            app.ThicknessSwitch_FD.Value = 'Sample';
 
             % Create MultipleReflectionCountPanel
             app.MultipleReflectionCountPanel = uipanel(app.FDDataAnalysisPanel);
@@ -4977,32 +5117,32 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.JetColormapButton_DM.Position = [559 23 107 26];
 
             % Create SystemStatusLabel
-            app.SystemStatusLabel = uilabel(app.CatsperUIFigure);
+            app.SystemStatusLabel = uilabel(app.CaTSperUIFigure);
             app.SystemStatusLabel.Position = [967 959 84 22];
             app.SystemStatusLabel.Text = 'System Status';
 
             % Create DEBUGMsgLabel
-            app.DEBUGMsgLabel = uilabel(app.CatsperUIFigure);
+            app.DEBUGMsgLabel = uilabel(app.CaTSperUIFigure);
             app.DEBUGMsgLabel.FontWeight = 'bold';
             app.DEBUGMsgLabel.Position = [1060 958 427 22];
             app.DEBUGMsgLabel.Text = '';
 
             % Create ClearMemoryButton
-            app.ClearMemoryButton = uibutton(app.CatsperUIFigure, 'push');
+            app.ClearMemoryButton = uibutton(app.CaTSperUIFigure, 'push');
             app.ClearMemoryButton.ButtonPushedFcn = createCallbackFcn(app, @ClearMemoryButtonPushed, true);
             app.ClearMemoryButton.FontWeight = 'bold';
             app.ClearMemoryButton.Position = [1256 923 112 29];
             app.ClearMemoryButton.Text = 'Clear Memory';
 
             % Create SaveTDFDDMButton
-            app.SaveTDFDDMButton = uibutton(app.CatsperUIFigure, 'push');
+            app.SaveTDFDDMButton = uibutton(app.CaTSperUIFigure, 'push');
             app.SaveTDFDDMButton.ButtonPushedFcn = createCallbackFcn(app, @SaveTDFDDMButtonPushed, true);
             app.SaveTDFDDMButton.FontWeight = 'bold';
             app.SaveTDFDDMButton.Position = [1374 923 109 29];
             app.SaveTDFDDMButton.Text = 'Save TD/FD/DM';
 
             % Create CaTSperLabel
-            app.CaTSperLabel = uilabel(app.CatsperUIFigure);
+            app.CaTSperLabel = uilabel(app.CaTSperUIFigure);
             app.CaTSperLabel.FontSize = 37;
             app.CaTSperLabel.FontWeight = 'bold';
             app.CaTSperLabel.FontAngle = 'italic';
@@ -5010,7 +5150,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.CaTSperLabel.Text = 'CaTSper';
 
             % Create ImportTHzFilesButton
-            app.ImportTHzFilesButton = uibutton(app.CatsperUIFigure, 'push');
+            app.ImportTHzFilesButton = uibutton(app.CaTSperUIFigure, 'push');
             app.ImportTHzFilesButton.ButtonPushedFcn = createCallbackFcn(app, @ImportTHzFilesButtonPushed, true);
             app.ImportTHzFilesButton.BackgroundColor = [1 1 1];
             app.ImportTHzFilesButton.FontSize = 13;
@@ -5019,18 +5159,18 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ImportTHzFilesButton.Text = 'Import THz Files';
 
             % Create ProjectsEditField
-            app.ProjectsEditField = uieditfield(app.CatsperUIFigure, 'text');
+            app.ProjectsEditField = uieditfield(app.CaTSperUIFigure, 'text');
             app.ProjectsEditField.FontWeight = 'bold';
             app.ProjectsEditField.BackgroundColor = [0.9412 0.9412 0.9412];
             app.ProjectsEditField.Position = [396 925 722 25];
 
             % Create Image
-            app.Image = uiimage(app.CatsperUIFigure);
+            app.Image = uiimage(app.CaTSperUIFigure);
             app.Image.Position = [24 927 58 58];
             app.Image.ImageSource = fullfile(pathToMLAPP, 'dotTHz_logo.png');
 
             % Create DeployButton
-            app.DeployButton = uibutton(app.CatsperUIFigure, 'push');
+            app.DeployButton = uibutton(app.CaTSperUIFigure, 'push');
             app.DeployButton.ButtonPushedFcn = createCallbackFcn(app, @DeployButtonPushed, true);
             app.DeployButton.BackgroundColor = [1 1 1];
             app.DeployButton.FontSize = 13;
@@ -5039,7 +5179,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.DeployButton.Text = 'Deploy';
 
             % Show the figure after all components are created
-            app.CatsperUIFigure.Visible = 'on';
+            app.CaTSperUIFigure.Visible = 'on';
         end
     end
 
@@ -5053,7 +5193,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             createComponents(app)
 
             % Register the app with App Designer
-            registerApp(app, app.CatsperUIFigure)
+            registerApp(app, app.CaTSperUIFigure)
 
             % Execute the startup function
             runStartupFcn(app, @startupFcn)
@@ -5067,7 +5207,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         function delete(app)
 
             % Delete UIFigure when app is deleted
-            delete(app.CatsperUIFigure)
+            delete(app.CaTSperUIFigure)
         end
     end
 end
