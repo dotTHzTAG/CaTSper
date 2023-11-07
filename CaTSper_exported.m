@@ -3656,7 +3656,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 TDIdx = app.MeasurementListBox.Value;
             catch
-                warning('No times seleced');
+                warning('No Items Seleced');
                 return;
             end
 
@@ -3677,7 +3677,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 TDIdx = app.MeasurementListBox.Value;
             catch
-                warning('No times seleced');
+                warning('No Items Seleced');
                 return;
             end
 
@@ -3698,7 +3698,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 TDIdx = app.MeasurementListBox.Value;
             catch
-                warning('No Selected Items');
+                warning('No Items Selected');
                 return;
             end
 
@@ -3718,7 +3718,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 TDIdx = app.MeasurementListBox.Value;
             catch
-                warning('No Seleted Items');
+                warning('No Items Seleted');
                 return;
             end
 
@@ -3738,7 +3738,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 TDIdx = app.MeasurementListBox.Value;
             catch
-                warning('No Seleted Items');
+                warning('No Items Seleted');
                 return;
             end
 
