@@ -59,6 +59,15 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             refF = app.refF;
             refE = app.refE;
             samA = app.samA;
+
+            lbFreq = round(min(refF)/10^12*100)/100;
+            ubFreq = round(max(refF)/10^12*100)/100;
+
+            app.CutoffFrequencySlider.Limits = [lbFreq ubFreq];
+            app.CutoffFrequencyEditField.Limits = [lbFreq ubFreq];
+            app.UpperlimitFrequencySlider.Limits = [lbFreq ubFreq];
+            app.FrequencyLimitTHzEditField.Limits = [lbFreq ubFreq];
+
             % extract the cutoff frequency value as indicated from the slider
             cutoffF = app.CutoffFrequencySlider.Value; % THz
             % convert the value into units of Hz
@@ -125,6 +134,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             xline(ax,cutoffF,'--r',{'Cutoff Frequency',(cutoffF)});
             yline(ax,1,'--b',{'Noise Floor'});
             hold(ax,"off")
+            xlim(ax,"auto");
             
         end
         
@@ -162,6 +172,8 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             DRlimit = 2./(thickness*0.1).*log(scaledRefDRMag);
             
             ax = app.UIAxes2;
+
+            xlim(ax,"auto");
             
             % if the box for the absorption spectrum y-axis fitting
             % is checked, use auto generated y-axis limits
@@ -409,7 +421,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
 
             % Create CutoffFrequencyEditField
             app.CutoffFrequencyEditField = uieditfield(app.CutoffSettingPanel, 'numeric');
-            app.CutoffFrequencyEditField.Limits = [0 5];
+            app.CutoffFrequencyEditField.Limits = [0 20];
             app.CutoffFrequencyEditField.ValueDisplayFormat = '%.2f';
             app.CutoffFrequencyEditField.ValueChangedFcn = createCallbackFcn(app, @CutoffFrequencyEditFieldValueChanged, true);
             app.CutoffFrequencyEditField.Position = [132 39 90 22];
@@ -452,6 +464,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             % Create ThicknessmmEditField
             app.ThicknessmmEditField = uieditfield(app.SampleInformationPanel, 'numeric');
             app.ThicknessmmEditField.ValueDisplayFormat = '%.3f';
+            app.ThicknessmmEditField.Editable = 'off';
             app.ThicknessmmEditField.Position = [135 70 90 22];
 
             % Create FrequencyLimitTHzEditFieldLabel
@@ -462,7 +475,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
 
             % Create FrequencyLimitTHzEditField
             app.FrequencyLimitTHzEditField = uieditfield(app.SampleInformationPanel, 'numeric');
-            app.FrequencyLimitTHzEditField.Limits = [0 4];
+            app.FrequencyLimitTHzEditField.Limits = [0 20];
             app.FrequencyLimitTHzEditField.ValueDisplayFormat = '%.3f';
             app.FrequencyLimitTHzEditField.ValueChangedFcn = createCallbackFcn(app, @FrequencyLimitTHzEditFieldValueChanged, true);
             app.FrequencyLimitTHzEditField.Position = [136 39 90 22];
