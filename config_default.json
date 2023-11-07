@@ -5,6 +5,7 @@
         "Unwrapping_Start_Frequency":0.8,
         "Extrapolation_Frequency_Range":[0.20,0.40],
         "Window_Function_Range":[-5,10],
+        "Apodisation_Function":"rectwin",
         "DR_boundary":[0.2,5.0]
     },    
     "Metadata_Settings":{

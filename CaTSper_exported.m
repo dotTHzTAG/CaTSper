@@ -98,7 +98,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         ApodisationFunctionDropDown     matlab.ui.control.DropDown
         ApodisationFunctionDropDownLabel  matlab.ui.control.Label
         TransformButton                 matlab.ui.control.Button
-        truncatebasedon1stetalonLabel   matlab.ui.control.Label
+        truncatebeforethe1stetalonLabel  matlab.ui.control.Label
         ToTimeEditField                 matlab.ui.control.NumericEditField
         MaxTimeLabel                    matlab.ui.control.Label
         ToFreqEditField                 matlab.ui.control.NumericEditField
@@ -1052,6 +1052,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ToEpolFreqEditField.Value = configData.FFT_Settings.Extrapolation_Frequency_Range(2);
             app.FromTimeEditField.Value = configData.FFT_Settings.Window_Function_Range(1);
             app.ToTimeEditField.Value = configData.FFT_Settings.Window_Function_Range(2);
+            app.ApodisationFunctionDropDown.Value = configData.FFT_Settings.Apodisation_Function;
 
             % Default thickness metadata
             app.mdSampleThicknessDropDown.Value = configData.Metadata_Settings.Sample_Thickness;
@@ -1081,8 +1082,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
 
             if isempty(ref_thickness)||isempty(sam_thickness)
-                    warning('Invalid Metadata')
-                    return;
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'Invalide Metadata','Warning');
+                return;
             end
 
             effThickness = app.TD_data.metadata{measIdx}.effThickness;
@@ -1383,6 +1385,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         
             % checking the current FD list number
             % extracting the column size of 'app.FD_data.measList'
+            fig = app.CaTSperUIFigure;
             FDindexNum = size(app.FD_data.measList,2);
             FDindex = 0;
             
@@ -1394,6 +1397,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             max_freq = app.ToFreqEditField.Value;
             upscale = app.ZeroFillingpowerofSpinner.Value; 
             funcName = app.ApodisationFunctionDropDown.Value; %window function
+
+            if isempty(addFDList)
+                uialert(fig,'No Items to Transform','Warning');
+                return;
+            end
             
             % this applies to all measurements selected for time domain
             % processing
@@ -1489,18 +1497,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % no zeros are added if the peak is already at midpoint
                 E_reference = [zeros(1, max(0, ref_add_zero_no)), E_reference, zeros(1, max(0, -ref_add_zero_no))];
                 E_sample = [zeros(1, max(0, sam_add_zero_no)), E_sample, zeros(1, max(0, -sam_add_zero_no))];
-                
+
                 % window function
-                % if any apodization function is chosen (apart from
-                % boxcar), apply the apodization function over the trimmed
-                % reference and sample electric field measurements
-                % respectively
-                if ~isequal(funcName,'Boxcar')
-                    wf = str2func(funcName);
-                    E_reference = E_reference.*...
-                        window(wf,length(E_reference))';
-                    E_sample = E_sample.*window(wf,length(E_sample))';
-                end
+                wf = str2func(funcName);
+                E_reference = E_reference.*window(wf,length(E_reference))';
+                E_sample = E_sample.*window(wf,length(E_sample))';
                 
                 % fast Fourier tranform
                 samNum = length(E_sample);
@@ -2002,7 +2003,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % if no items are in the TD selection box, display error
                 % message and do not continue to perform the function
                 if isempty(app.TD_select)
-                    warning('There are no selected data.')
+                    fig = app.CaTSperUIFigure;
+                    uialert(fig,'Select Item','Warning');
                     return;
                 end
                 
@@ -3120,7 +3122,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % if no time domain data are selected, display warning message and do
                 % not continue to execute the function
                 if isempty(app.TD_select)
-                    warning('There are no selected data.')
+                    fig = app.CaTSperUIFigure;
+                    uialert(fig,'Select Item','Warning');
                     return;
                 end
                 
@@ -3338,8 +3341,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             allListItems = {};
             newDataset = 1;
 
-
-
             for PRJcnt = 1:app.PRJ_count
                 % import .thz file to the workspace
                 fullpath = app.fullpathname{PRJcnt};
@@ -3512,9 +3513,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.TD_data = TD_data;            
             app.MeasurementListBox.Items = allListItems;
             app.MeasurementListBox.ItemsData = (1:length(allListItems));
-
-            % enable the Fourier transform button
-            app.TransformButton.Enable = true;
             
             % empty arrays associated with frequency domain
             app.FD_data.measList = {};
@@ -3656,7 +3654,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 TDIdx = app.MeasurementListBox.Value;
             catch
-                warning('No Items Seleced');
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'Select Item','Warning');
                 return;
             end
 
@@ -3677,7 +3676,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 TDIdx = app.MeasurementListBox.Value;
             catch
-                warning('No Items Seleced');
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'Select Item','Warning');
                 return;
             end
 
@@ -3698,7 +3698,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 TDIdx = app.MeasurementListBox.Value;
             catch
-                warning('No Items Selected');
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'Select Item','Warning');
                 return;
             end
 
@@ -3718,7 +3719,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 TDIdx = app.MeasurementListBox.Value;
             catch
-                warning('No Items Seleted');
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'Select Item','Warning');
                 return;
             end
 
@@ -3738,7 +3740,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             try
                 TDIdx = app.MeasurementListBox.Value;
             catch
-                warning('No Items Seleted');
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'Select Item','Warning');
                 return;
             end
 
@@ -3870,38 +3873,38 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FFTSettingsPanel = uipanel(app.TimeDomainTDTab);
             app.FFTSettingsPanel.Title = 'FFT Settings';
             app.FFTSettingsPanel.FontWeight = 'bold';
-            app.FFTSettingsPanel.Position = [353 57 328 305];
+            app.FFTSettingsPanel.Position = [353 57 328 309];
 
             % Create fromLabel
             app.fromLabel = uilabel(app.FFTSettingsPanel);
             app.fromLabel.HorizontalAlignment = 'right';
-            app.fromLabel.Position = [143 254 59 23];
+            app.fromLabel.Position = [143 258 59 23];
             app.fromLabel.Text = ' from ';
 
             % Create FromFreqEditField
             app.FromFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
             app.FromFreqEditField.Limits = [0 5];
             app.FromFreqEditField.ValueDisplayFormat = '%.1f';
-            app.FromFreqEditField.Position = [206 255 40 22];
+            app.FromFreqEditField.Position = [206 259 40 22];
             app.FromFreqEditField.Value = 0.2;
 
             % Create toLabel
             app.toLabel = uilabel(app.FFTSettingsPanel);
             app.toLabel.HorizontalAlignment = 'right';
-            app.toLabel.Position = [242 254 25 23];
+            app.toLabel.Position = [242 258 25 23];
             app.toLabel.Text = 'to';
 
             % Create ToFreqEditField
             app.ToFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
             app.ToFreqEditField.Limits = [1 10];
             app.ToFreqEditField.ValueDisplayFormat = '%.1f';
-            app.ToFreqEditField.Position = [272 255 40 22];
+            app.ToFreqEditField.Position = [272 259 40 22];
             app.ToFreqEditField.Value = 2.8;
 
             % Create MaxTimeLabel
             app.MaxTimeLabel = uilabel(app.FFTSettingsPanel);
             app.MaxTimeLabel.HorizontalAlignment = 'right';
-            app.MaxTimeLabel.Position = [219 84 25 23];
+            app.MaxTimeLabel.Position = [219 88 25 23];
             app.MaxTimeLabel.Text = 'to';
 
             % Create ToTimeEditField
@@ -3909,50 +3912,48 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ToTimeEditField.Limits = [0 100];
             app.ToTimeEditField.ValueDisplayFormat = '%5.2f';
             app.ToTimeEditField.Tooltip = {'set the maximum value of the sample waveform(s)'};
-            app.ToTimeEditField.Position = [248 85 45 22];
+            app.ToTimeEditField.Position = [248 89 45 22];
             app.ToTimeEditField.Value = 20;
 
-            % Create truncatebasedon1stetalonLabel
-            app.truncatebasedon1stetalonLabel = uilabel(app.FFTSettingsPanel);
-            app.truncatebasedon1stetalonLabel.Position = [121 108 164 22];
-            app.truncatebasedon1stetalonLabel.Text = '(truncate based on 1st etalon)';
+            % Create truncatebeforethe1stetalonLabel
+            app.truncatebeforethe1stetalonLabel = uilabel(app.FFTSettingsPanel);
+            app.truncatebeforethe1stetalonLabel.Position = [121 112 169 22];
+            app.truncatebeforethe1stetalonLabel.Text = '(truncate before the 1st etalon)';
 
             % Create TransformButton
             app.TransformButton = uibutton(app.FFTSettingsPanel, 'push');
             app.TransformButton.ButtonPushedFcn = createCallbackFcn(app, @TransformButtonPushed, true);
             app.TransformButton.FontWeight = 'bold';
-            app.TransformButton.Enable = 'off';
-            app.TransformButton.Position = [118 11 192 34];
+            app.TransformButton.Position = [136 10 171 41];
             app.TransformButton.Text = 'Transform';
 
             % Create ApodisationFunctionDropDownLabel
             app.ApodisationFunctionDropDownLabel = uilabel(app.FFTSettingsPanel);
             app.ApodisationFunctionDropDownLabel.FontWeight = 'bold';
-            app.ApodisationFunctionDropDownLabel.Position = [18 56 128 23];
+            app.ApodisationFunctionDropDownLabel.Position = [18 60 128 23];
             app.ApodisationFunctionDropDownLabel.Text = 'Apodisation Function';
 
             % Create ApodisationFunctionDropDown
             app.ApodisationFunctionDropDown = uidropdown(app.FFTSettingsPanel);
-            app.ApodisationFunctionDropDown.Items = {'Boxcar', 'Hamming', 'Bartlett', 'Blackman', 'Rectangular window', 'Hann', 'Taylor', 'Triang'};
-            app.ApodisationFunctionDropDown.ItemsData = {'Boxcar', 'hamming', 'bartlett', 'blackman', 'rectwin', 'hann', 'taylorwin', 'triang'};
-            app.ApodisationFunctionDropDown.Position = [151 57 149 22];
-            app.ApodisationFunctionDropDown.Value = 'Boxcar';
+            app.ApodisationFunctionDropDown.Items = {'barthannwin', 'blackman', 'blackmanharris', 'bohmanwin', 'chebwin', 'flattopwin', 'gausswin', 'hamming', 'hann', 'kaiser', 'nuttallwin', 'parzenwin', 'rectwin', 'taylorwin', 'triang', 'tukeywin'};
+            app.ApodisationFunctionDropDown.Position = [151 61 149 22];
+            app.ApodisationFunctionDropDown.Value = 'rectwin';
 
             % Create ZeroFillingpowerofSpinnerLabel
             app.ZeroFillingpowerofSpinnerLabel = uilabel(app.FFTSettingsPanel);
-            app.ZeroFillingpowerofSpinnerLabel.Position = [124 222 129 23];
+            app.ZeroFillingpowerofSpinnerLabel.Position = [124 226 129 23];
             app.ZeroFillingpowerofSpinnerLabel.Text = 'Zero Filling, + power of';
 
             % Create ZeroFillingpowerofSpinner
             app.ZeroFillingpowerofSpinner = uispinner(app.FFTSettingsPanel);
             app.ZeroFillingpowerofSpinner.Limits = [1 4];
-            app.ZeroFillingpowerofSpinner.Position = [252 223 65 22];
+            app.ZeroFillingpowerofSpinner.Position = [252 227 65 22];
             app.ZeroFillingpowerofSpinner.Value = 2;
 
             % Create ManualWindowpsLabel
             app.ManualWindowpsLabel = uilabel(app.FFTSettingsPanel);
             app.ManualWindowpsLabel.FontWeight = 'bold';
-            app.ManualWindowpsLabel.Position = [18 85 128 22];
+            app.ManualWindowpsLabel.Position = [18 89 128 22];
             app.ManualWindowpsLabel.Text = 'Manual Window (ps): ';
 
             % Create AutoWindowButton
@@ -3961,30 +3962,30 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.AutoWindowButton.Tooltip = {'set the time_max 1st multiple reflection time'};
             app.AutoWindowButton.Text = 'Auto Window';
             app.AutoWindowButton.BackgroundColor = [1 1 1];
-            app.AutoWindowButton.Position = [11 108 105 23];
+            app.AutoWindowButton.Position = [11 112 105 23];
 
             % Create FrequencyRangeTHzLabel
             app.FrequencyRangeTHzLabel = uilabel(app.FFTSettingsPanel);
             app.FrequencyRangeTHzLabel.FontWeight = 'bold';
-            app.FrequencyRangeTHzLabel.Position = [11 255 139 22];
+            app.FrequencyRangeTHzLabel.Position = [11 259 139 22];
             app.FrequencyRangeTHzLabel.Text = 'Frequency Range (THz)';
 
             % Create UpsamplingLabel
             app.UpsamplingLabel = uilabel(app.FFTSettingsPanel);
             app.UpsamplingLabel.FontWeight = 'bold';
-            app.UpsamplingLabel.Position = [11 224 74 22];
+            app.UpsamplingLabel.Position = [11 228 74 22];
             app.UpsamplingLabel.Text = 'Upsampling';
 
             % Create WindowFunctionLabel
             app.WindowFunctionLabel = uilabel(app.FFTSettingsPanel);
             app.WindowFunctionLabel.FontWeight = 'bold';
-            app.WindowFunctionLabel.Position = [11 135 105 22];
+            app.WindowFunctionLabel.Position = [11 139 105 22];
             app.WindowFunctionLabel.Text = 'Window Function';
 
             % Create fromLabel_3
             app.fromLabel_3 = uilabel(app.FFTSettingsPanel);
             app.fromLabel_3.HorizontalAlignment = 'right';
-            app.fromLabel_3.Position = [150 85 29 22];
+            app.fromLabel_3.Position = [150 89 29 22];
             app.fromLabel_3.Text = 'from';
 
             % Create FromTimeEditField
@@ -3992,43 +3993,43 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FromTimeEditField.Limits = [-30 50];
             app.FromTimeEditField.ValueDisplayFormat = '%5.2f';
             app.FromTimeEditField.Tooltip = {'Set the minimum value of the sample waveform(s)'};
-            app.FromTimeEditField.Position = [183 85 45 22];
+            app.FromTimeEditField.Position = [183 89 45 22];
             app.FromTimeEditField.Value = -10;
 
             % Create StartFrequencyTHzEditFieldLabel
             app.StartFrequencyTHzEditFieldLabel = uilabel(app.FFTSettingsPanel);
             app.StartFrequencyTHzEditFieldLabel.HorizontalAlignment = 'right';
-            app.StartFrequencyTHzEditFieldLabel.Position = [143 193 124 22];
+            app.StartFrequencyTHzEditFieldLabel.Position = [143 197 124 22];
             app.StartFrequencyTHzEditFieldLabel.Text = 'Start Frequency (THz)';
 
             % Create StartFrequencyTHzEditField
             app.StartFrequencyTHzEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
             app.StartFrequencyTHzEditField.Limits = [0.2 1.5];
             app.StartFrequencyTHzEditField.ValueDisplayFormat = '%5.1f';
-            app.StartFrequencyTHzEditField.Position = [272 193 41 22];
+            app.StartFrequencyTHzEditField.Position = [272 197 41 22];
             app.StartFrequencyTHzEditField.Value = 0.8;
 
             % Create UnwrappingLabel
             app.UnwrappingLabel = uilabel(app.FFTSettingsPanel);
             app.UnwrappingLabel.FontWeight = 'bold';
-            app.UnwrappingLabel.Position = [11 193 75 22];
+            app.UnwrappingLabel.Position = [11 197 75 22];
             app.UnwrappingLabel.Text = 'Unwrapping';
 
             % Create FulllistnamingCheckBox
             app.FulllistnamingCheckBox = uicheckbox(app.FFTSettingsPanel);
             app.FulllistnamingCheckBox.Text = 'Full list naming';
-            app.FulllistnamingCheckBox.Position = [15 14 102 22];
+            app.FulllistnamingCheckBox.Position = [20 18 102 22];
 
             % Create ExtrapolationRangeTHzLabel
             app.ExtrapolationRangeTHzLabel = uilabel(app.FFTSettingsPanel);
             app.ExtrapolationRangeTHzLabel.FontWeight = 'bold';
-            app.ExtrapolationRangeTHzLabel.Position = [11 162 155 22];
+            app.ExtrapolationRangeTHzLabel.Position = [11 166 155 22];
             app.ExtrapolationRangeTHzLabel.Text = 'Extrapolation Range (THz)';
 
             % Create fromLabel_2
             app.fromLabel_2 = uilabel(app.FFTSettingsPanel);
             app.fromLabel_2.HorizontalAlignment = 'right';
-            app.fromLabel_2.Position = [173 162 29 22];
+            app.fromLabel_2.Position = [173 166 29 22];
             app.fromLabel_2.Text = 'from';
 
             % Create FromEpolFreqEditField
@@ -4036,13 +4037,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FromEpolFreqEditField.Limits = [0 5];
             app.FromEpolFreqEditField.ValueDisplayFormat = '%5.2f';
             app.FromEpolFreqEditField.ValueChangedFcn = createCallbackFcn(app, @FromEpolFreqEditFieldValueChanged, true);
-            app.FromEpolFreqEditField.Position = [207 162 40 22];
+            app.FromEpolFreqEditField.Position = [207 166 40 22];
             app.FromEpolFreqEditField.Value = 0.2;
 
             % Create toLabel_2
             app.toLabel_2 = uilabel(app.FFTSettingsPanel);
             app.toLabel_2.HorizontalAlignment = 'right';
-            app.toLabel_2.Position = [243 162 25 22];
+            app.toLabel_2.Position = [243 166 25 22];
             app.toLabel_2.Text = 'to';
 
             % Create ToEpolFreqEditField
@@ -4050,7 +4051,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ToEpolFreqEditField.Limits = [0 5];
             app.ToEpolFreqEditField.ValueDisplayFormat = '%5.2f';
             app.ToEpolFreqEditField.ValueChangedFcn = createCallbackFcn(app, @ToEpolFreqEditFieldValueChanged, true);
-            app.ToEpolFreqEditField.Position = [273 162 40 22];
+            app.ToEpolFreqEditField.Position = [273 166 40 22];
             app.ToEpolFreqEditField.Value = 0.4;
 
             % Create Plot2TDButton
