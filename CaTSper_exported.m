@@ -3850,14 +3850,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % display window function along with terahertz measurement waveforms
             ax = app.UIAxes2;
-            legend(ax,'off');
+            grid(ax,"on")
             
-            if app.GridOffButton_3.Value
-                grid(ax,"off")
-            else
-                grid(ax,"on")
-            end
-           
             xTime = linspace(0,xSpacing*N,N);
             maxERef = max(E_reference,[],"all");
             sampleID = strjoin(app.TD_data.measList{TDindex});
@@ -4154,7 +4148,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create PlotWindowFunctionButton
             app.PlotWindowFunctionButton = uibutton(app.FFTSettingsPanel, 'push');
             app.PlotWindowFunctionButton.ButtonPushedFcn = createCallbackFcn(app, @PlotWindowFunctionButtonPushed, true);
-            app.PlotWindowFunctionButton.Position = [184 57 131 23];
+            app.PlotWindowFunctionButton.Position = [182 59 131 23];
             app.PlotWindowFunctionButton.Text = 'Plot Window Function';
 
             % Create Plot2TDButton
