@@ -384,14 +384,10 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.md2DesEditField.Value = '';
             app.md3DesEditField.Value = '';
             app.md4DesEditField.Value = '';
-            app.md1EditField.AllowEmpty = "on";
-            app.md2EditField.AllowEmpty = "on";
-            app.md3EditField.AllowEmpty = "on";
-            app.md4EditField.AllowEmpty = "on";
-            app.md1EditField.Value = [];
-            app.md2EditField.Value = [];
-            app.md3EditField.Value = [];
-            app.md4EditField.Value = [];
+            app.md1EditField.Value = 0;
+            app.md2EditField.Value = 0;
+            app.md3EditField.Value = 0;
+            app.md4EditField.Value = 0;
             app.ds1DesEditField.Value = '';
             app.ds2DesEditField.Value = '';
             app.ds3DesEditField.Value = '';
@@ -3851,6 +3847,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % display window function along with terahertz measurement waveforms
             ax = app.UIAxes2;
             grid(ax,"on")
+            xlim(ax,"tight");
+            ylim(ax,"tight");
             
             xTime = linspace(0,xSpacing*N,N);
             maxERef = max(E_reference,[],"all");
