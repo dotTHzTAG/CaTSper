@@ -77,6 +77,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         ALLButton                       matlab.ui.control.Button
         Plot2TDButton                   matlab.ui.control.Button
         FFTSettingsPanel                matlab.ui.container.Panel
+        PlotWindowFunctionButton        matlab.ui.control.Button
         ToEpolFreqEditField             matlab.ui.control.NumericEditField
         toLabel_2                       matlab.ui.control.Label
         FromEpolFreqEditField           matlab.ui.control.NumericEditField
@@ -95,8 +96,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
         ManualWindowpsLabel             matlab.ui.control.Label
         ZeroFillingpowerofSpinner       matlab.ui.control.Spinner
         ZeroFillingpowerofSpinnerLabel  matlab.ui.control.Label
-        ApodisationFunctionDropDown     matlab.ui.control.DropDown
-        ApodisationFunctionDropDownLabel  matlab.ui.control.Label
+        FunctionDropDown                matlab.ui.control.DropDown
+        FunctionDropDownLabel           matlab.ui.control.Label
         TransformButton                 matlab.ui.control.Button
         truncatebeforethe1stetalonLabel  matlab.ui.control.Label
         ToTimeEditField                 matlab.ui.control.NumericEditField
@@ -1052,7 +1053,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ToEpolFreqEditField.Value = configData.FFT_Settings.Extrapolation_Frequency_Range(2);
             app.FromTimeEditField.Value = configData.FFT_Settings.Window_Function_Range(1);
             app.ToTimeEditField.Value = configData.FFT_Settings.Window_Function_Range(2);
-            app.ApodisationFunctionDropDown.Value = configData.FFT_Settings.Apodisation_Function;
+            app.FunctionDropDown.Value = configData.FFT_Settings.Apodisation_Function;
 
             % Default thickness metadata
             app.mdSampleThicknessDropDown.Value = configData.Metadata_Settings.Sample_Thickness;
@@ -1396,7 +1397,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             min_freq = app.FromFreqEditField.Value;
             max_freq = app.ToFreqEditField.Value;
             upscale = app.ZeroFillingpowerofSpinner.Value; 
-            funcName = app.ApodisationFunctionDropDown.Value; %window function
+            funcName = app.FunctionDropDown.Value; %window function
 
             if isempty(addFDList)
                 uialert(fig,'No Items to Transform','Warning');
@@ -3774,6 +3775,102 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.TD_data.metadata{TDIdx}.md{4} = value;
             mdThicknessSync(app,TDIdx);
         end
+
+        % Button pushed function: PlotWindowFunctionButton
+        function PlotWindowFunctionButtonPushed(app, event)
+            fig = app.CaTSperUIFigure;
+            TDindex = app.SelectionListBox.Value;
+            isAutowindow = app.AutoWindowButton.Value;
+            min_freq = app.FromFreqEditField.Value;
+            max_freq = app.ToFreqEditField.Value;
+            upscale = app.ZeroFillingpowerofSpinner.Value; 
+            funcName = app.FunctionDropDown.Value; %window function
+
+            if isempty(TDindex)
+                uialert(fig,'Select item','Warning');
+                return;
+            end
+            
+            % reference waveform
+            dsNum_Sample = app.TD_data.dsNum_Sample{TDindex};
+            dsNum_Reference = app.TD_data.dsNum_Reference{TDindex};
+            
+            % reference waveform 
+            xSpacing = app.TD_data.metadata{TDindex}.xSpacing;
+            fs = 1/(xSpacing*10^-12); % obtain sampling frequency based on xSpacing value
+            t_reference = app.TD_data.ds{TDindex,dsNum_Reference}(1,:);
+            E_reference = app.TD_data.ds{TDindex,dsNum_Reference}(2,:);
+            
+            % sample waveform
+            t_sample = app.TD_data.ds{TDindex,dsNum_Sample}(1,:);
+            E_sample = app.TD_data.ds{TDindex,dsNum_Sample}(2,:);
+            
+            % time delay between reference and sample measurement
+            delta_t = app.TD_data.metadata{TDindex}.timeDelay;
+            
+            % windowing
+            etl_t = app.TD_data.metadata{TDindex}.internalReflection;
+            
+            if isAutowindow
+                td_max = etl_t;
+                td_min = - etl_t + delta_t;
+            else
+                % maximum and minimum time delay values are defined
+                % by the user
+                td_max = app.ToTimeEditField.Value;
+                td_min = app.FromTimeEditField.Value;
+            end
+            
+            cutoff_low = sum(t_sample < td_min) + 1;
+            cutoff_high = sum(t_sample < td_max);
+
+            E_reference = E_reference(cutoff_low:cutoff_high);
+            E_sample = E_sample(cutoff_low:cutoff_high);
+
+            [~,reference_pk_loc] = max(E_sample);
+            [~,sample_pk_loc] = max(E_sample);
+
+            ref_add_zero_no = length(E_reference)-2*reference_pk_loc+1;
+            sam_add_zero_no = length(E_sample)-2*sample_pk_loc+1;
+
+            E_reference = [zeros(1, max(0, ref_add_zero_no)), E_reference, zeros(1, max(0, -ref_add_zero_no))];
+            E_sample = [zeros(1, max(0, sam_add_zero_no)), E_sample, zeros(1, max(0, -sam_add_zero_no))];
+
+            % window function
+            wf = str2func(funcName);
+            E_reference_win = E_reference.*window(wf,length(E_reference))';
+            E_sample_win = E_sample.*window(wf,length(E_sample))';
+            
+            % fast Fourier tranform
+            samNum = length(E_sample_win);
+            N = 2^(nextpow2(length(E_sample_win))+upscale);
+            
+            FD_reference = fft(E_reference,N);
+            FD_sample = fft(E_sample,N);
+
+            % display window function along with terahertz measurement waveforms
+            ax = app.UIAxes2;
+            legend(ax,'off');
+            
+            if app.GridOffButton_3.Value
+                grid(ax,"off")
+            else
+                grid(ax,"on")
+            end
+           
+            xTime = linspace(0,xSpacing*N,N);
+            maxERef = max(E_reference,[],"all");
+            sampleID = strjoin(app.TD_data.measList{TDindex});
+            winFunc = [window(wf,length(E_reference))', zeros(1,N-samNum)];
+            E_reference = [E_reference/maxERef, zeros(1,N-samNum)];
+            E_reference_win = [E_reference_win/maxERef, zeros(1,N-samNum)];
+            E_sample = [E_sample/maxERef, zeros(1,N-samNum)];
+            E_sample_win = [E_sample_win/maxERef, zeros(1,N-samNum)];  
+            plot(ax,xTime,winFunc,xTime,E_reference,xTime,E_reference_win,xTime,E_sample,xTime,E_sample_win,'linewidth',1);
+            
+            lgd = {funcName, "Ref_org", "Ref_win", strcat(sampleID,"_org"),strcat(sampleID,"_win")};
+            legend(ax,(lgd),'Interpreter','none');            
+        end
     end
 
     % Component initialization
@@ -3904,7 +4001,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create MaxTimeLabel
             app.MaxTimeLabel = uilabel(app.FFTSettingsPanel);
             app.MaxTimeLabel.HorizontalAlignment = 'right';
-            app.MaxTimeLabel.Position = [219 88 25 23];
+            app.MaxTimeLabel.Position = [239 88 25 23];
             app.MaxTimeLabel.Text = 'to';
 
             % Create ToTimeEditField
@@ -3912,7 +4009,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ToTimeEditField.Limits = [0 100];
             app.ToTimeEditField.ValueDisplayFormat = '%5.2f';
             app.ToTimeEditField.Tooltip = {'set the maximum value of the sample waveform(s)'};
-            app.ToTimeEditField.Position = [248 89 45 22];
+            app.ToTimeEditField.Position = [268 89 45 22];
             app.ToTimeEditField.Value = 20;
 
             % Create truncatebeforethe1stetalonLabel
@@ -3924,20 +4021,20 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.TransformButton = uibutton(app.FFTSettingsPanel, 'push');
             app.TransformButton.ButtonPushedFcn = createCallbackFcn(app, @TransformButtonPushed, true);
             app.TransformButton.FontWeight = 'bold';
-            app.TransformButton.Position = [136 10 171 41];
+            app.TransformButton.Position = [136 12 178 36];
             app.TransformButton.Text = 'Transform';
 
-            % Create ApodisationFunctionDropDownLabel
-            app.ApodisationFunctionDropDownLabel = uilabel(app.FFTSettingsPanel);
-            app.ApodisationFunctionDropDownLabel.FontWeight = 'bold';
-            app.ApodisationFunctionDropDownLabel.Position = [18 60 128 23];
-            app.ApodisationFunctionDropDownLabel.Text = 'Apodisation Function';
+            % Create FunctionDropDownLabel
+            app.FunctionDropDownLabel = uilabel(app.FFTSettingsPanel);
+            app.FunctionDropDownLabel.FontWeight = 'bold';
+            app.FunctionDropDownLabel.Position = [15 58 58 23];
+            app.FunctionDropDownLabel.Text = 'Function';
 
-            % Create ApodisationFunctionDropDown
-            app.ApodisationFunctionDropDown = uidropdown(app.FFTSettingsPanel);
-            app.ApodisationFunctionDropDown.Items = {'barthannwin', 'blackman', 'blackmanharris', 'bohmanwin', 'chebwin', 'flattopwin', 'gausswin', 'hamming', 'hann', 'kaiser', 'nuttallwin', 'parzenwin', 'rectwin', 'taylorwin', 'triang', 'tukeywin'};
-            app.ApodisationFunctionDropDown.Position = [151 61 149 22];
-            app.ApodisationFunctionDropDown.Value = 'rectwin';
+            % Create FunctionDropDown
+            app.FunctionDropDown = uidropdown(app.FFTSettingsPanel);
+            app.FunctionDropDown.Items = {'barthannwin', 'blackman', 'blackmanharris', 'bohmanwin', 'chebwin', 'flattopwin', 'gausswin', 'hamming', 'hann', 'kaiser', 'nuttallwin', 'parzenwin', 'rectwin', 'taylorwin', 'triang', 'tukeywin'};
+            app.FunctionDropDown.Position = [73 59 102 22];
+            app.FunctionDropDown.Value = 'rectwin';
 
             % Create ZeroFillingpowerofSpinnerLabel
             app.ZeroFillingpowerofSpinnerLabel = uilabel(app.FFTSettingsPanel);
@@ -3985,7 +4082,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create fromLabel_3
             app.fromLabel_3 = uilabel(app.FFTSettingsPanel);
             app.fromLabel_3.HorizontalAlignment = 'right';
-            app.fromLabel_3.Position = [150 89 29 22];
+            app.fromLabel_3.Position = [167 89 29 22];
             app.fromLabel_3.Text = 'from';
 
             % Create FromTimeEditField
@@ -3993,7 +4090,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FromTimeEditField.Limits = [-30 50];
             app.FromTimeEditField.ValueDisplayFormat = '%5.2f';
             app.FromTimeEditField.Tooltip = {'Set the minimum value of the sample waveform(s)'};
-            app.FromTimeEditField.Position = [183 89 45 22];
+            app.FromTimeEditField.Position = [200 89 45 22];
             app.FromTimeEditField.Value = -10;
 
             % Create StartFrequencyTHzEditFieldLabel
@@ -4018,7 +4115,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create FulllistnamingCheckBox
             app.FulllistnamingCheckBox = uicheckbox(app.FFTSettingsPanel);
             app.FulllistnamingCheckBox.Text = 'Full list naming';
-            app.FulllistnamingCheckBox.Position = [20 18 102 22];
+            app.FulllistnamingCheckBox.Position = [18 24 102 22];
 
             % Create ExtrapolationRangeTHzLabel
             app.ExtrapolationRangeTHzLabel = uilabel(app.FFTSettingsPanel);
@@ -4053,6 +4150,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ToEpolFreqEditField.ValueChangedFcn = createCallbackFcn(app, @ToEpolFreqEditFieldValueChanged, true);
             app.ToEpolFreqEditField.Position = [273 166 40 22];
             app.ToEpolFreqEditField.Value = 0.4;
+
+            % Create PlotWindowFunctionButton
+            app.PlotWindowFunctionButton = uibutton(app.FFTSettingsPanel, 'push');
+            app.PlotWindowFunctionButton.ButtonPushedFcn = createCallbackFcn(app, @PlotWindowFunctionButtonPushed, true);
+            app.PlotWindowFunctionButton.Position = [184 57 131 23];
+            app.PlotWindowFunctionButton.Text = 'Plot Window Function';
 
             % Create Plot2TDButton
             app.Plot2TDButton = uibutton(app.TimeDomainTDTab, 'push');
