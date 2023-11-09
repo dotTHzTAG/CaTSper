@@ -1972,7 +1972,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % available options in responding to question are 'Yes' or 'No, only selected data'
             % if the return key is pressed, the dialouge box will remain
             % open
-            answer = questdlg(question,'Data Range','Yes','No, only selected data','cancel');
+            answer = questdlg(question,'Data Range','Yes','No, only selected data','Yes');
             
             % in the 'select file to write' dialouge box, allow files to be
             % saved a '*.mat' file or all types
@@ -2463,7 +2463,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % extract input value
             question = "Select The Waveform Period to be processed";
-            truncationOption = questdlg('Select Truncation Period','Truncation','Full Waveform','FFT-Setting Values','Cancel');
+            truncationOption = questdlg('Select Truncation Period','Truncation','Full Waveform','FFT-Setting Values','Full Waveform');
 
             upscale = app.ZeroFillingpowerofSpinner.Value; 
             dsNum_Sample = app.TD_data.dsNum_Sample{TDindex};
@@ -2945,7 +2945,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % parameters are emptied
 
                 question = "Do you want to clear memory?";
-                answer = questdlg(question,'Warning');
+                answer = questdlg(question,'Warning','Yes','No','No');
                 
             % if 'yes' is selected, empty the following arrays and parameters
             if answer == "Yes"
@@ -3095,7 +3095,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % data (time domain, frequency domain and data manipulation),
             % and provides three options for response
             question = 'Do you want to save all data?';
-            answer = questdlg(question,'Data Range','Yes','No, only selected data','Cancel','Yes');
+            answer = questdlg(question,'Data Range','Yes','No, only selected data','Yes');
             
             % open a dialouge box for saving file as *.mat format or for
             % any file format
@@ -3322,14 +3322,14 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
             try
                 question = "Select effective thickness";
-                thicknessOption = questdlg('Select Effective Thickness','Thickness Information','Sample','Sample-Reference Offset','Cancel');
+                thicknessOption = questdlg('Select Effective Thickness','Thickness Information','Sample','Sample-Reference Offset','Sample');
             catch
                 return;
             end
 
             if isequal(thicknessOption,'Sample-Reference Offset')
                 question = "Select metadata";
-                referenceThicknessMn = questdlg('Select Reference Thickness Metadata','Thickness Information','md2','md3','md4','Cancel');
+                referenceThicknessMn = questdlg('Select Reference Thickness Metadata','Thickness Information','md2','md3','md4','md2');
                 app.mdReferenceThicknessDropDown.Value = referenceThicknessMn;
             else
                 app.mdReferenceThicknessDropDown.Value = "no";
