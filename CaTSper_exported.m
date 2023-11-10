@@ -1325,7 +1325,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
             % if the measurements already added do not include the item to
             % be added, perform the following actions
-            if ~sum(app.TD_select == addItem)
+            if ~any(app.TD_select == addItem)
                 % adding the new item to the existing list
                 app.TD_select = [app.TD_select addItem];
                 % sort the list
@@ -1836,7 +1836,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
             % if the selected item is not already in the FD select list,
             % execute the following
-            if ~sum(app.FD_select == addItem)
+            if ~any(app.FD_select == addItem)
                 % add the selected item into the FD select list
                 app.FD_select = [app.FD_select addItem];
                 % sort the list
@@ -2125,7 +2125,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
             
             % if the FD selection list do not contain the item to be added
-            if ~sum(app.FD_select_2 == addItem)
+            if ~any(app.FD_select_2 == addItem)
                 % add the item to the FD selection list
                 app.FD_select_2 = [app.FD_select_2 addItem];
                 % sort the selection list
