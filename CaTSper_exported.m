@@ -178,7 +178,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         DELFDButton                     matlab.ui.control.Button
         ADDFDButton                     matlab.ui.control.Button
         ALLFDButton                     matlab.ui.control.Button
-        FDListListBox                   matlab.ui.control.ListBox
+        FDListBox                       matlab.ui.control.ListBox
         FDListListBoxLabel              matlab.ui.control.Label
         Plot2FDButton                   matlab.ui.control.Button
         Plot1FDButton                   matlab.ui.control.Button
@@ -360,14 +360,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 app.FD_data.refractiveIndex(FDindex) = [];
                 app.FD_data.eReal(FDindex) = [];
                 app.FD_data.eImag(FDindex) = [];
-            end
-             
-            % provided the array 'app.FD_data.metadata' is not empty,
-            % empty following data fields
-            if ~isempty(app.FD_data.metadata)
-                app.FD_data.metadata(FDindex) = [];
-            end
-            
+            end            
         end
         
         % TDdataDel empties arrays associated with the time domain (TD) tab
@@ -1383,7 +1376,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             FDindex = 0;
             
             % extracting the values that were specified by the user
-            ListBoxItem = app.FDListListBox.Items;
+            ListBoxItem = app.FDListBox.Items;
             addFDList = app.TD_select;
             isAutowindow = app.AutoWindowButton.Value;
             min_freq = app.FromFreqEditField.Value;
@@ -1637,8 +1630,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 
             end
             
-            app.FDListListBox.Items = ListBoxItem;
-            app.FDListListBox.ItemsData = (1:FDindex);
+            app.FDListBox.Items = ListBoxItem;
+            app.FDListBox.ItemsData = (1:FDindex);
         end
 
         % Button pushed function: Plot1TDButton
@@ -1743,8 +1736,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % clears all strings/data stored in the two selection boxes in the
             % frequency domain tab
 
-            delItem = app.FDListListBox.Value;
-            ListBoxItems = app.FDListListBox.Items;
+            delItem = app.FDListBox.Value;
+            ListBoxItems = app.FDListBox.Items;
             
             % if no item is selected for deletion, do not continue to run
             % the code
@@ -1784,12 +1777,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
             
             % update the information stored in the array
-            app.FDListListBox.Items = ListBoxItems;
-            app.FDListListBox.ItemsData = (1:length(ListBoxItems));
+            app.FDListBox.Items = ListBoxItems;
+            app.FDListBox.ItemsData = (1:length(ListBoxItems));            
             
             % clear all strings/names stored in the selection boxes in the frequency domain tab
-            app.FD_select = {};
-            app.FD_select_2 = {};
+            app.FD_select = [];
+            app.FD_select_2 = [];
             app.FDSelectionListBox.Items = {};
             app.FDSelectionListBox_2.Items = {};
         end
@@ -1800,7 +1793,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % box and place them into the FD selection box
 
             % extracting values
-            ListBoxItemValue = app.FDListListBox.ItemsData;
+            ListBoxItemValue = app.FDListBox.ItemsData;
             % select all values in the list box
             app.FD_select = ListBoxItemValue;
             % if there are no items in the list box, do not continue to run
@@ -1830,7 +1823,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % the FD selection box
             
             % extracting the selected value in the FD list box    
-            addItem = app.FDListListBox.Value;
+            addItem = app.FDListBox.Value;
             % empty arrays/vectors
             ListBoxItem = {};
             ListBoxItemValue = [];
@@ -1870,11 +1863,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % list, default select the item above the added item in the
             % list box
             if ~isequal(addItem,1)
-                List = app.FDListListBox.ItemsData;
+                List = app.FDListBox.ItemsData;
                 curLoc = sum(List < addItem);
                 if ~isequal(curLoc,0)
                     cursor = List(curLoc);
-                    app.FDListListBox.Value = cursor;                  
+                    app.FDListBox.Value = cursor;                  
                 end
             end  
         end
@@ -1952,7 +1945,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % run FDdataDel to remove all stored frequency domain data
             FDdataDel(app,':');      
             % empty all arrays/vectors relating FD list and selection boxes      
-            app.FDListListBox.Items = {};
+            app.FDListBox.Items = {};
             app.FDSelectionListBox.Items = {};
             app.FDSelectionListBox_2.Items = {};
             app.FD_select = [];
@@ -2077,7 +2070,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % catenate the file path and file name to a single string
             fullfile = strcat(filepath,filename);
             % saving the data
-            ListItems = app.FDListListBox.Items;
+            ListItems = app.FDListBox.Items;
             ListItems2 = app.FDSelectionListBox_2.Items;
             FD_data = app.FD_data;
             save(fullfile,'FD_data','ListItems','ListItems2');
@@ -2089,7 +2082,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
            % selection box
             
             % extracting the number of items in the FD List
-            ListBoxItemValue = app.FDListListBox.ItemsData;
+            ListBoxItemValue = app.FDListBox.ItemsData;
             app.FD_select_2 = ListBoxItemValue;
             
             % if the ListBoxItemValue is empty, do not continue to execute
@@ -2120,7 +2113,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % the FD selection box
             
             % extract item to be added from the FD List
-            addItem = app.FDListListBox.Value;
+            addItem = app.FDListBox.Value;
             % empty arrays
             ListBoxItem = {};
             ListBoxItemValue = [];
@@ -2155,11 +2148,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % list, default select the item above the added item in the
             % list box
             if ~isequal(addItem,1)
-                List = app.FDListListBox.ItemsData;
+                List = app.FDListBox.ItemsData;
                 curLoc = sum(List < addItem);
                 if ~isequal(curLoc,0)
                     cursor = List(curLoc);
-                    app.FDListListBox.Value = cursor;                  
+                    app.FDListBox.Value = cursor;                  
                 end
             end 
             
@@ -2959,7 +2952,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 app.FD_select_2 = [];
                 app.MeasurementListBox.Items = {};
                 app.SelectionListBox.Items = {};
-                app.FDListListBox.Items = {};
+                app.FDListBox.Items = {};
                 app.FDSelectionListBox.Items = {};
                 app.FDSelectionListBox_2.Items = {};
                 app.filename = [];
@@ -3006,8 +2999,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % loads frequency domain data from the file to the app and the
             % graphical user interface
             app.FD_data = FD_data;
-            app.FDListListBox.Items = ListItems;
-            app.FDListListBox.ItemsData = (1:length(ListItems));
+            app.FDListBox.Items = ListItems;
+            app.FDListBox.ItemsData = (1:length(ListItems));
             app.FDSelectionListBox_2.Items = ListItems;
             app.FDSelectionListBox_2.ItemsData = (1:length(ListItems));
         end
@@ -3148,7 +3141,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % preparing to save FD_data
             % extract the frequency domain data and assign them to
             % parameters
-            FD_ListItems = app.FDListListBox.Items;
+            FD_ListItems = app.FDListBox.Items;
             FD_ListItems2 = app.FDSelectionListBox_2.Items;
             % save the frequency domain data
             FD_data = app.FD_data;
@@ -3181,7 +3174,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % catenate the file path and file name to a single string
             fullfile = strcat(filepath,filename);
             % assign arrays and values to parameters
-            ListItems = app.FDListListBox.Items;
+            ListItems = app.FDListBox.Items;
             ListItems2 = app.FDSelectionListBox_2.Items;
             DM_data = app.DM_data;
             % save data manipulation data
@@ -3299,7 +3292,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FD_select_2 = [];
             app.MeasurementListBox.Items = {};
             app.SelectionListBox.Items = {};
-            app.FDListListBox.Items = {};
+            app.FDListBox.Items = {};
             app.FDSelectionListBox.Items = {};
             cla(app.UIAxes1)
             cla(app.UIAxes2)
@@ -4581,11 +4574,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FDListListBoxLabel.Position = [17 833 79 22];
             app.FDListListBoxLabel.Text = 'FD List';
 
-            % Create FDListListBox
-            app.FDListListBox = uilistbox(app.FrequencyDomainFDTab);
-            app.FDListListBox.Items = {};
-            app.FDListListBox.Position = [14 496 358 336];
-            app.FDListListBox.Value = {};
+            % Create FDListBox
+            app.FDListBox = uilistbox(app.FrequencyDomainFDTab);
+            app.FDListBox.Items = {};
+            app.FDListBox.Position = [14 496 358 336];
+            app.FDListBox.Value = {};
 
             % Create ALLFDButton
             app.ALLFDButton = uibutton(app.FrequencyDomainFDTab, 'push');
