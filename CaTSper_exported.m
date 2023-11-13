@@ -4366,7 +4366,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create md1EditField
             app.md1EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
-            app.md1EditField.ValueDisplayFormat = '%5.2f';
+            app.md1EditField.ValueDisplayFormat = '%6.3f';
             app.md1EditField.ValueChangedFcn = createCallbackFcn(app, @md1EditFieldValueChanged, true);
             app.md1EditField.Position = [54 149 50 22];
 
@@ -4378,7 +4378,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create md2EditField
             app.md2EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
-            app.md2EditField.ValueDisplayFormat = '%5.2f';
+            app.md2EditField.ValueDisplayFormat = '%6.3f';
             app.md2EditField.ValueChangedFcn = createCallbackFcn(app, @md2EditFieldValueChanged, true);
             app.md2EditField.Position = [54 123 50 22];
 
@@ -4390,7 +4390,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create md3EditField
             app.md3EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
-            app.md3EditField.ValueDisplayFormat = '%5.2f';
+            app.md3EditField.ValueDisplayFormat = '%6.3f';
             app.md3EditField.ValueChangedFcn = createCallbackFcn(app, @md3EditFieldValueChanged, true);
             app.md3EditField.Position = [54 98 50 22];
 
@@ -4402,7 +4402,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create md4EditField
             app.md4EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
-            app.md4EditField.ValueDisplayFormat = '%5.2f';
+            app.md4EditField.ValueDisplayFormat = '%6.3f';
             app.md4EditField.ValueChangedFcn = createCallbackFcn(app, @md4EditFieldValueChanged, true);
             app.md4EditField.Position = [54 73 50 22];
 
@@ -4735,9 +4735,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create ReferenceEditField
             app.ReferenceEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
             app.ReferenceEditField.Limits = [0 Inf];
-            app.ReferenceEditField.ValueDisplayFormat = '%5.2f';
+            app.ReferenceEditField.ValueDisplayFormat = '%6.3f';
             app.ReferenceEditField.Editable = 'off';
-            app.ReferenceEditField.Position = [84 35 50 22];
+            app.ReferenceEditField.Position = [77 35 57 22];
 
             % Create SampleEditFieldLabel
             app.SampleEditFieldLabel = uilabel(app.ThicknessmmPanel);
@@ -4748,9 +4748,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create SampleEditField
             app.SampleEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
             app.SampleEditField.Limits = [0 Inf];
-            app.SampleEditField.ValueDisplayFormat = '%5.2f';
+            app.SampleEditField.ValueDisplayFormat = '%6.3f';
             app.SampleEditField.Editable = 'off';
-            app.SampleEditField.Position = [83 62 51 22];
+            app.SampleEditField.Position = [77 62 57 22];
 
             % Create ThicknessSwitch_FD
             app.ThicknessSwitch_FD = uiswitch(app.ThicknessmmPanel, 'slider');
