@@ -3315,21 +3315,28 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
             try
                 question = "Select effective thickness";
-                thicknessOption = questdlg('Select Effective Thickness','Thickness Information','Sample','Sample-Reference Offset','Sample');
+                thicknessOption = questdlg('Select Effective Thickness','Thickness Information','Sample','Sample-Reference Offset','No information','Sample');
             catch
                 return;
             end
 
-            if isequal(thicknessOption,'Sample-Reference Offset')
-                question = "Select metadata";
-                referenceThicknessMn = questdlg('Select Reference Thickness Metadata','Thickness Information','md2','md3','md4','md2');
-                app.mdReferenceThicknessDropDown.Value = referenceThicknessMn;
-            else
-                app.mdReferenceThicknessDropDown.Value = "no";
-                referenceThicknessMn = "no";
+            switch thicknessOption
+                case "Sample-Reference Offset"
+                    question = "Select metadata";
+                    referenceThicknessMn = questdlg('Select Reference Thickness Metadata','Thickness Information','md2','md3','md4','md2');
+                    app.mdReferenceThicknessDropDown.Value = referenceThicknessMn;
+                    sampleThicknessMn = app.mdSampleThicknessDropDown.Value;
+                case "No information"
+                    app.mdReferenceThicknessDropDown.Value = "no";
+                    app.mdSampleThicknessDropDown.Value = "no";
+                    referenceThicknessMn = "no";
+                    sampleThicknessMn = "no";
+                otherwise
+                    app.mdReferenceThicknessDropDown.Value = "no";
+                    referenceThicknessMn = "no";
+                    sampleThicknessMn = app.mdSampleThicknessDropDown.Value;
             end
-            sampleThicknessMn = app.mdSampleThicknessDropDown.Value;
-            
+
             idxCap = 1;
             % run the TDdataDel function
             TDdataDel(app);
@@ -3424,8 +3431,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     % time delay and effective refractive index calculation
                     % if the array in the dataset has the referecne 1 datasets
                      % sam_thickness = h5readatt(fullpath,dn,sampleThicknessMn);
-                    sam_thickness = TD_data.metadata{idxCap+idx-1}.md{mdNum_SamThickness};
-                    
+                    if isequal(sampleThicknessMn, "no")
+                        sam_thickness = 0;
+                    else
+                        sam_thickness = TD_data.metadata{idxCap+idx-1}.md{mdNum_SamThickness};
+                    end
+
                     if isequal(referenceThicknessMn,"no")
                         ref_thickness = 0;
                     else
@@ -4724,9 +4735,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create ReferenceEditField
             app.ReferenceEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
             app.ReferenceEditField.Limits = [0 Inf];
-            app.ReferenceEditField.ValueDisplayFormat = '%5.2g';
+            app.ReferenceEditField.ValueDisplayFormat = '%5.2f';
             app.ReferenceEditField.Editable = 'off';
-            app.ReferenceEditField.Position = [92 35 42 22];
+            app.ReferenceEditField.Position = [84 35 50 22];
 
             % Create SampleEditFieldLabel
             app.SampleEditFieldLabel = uilabel(app.ThicknessmmPanel);
@@ -4737,9 +4748,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create SampleEditField
             app.SampleEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
             app.SampleEditField.Limits = [0 Inf];
-            app.SampleEditField.ValueDisplayFormat = '%5.2g';
+            app.SampleEditField.ValueDisplayFormat = '%5.2f';
             app.SampleEditField.Editable = 'off';
-            app.SampleEditField.Position = [92 62 42 22];
+            app.SampleEditField.Position = [83 62 51 22];
 
             % Create ThicknessSwitch_FD
             app.ThicknessSwitch_FD = uiswitch(app.ThicknessmmPanel, 'slider');
