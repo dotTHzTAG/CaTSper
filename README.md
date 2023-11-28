@@ -11,7 +11,7 @@ In the repository, there is a pair of .mlapp and .m files. Basically, .m file is
 
 Please follow the instructions below.
 1. MATLAB needs to be installed in your computer to use CaTSper.
-2. Download 'Install_releaseDate.zip' file, which contains the following files. [Download](/Install_r230918.zip)
+2. Download 'Install_releaseDate.zip' file, which contains the following files. [Download](/installer_r231110.zip)
  - CaTSper.mlapp : CaTSper MATLAB App-designer file
  - DR_Checker.mlapp : CaTSper dynamic range checker MATLAB App-designer file
  - CaT_logo.png : logo image
