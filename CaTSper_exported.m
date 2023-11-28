@@ -1019,14 +1019,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             addpath(genpath(mPath));    
             try
                 configFile = 'config_default.json';
+                configData = jsondecode(fileread(configFile));
            catch ME
                 fig = app.CaTSperUIFigure;
                 uialert(fig,'config_default.json file is missing.','warning');
                 return;
             end
 
-            % Apply default configuration settings
-            configData = jsondecode(fileread(configFile));
             app.DR_boundary = configData.FFT_Settings.DR_boundary; % dynamic range frequency boundary
 
             % Default FFT_Settings
@@ -2713,6 +2712,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             ylabel = strrep(app.YaxisDataFormulationEditField.Value,'A',A);
             ylabel = strrep(ylabel,'B',B);
             ylabel = strrep(ylabel,'C',C);
+            grid(ax,"on");
             
             % put axis labels on plot
             ax.reset;
@@ -2847,6 +2847,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             ax.XTickLabelRotation= 45;
             ax.TickLabelInterpreter = 'none';
             legend(ax,lgd,'Interpreter','none');
+            grid(ax,"on")
             hold(ax,"off")
         end
 
@@ -3075,6 +3076,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             ax.XLabel.String = "Frequency";
             ax.ZLabel.String = zlabel;
             ax.YLabel.String = app.XaxisDataDropDown.Value;
+            grid(ax,"on");
             hold(ax,"off");
         end
 
@@ -3431,13 +3433,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     % time delay and effective refractive index calculation
                     % if the array in the dataset has the referecne 1 datasets
                      % sam_thickness = h5readatt(fullpath,dn,sampleThicknessMn);
-                    if isequal(sampleThicknessMn, "no")
+                    if isequal(sampleThicknessMn, "no")||isempty(TD_data.metadata{idxCap+idx-1}.md{mdNum_SamThickness})
                         sam_thickness = 0;
                     else
                         sam_thickness = TD_data.metadata{idxCap+idx-1}.md{mdNum_SamThickness};
                     end
 
-                    if isequal(referenceThicknessMn,"no")
+                    if isequal(referenceThicknessMn,"no")||isempty(TD_data.metadata{idxCap+idx-1}.md{mdNum_ReferecenThickness})
                         ref_thickness = 0;
                     else
                         ref_thickness = TD_data.metadata{idxCap+idx-1}.md{mdNum_ReferecenThickness};

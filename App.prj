@@ -1,0 +1,105 @@
+<deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
+  <configuration build-checksum="1197358341" file="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App.prj" location="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer" name="App" preferred-package-location="C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>CaTSper</param.appname>
+    <param.icon />
+    <param.icons />
+    <param.version>1.0</param.version>
+    <param.authnamewatermark>Terahertz Applications Group</param.authnamewatermark>
+    <param.email>jl2112@cam.ac.uk</param.email>
+    <param.company>University of Cambridge</param.company>
+    <param.summary>Terahertz Spectrum Analyser</param.summary>
+    <param.description>The dotTHz proeject compatible spectrum analyser</param.description>
+    <param.screenshot>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTx_SA\CaTSper_splash.png</param.screenshot>
+    <param.guid />
+    <param.installpath.string>\dotTHz\CaTSper\</param.installpath.string>
+    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.logo>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTx_SA\installer_image.png</param.logo>
+    <param.install.notes />
+    <param.target.install.notes />
+    <param.intermediate>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA</param.intermediate>
+    <param.files.only>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA</param.files.only>
+    <param.output>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA</param.output>
+    <param.logdir>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA</param.logdir>
+    <param.enable.clean.build>false</param.enable.clean.build>
+    <param.user.defined.mcr.options />
+    <param.target.type>subtarget.standalone</param.target.type>
+    <param.support.packages />
+    <param.web.mcr>true</param.web.mcr>
+    <param.package.mcr>false</param.package.mcr>
+    <param.no.mcr>false</param.no.mcr>
+    <param.web.mcr.name>CaTSperInstaller_web</param.web.mcr.name>
+    <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
+    <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
+    <param.windows.command.prompt>true</param.windows.command.prompt>
+    <param.create.log>false</param.create.log>
+    <param.log.file />
+    <param.native.matlab>false</param.native.matlab>
+    <param.checkbox>false</param.checkbox>
+    <param.example />
+    <param.help.text>Syntax 
+	  -? 
+	 
+ Input Arguments 
+	 -?  print help on how to use the application 
+	 input arguments</param.help.text>
+    <unset>
+      <param.icon />
+      <param.icons />
+      <param.version />
+      <param.guid />
+      <param.installpath.combo />
+      <param.install.notes />
+      <param.target.install.notes />
+      <param.enable.clean.build />
+      <param.user.defined.mcr.options />
+      <param.target.type />
+      <param.support.packages />
+      <param.web.mcr />
+      <param.package.mcr />
+      <param.no.mcr />
+      <param.package.mcr.name />
+      <param.no.mcr.name />
+      <param.windows.command.prompt />
+      <param.create.log />
+      <param.log.file />
+      <param.native.matlab />
+      <param.checkbox />
+      <param.example />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\CaTSper.mlapp</file>
+    </fileset.main>
+    <fileset.resources />
+    <fileset.package />
+    <fileset.depfun>
+      <file>${PROJECT_ROOT}\CaT_logo.png</file>
+      <file>${PROJECT_ROOT}\dotTHz_logo.png</file>
+      <file>${PROJECT_ROOT}\DR_Checker.mlapp</file>
+    </fileset.depfun>
+    <build-deliverables>
+      <file location="C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA" name="readme.txt" optional="true">C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA\readme.txt</file>
+      <file location="C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA" name="CaTSper.exe" optional="false">C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA\CaTSper.exe</file>
+      <file location="C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA" name="splash.png" optional="false">C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA\splash.png</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2023a</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
