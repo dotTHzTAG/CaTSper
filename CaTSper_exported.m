@@ -453,11 +453,21 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
                 dsNum_Sample = app.TD_data.dsNum_Sample{idx};
                 dsNum_Reference = app.TD_data.dsNum_Reference{idx};
+
+                if isequal(dsNum_Reference,0)
+                    app.ButtonGroupTD.SelectedObject = app.SampleButtonTD;
+                    plotType = "Sample";
+                end
                 
-                td_time = app.TD_data.ds{idx,dsNum_Reference}(1,:);
+                td_time = app.TD_data.ds{idx,dsNum_Sample}(1,:);
                 % extracting corresponding electric field intensity values
                 % for reference measurement
-                td_reference = app.TD_data.ds{idx,dsNum_Reference}(2,:);
+
+                try
+                    td_reference = app.TD_data.ds{idx,dsNum_Reference}(2,:);
+                catch
+                end
+
                 % extracting corresponding electric field intensity values
                 % for sample measurement
                 td_sample = app.TD_data.ds{idx,dsNum_Sample}(2,:);
@@ -1397,6 +1407,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
                 dsNum_Sample = app.TD_data.dsNum_Sample{TDindex};
                 dsNum_Reference = app.TD_data.dsNum_Reference{TDindex};
+
+                if isequal(dsNum_Reference,0)
+                    uialert(fig,'No Reference waveforms','FFD Aborted');
+                    return;
+                end
                 
                 % reference waveform 
                 xSpacing = app.TD_data.metadata{TDindex}.xSpacing;
@@ -3373,6 +3388,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     % dataset extraction
                     dn = ListItems{idx};
                     dsList = ["ds1","ds2","ds3","ds4"];
+                    totalDsCnt = 4;
 
                     for dsNum = 1:4
                         dnTemp = strcat(dn,'/',dsList(dsNum));                        
@@ -3381,8 +3397,16 @@ classdef CaTSper_exported < matlab.apps.AppBase
                            dsTemp = h5read(fullpath,dnTemp);
                            TD_data.ds{idxCap+idx-1,dsNum} = dsTemp;
                         catch
+                            totalDsCnt = totalDsCnt - 1;
                         end
 
+                    end
+
+                    if isequal(totalDsCnt,1)
+                        app.dsReferenceDropDown.Value = "no";
+                        app.dsPumpedDropDown.Value = "no";
+                    elseif isequal(totalDsCnt,3)
+                        app.dsPumpedDropDown.Value = "ds3";
                     end
 
                     sampleDn = app.dsSampleDropDown.Value; % sample dataset name
@@ -3391,6 +3415,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
 
                     sampleDsNum = str2num(sampleDn(3));
+
                     try
                         referenceDsNum = str2num(referenceDn(3));
                     catch
