@@ -1407,22 +1407,32 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
                 dsNum_Sample = app.TD_data.dsNum_Sample{TDindex};
                 dsNum_Reference = app.TD_data.dsNum_Reference{TDindex};
-
-                if isequal(dsNum_Reference,0)
-                    uialert(fig,'No Reference waveforms','FFD Aborted');
-                    return;
-                end
                 
                 % reference waveform 
                 xSpacing = app.TD_data.metadata{TDindex}.xSpacing;
                 % convert the time spacing into frequency spacing
                 fs = 1/(xSpacing*10^-12); % obtain sampling frequency based on xSpacing value
-                t_reference = app.TD_data.ds{TDindex,dsNum_Reference}(1,:);
-                E_reference = app.TD_data.ds{TDindex,dsNum_Reference}(2,:);
-                
+
                 % sample waveform
                 t_sample = app.TD_data.ds{TDindex,dsNum_Sample}(1,:);
                 E_sample = app.TD_data.ds{TDindex,dsNum_Sample}(2,:);
+
+                % reference waveform, 
+                % Note: In case where a reference waveform isn't supplied, 
+                % the code duplicates the sample waveform to act as the 
+                % reference waveform. This action prevents errors and allow the
+                % process to continue without interruption. However, the
+                % resultant optical parameters, such as absorption
+                % coefficient and refractive index, are not valid.
+                if isequal(dsNum_Reference,0)
+                    t_reference = app.TD_data.ds{TDindex,dsNum_Sample}(1,:);
+                    E_reference = app.TD_data.ds{TDindex,dsNum_Sample}(2,:);                
+                else
+                    t_reference = app.TD_data.ds{TDindex,dsNum_Reference}(1,:);
+                    E_reference = app.TD_data.ds{TDindex,dsNum_Reference}(2,:);
+                end
+                
+                
                 
                 % time delay between reference and sample measurement
                 delta_t = app.TD_data.metadata{TDindex}.timeDelay;
@@ -1432,7 +1442,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % occur
                 % this is calulcated in the TDanalysisUpdate function
                 etl_t = app.TD_data.metadata{TDindex}.internalReflection;
-                
+
                 if isAutowindow
                     % if the auto window function is selected, the upper
                     % limit in the range is defined as the time delay with one
@@ -2467,14 +2477,22 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 return;
             end
 
+            fig = app.CaTSperUIFigure;
+            upscale = app.ZeroFillingpowerofSpinner.Value; 
+            dsNum_Sample = app.TD_data.dsNum_Sample{TDindex};
+            dsNum_Reference = app.TD_data.dsNum_Reference{TDindex};
+
+            if isequal(dsNum_Reference,0)
+                uialert(fig,'No Reference waveform','Dynamic range check aborted');
+                return;
+            end
+
 
             % extract input value
             question = "Select The Waveform Period to be processed";
             truncationOption = questdlg('Select Truncation Period','Truncation','Full Waveform','FFT-Setting Values','Full Waveform');
 
-            upscale = app.ZeroFillingpowerofSpinner.Value; 
-            dsNum_Sample = app.TD_data.dsNum_Sample{TDindex};
-            dsNum_Reference = app.TD_data.dsNum_Reference{TDindex};
+
 
             % reference waveform
             % extract the time spacing between logged values
