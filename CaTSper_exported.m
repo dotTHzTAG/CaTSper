@@ -3,20 +3,70 @@ classdef CaTSper_exported < matlab.apps.AppBase
     % Properties that correspond to app components
     properties (Access = public)
         CaTSperUIFigure                 matlab.ui.Figure
-        DeployButton                    matlab.ui.control.Button
-        Image                           matlab.ui.control.Image
-        ProjectsEditField               matlab.ui.control.EditField
-        ImportTHzFilesButton            matlab.ui.control.Button
-        CaTSperLabel                    matlab.ui.control.Label
-        SaveTDFDDMButton                matlab.ui.control.Button
-        ClearMemoryButton               matlab.ui.control.Button
-        DEBUGMsgLabel                   matlab.ui.control.Label
-        SystemStatusLabel               matlab.ui.control.Label
         TabGroup                        matlab.ui.container.TabGroup
         TimeDomainTDTab                 matlab.ui.container.Tab
+        JetColormapButton_TD            matlab.ui.control.StateButton
+        LegendButton_TD                 matlab.ui.control.StateButton
+        AssignTD_DataButton             matlab.ui.control.Button
+        SaveData_TD                     matlab.ui.control.Button
+        LoadData_TD                     matlab.ui.control.Button
+        ResetConfigurationsButton       matlab.ui.control.Button
+        MetadataInformationPanel        matlab.ui.container.Panel
+        mdReferenceThicknessDropDown    matlab.ui.control.DropDown
+        ReferenceLabel                  matlab.ui.control.Label
+        mdSampleThicknessDropDown       matlab.ui.control.DropDown
+        SampleLabel                     matlab.ui.control.Label
+        ThicknessSwitch_TD              matlab.ui.control.Switch
+        ThicknessmmLabel                matlab.ui.control.Label
+        md4DesEditField                 matlab.ui.control.EditField
+        md4EditField                    matlab.ui.control.NumericEditField
+        md4EditFieldLabel               matlab.ui.control.Label
+        md3DesEditField                 matlab.ui.control.EditField
+        md3EditField                    matlab.ui.control.NumericEditField
+        md3EditFieldLabel               matlab.ui.control.Label
+        md2DesEditField                 matlab.ui.control.EditField
+        md2EditField                    matlab.ui.control.NumericEditField
+        md2EditFieldLabel               matlab.ui.control.Label
+        md1DesEditField                 matlab.ui.control.EditField
+        md1EditField                    matlab.ui.control.NumericEditField
+        md1EditFieldLabel               matlab.ui.control.Label
+        FFTSettingsPanel                matlab.ui.container.Panel
+        TransformButton                 matlab.ui.control.Button
+        FulllistnamingCheckBox          matlab.ui.control.CheckBox
+        PlotWindowFunctionButton        matlab.ui.control.Button
+        FunctionDropDown                matlab.ui.control.DropDown
+        FunctionDropDownLabel           matlab.ui.control.Label
+        ToTimeEditField                 matlab.ui.control.NumericEditField
+        MaxTimeLabel                    matlab.ui.control.Label
+        FromTimeEditField               matlab.ui.control.NumericEditField
+        fromLabel_3                     matlab.ui.control.Label
+        ManualWindowpsLabel             matlab.ui.control.Label
+        truncatebeforethe1stetalonLabel  matlab.ui.control.Label
+        AutoWindowButton                matlab.ui.control.StateButton
+        WindowFunctionLabel             matlab.ui.control.Label
+        ToEpolFreqEditField             matlab.ui.control.NumericEditField
+        toLabel_2                       matlab.ui.control.Label
+        FromEpolFreqEditField           matlab.ui.control.NumericEditField
+        fromLabel_2                     matlab.ui.control.Label
+        ExtrapolationRangeTHzLabel      matlab.ui.control.Label
+        StartFrequencyTHzEditField      matlab.ui.control.NumericEditField
+        StartFrequencyTHzEditFieldLabel  matlab.ui.control.Label
+        UnwrappingLabel                 matlab.ui.control.Label
+        ZeroFillingpowerofSpinner       matlab.ui.control.Spinner
+        ZeroFillingpowerofSpinnerLabel  matlab.ui.control.Label
+        UpsamplingLabel                 matlab.ui.control.Label
+        ToFreqEditField                 matlab.ui.control.NumericEditField
+        toLabel                         matlab.ui.control.Label
+        FromFreqEditField               matlab.ui.control.NumericEditField
+        fromLabel                       matlab.ui.control.Label
+        FrequencyRangeTHzLabel          matlab.ui.control.Label
         DatasetInformationPanel         matlab.ui.container.Panel
         dsPumpedDropDown                matlab.ui.control.DropDown
         PumpedLabel                     matlab.ui.control.Label
+        dsReferenceDropDown             matlab.ui.control.DropDown
+        ReferenceDropDownLabel          matlab.ui.control.Label
+        dsSampleDropDown                matlab.ui.control.DropDown
+        SampleDropDownLabel             matlab.ui.control.Label
         ds4DesEditField                 matlab.ui.control.EditField
         ds4EditFieldLabel               matlab.ui.control.Label
         ds3DesEditField                 matlab.ui.control.EditField
@@ -25,30 +75,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
         ds2EditFieldLabel               matlab.ui.control.Label
         ds1DesEditField                 matlab.ui.control.EditField
         ds1EditFieldLabel               matlab.ui.control.Label
-        dsReferenceDropDown             matlab.ui.control.DropDown
-        ReferenceDropDownLabel          matlab.ui.control.Label
-        dsSampleDropDown                matlab.ui.control.DropDown
-        SampleDropDownLabel             matlab.ui.control.Label
-        ResetConfigurationsButton       matlab.ui.control.Button
-        MetadataInformationPanel        matlab.ui.container.Panel
-        ThicknessSwitch_TD              matlab.ui.control.Switch
-        md4DesEditField                 matlab.ui.control.EditField
-        md3DesEditField                 matlab.ui.control.EditField
-        md2DesEditField                 matlab.ui.control.EditField
-        md1DesEditField                 matlab.ui.control.EditField
-        ThicknessmmLabel                matlab.ui.control.Label
-        md4EditField                    matlab.ui.control.NumericEditField
-        md4EditFieldLabel               matlab.ui.control.Label
-        md3EditField                    matlab.ui.control.NumericEditField
-        md3EditFieldLabel               matlab.ui.control.Label
-        md2EditField                    matlab.ui.control.NumericEditField
-        md2EditFieldLabel               matlab.ui.control.Label
-        md1EditField                    matlab.ui.control.NumericEditField
-        md1EditFieldLabel               matlab.ui.control.Label
-        mdReferenceThicknessDropDown    matlab.ui.control.DropDown
-        ReferenceLabel                  matlab.ui.control.Label
-        mdSampleThicknessDropDown       matlab.ui.control.DropDown
-        SampleLabel                     matlab.ui.control.Label
         GeneralInformationPanel         matlab.ui.container.Panel
         GeneralEtalonEditField          matlab.ui.control.NumericEditField
         stEtalonpsLabel                 matlab.ui.control.Label
@@ -62,80 +88,58 @@ classdef CaTSper_exported < matlab.apps.AppBase
         DateandTimeEditFieldLabel       matlab.ui.control.Label
         GeneralDescriptionEditField     matlab.ui.control.EditField
         DescriptionEditField_2Label_2   matlab.ui.control.Label
-        PlotForCustomisationButton_TD   matlab.ui.control.Button
         CheckDynamicRangeButton         matlab.ui.control.Button
-        AssignTD_DataButton             matlab.ui.control.Button
-        SaveData_TD                     matlab.ui.control.Button
-        LoadData_TD                     matlab.ui.control.Button
+        PlotForCustomisationButton_TD   matlab.ui.control.Button
+        Plot2TDButton                   matlab.ui.control.Button
+        DELButton                       matlab.ui.control.Button
+        Plot1TDButton                   matlab.ui.control.Button
         GridOffButton_3                 matlab.ui.control.StateButton
-        JetColormapButton_2             matlab.ui.control.StateButton
-        LegendButton_2                  matlab.ui.control.StateButton
+        ADDButton                       matlab.ui.control.Button
+        ALLButton                       matlab.ui.control.Button
         ButtonGroupTD                   matlab.ui.container.ButtonGroup
         BothButtonTD                    matlab.ui.control.RadioButton
         SampleButtonTD                  matlab.ui.control.RadioButton
         ReferenceButtonTD               matlab.ui.control.RadioButton
-        ALLButton                       matlab.ui.control.Button
-        Plot2TDButton                   matlab.ui.control.Button
-        FFTSettingsPanel                matlab.ui.container.Panel
-        PlotWindowFunctionButton        matlab.ui.control.Button
-        ToEpolFreqEditField             matlab.ui.control.NumericEditField
-        toLabel_2                       matlab.ui.control.Label
-        FromEpolFreqEditField           matlab.ui.control.NumericEditField
-        fromLabel_2                     matlab.ui.control.Label
-        ExtrapolationRangeTHzLabel      matlab.ui.control.Label
-        FulllistnamingCheckBox          matlab.ui.control.CheckBox
-        UnwrappingLabel                 matlab.ui.control.Label
-        StartFrequencyTHzEditField      matlab.ui.control.NumericEditField
-        StartFrequencyTHzEditFieldLabel  matlab.ui.control.Label
-        FromTimeEditField               matlab.ui.control.NumericEditField
-        fromLabel_3                     matlab.ui.control.Label
-        WindowFunctionLabel             matlab.ui.control.Label
-        UpsamplingLabel                 matlab.ui.control.Label
-        FrequencyRangeTHzLabel          matlab.ui.control.Label
-        AutoWindowButton                matlab.ui.control.StateButton
-        ManualWindowpsLabel             matlab.ui.control.Label
-        ZeroFillingpowerofSpinner       matlab.ui.control.Spinner
-        ZeroFillingpowerofSpinnerLabel  matlab.ui.control.Label
-        FunctionDropDown                matlab.ui.control.DropDown
-        FunctionDropDownLabel           matlab.ui.control.Label
-        TransformButton                 matlab.ui.control.Button
-        truncatebeforethe1stetalonLabel  matlab.ui.control.Label
-        ToTimeEditField                 matlab.ui.control.NumericEditField
-        MaxTimeLabel                    matlab.ui.control.Label
-        ToFreqEditField                 matlab.ui.control.NumericEditField
-        toLabel                         matlab.ui.control.Label
-        FromFreqEditField               matlab.ui.control.NumericEditField
-        fromLabel                       matlab.ui.control.Label
-        Plot1TDButton                   matlab.ui.control.Button
         SelectionListBox                matlab.ui.control.ListBox
-        SelectionListBoxLabel           matlab.ui.control.Label
-        DELButton                       matlab.ui.control.Button
-        ADDButton                       matlab.ui.control.Button
         MeasurementListBox              matlab.ui.control.ListBox
+        SelectionListBoxLabel           matlab.ui.control.Label
         MeasurementListBoxLabel         matlab.ui.control.Label
         UIAxes1                         matlab.ui.control.UIAxes
         UIAxes2                         matlab.ui.control.UIAxes
         FrequencyDomainFDTab            matlab.ui.container.Tab
-        PlotForCustomisationButton_FD1  matlab.ui.control.Button
-        GridOffButton                   matlab.ui.control.StateButton
+        JetColormapButton_FD            matlab.ui.control.StateButton
+        LegendButton_FD                 matlab.ui.control.StateButton
+        AssignFD_DataButton             matlab.ui.control.Button
+        SaveData_FD                     matlab.ui.control.Button
+        LoadData_FD                     matlab.ui.control.Button
         DataManipulationButton          matlab.ui.control.Button
         FDDatatoLabel                   matlab.ui.control.Label
-        JetColormapButton               matlab.ui.control.StateButton
-        LegendButton                    matlab.ui.control.StateButton
-        LoadData_FD                     matlab.ui.control.Button
-        SaveData_FD                     matlab.ui.control.Button
-        MagPhaseButtonGroup             matlab.ui.container.ButtonGroup
-        PhaseButton                     matlab.ui.control.RadioButton
-        AmplitudeButton                 matlab.ui.control.RadioButton
-        YscaleButtonGroup               matlab.ui.container.ButtonGroup
-        linearButton                    matlab.ui.control.RadioButton
-        logButton                       matlab.ui.control.RadioButton
         FDDataAnalysisPanel             matlab.ui.container.Panel
+        PlotForCustomisationButton_FD2  matlab.ui.control.Button
+        CalculateOpticalParametersButton  matlab.ui.control.Button
+        Plot2FDButton_2                 matlab.ui.control.Button
+        MultipleReflectionCountPanel    matlab.ui.container.Panel
+        SampleNMREditField              matlab.ui.control.NumericEditField
+        SampleEditField_2Label          matlab.ui.control.Label
+        Plot1FDButton_2                 matlab.ui.control.Button
+        DELFDButton_2                   matlab.ui.control.Button
         GridOffButton_2                 matlab.ui.control.StateButton
+        ADDFDButton_2                   matlab.ui.control.Button
         RealImagButtonGroup             matlab.ui.container.ButtonGroup
         ImaginaryButton                 matlab.ui.control.RadioButton
         RealButton                      matlab.ui.control.RadioButton
-        PlotForCustomisationButton_FD2  matlab.ui.control.Button
+        MagPhaseButtonGroup_2           matlab.ui.container.ButtonGroup
+        PhaseButton_2                   matlab.ui.control.RadioButton
+        AmplitudeButton_2               matlab.ui.control.RadioButton
+        ThicknessmmPanel                matlab.ui.container.Panel
+        ThicknessSwitch_FD              matlab.ui.control.Switch
+        ReferenceEditField              matlab.ui.control.NumericEditField
+        ReferenceEditFieldLabel         matlab.ui.control.Label
+        SampleEditField                 matlab.ui.control.NumericEditField
+        SampleEditFieldLabel            matlab.ui.control.Label
+        ALLFDButton_2                   matlab.ui.control.Button
+        DescriptionEditField_FD         matlab.ui.control.EditField
+        FDSelectionListBox_2            matlab.ui.control.ListBox
         YscaleButtonGroup_2             matlab.ui.container.ButtonGroup
         linearButton_2                  matlab.ui.control.RadioButton
         logButton_2                     matlab.ui.control.RadioButton
@@ -144,113 +148,109 @@ classdef CaTSper_exported < matlab.apps.AppBase
         RefractiveIndexButton           matlab.ui.control.ToggleButton
         AbsorptionButton                matlab.ui.control.ToggleButton
         TransmittanceButton             matlab.ui.control.ToggleButton
-        FDSelectionListBox_2            matlab.ui.control.ListBox
-        FDSelectionListBox_2Label       matlab.ui.control.Label
-        CalculateOpticalParametersButton  matlab.ui.control.Button
-        MultipleReflectionCountPanel    matlab.ui.container.Panel
-        SampleNMREditField              matlab.ui.control.NumericEditField
-        SampleEditField_2Label          matlab.ui.control.Label
-        ThicknessmmPanel                matlab.ui.container.Panel
-        ThicknessSwitch_FD              matlab.ui.control.Switch
-        SampleEditField                 matlab.ui.control.NumericEditField
-        SampleEditFieldLabel            matlab.ui.control.Label
-        ReferenceEditField              matlab.ui.control.NumericEditField
-        ReferenceEditFieldLabel         matlab.ui.control.Label
-        DescriptionEditField_FD         matlab.ui.control.EditField
         DescriptionEditField_2Label     matlab.ui.control.Label
-        DELFDButton_2                   matlab.ui.control.Button
-        ADDFDButton_2                   matlab.ui.control.Button
-        ALLFDButton_2                   matlab.ui.control.Button
-        MagPhaseButtonGroup_2           matlab.ui.container.ButtonGroup
-        PhaseButton_2                   matlab.ui.control.RadioButton
-        AmplitudeButton_2               matlab.ui.control.RadioButton
-        Plot2FDButton_2                 matlab.ui.control.Button
-        Plot1FDButton_2                 matlab.ui.control.Button
-        AssignFD_DataButton             matlab.ui.control.Button
+        FDSelectionListBox_2Label       matlab.ui.control.Label
+        PlotForCustomisationButton_FD1  matlab.ui.control.Button
         RemoveAllButton                 matlab.ui.control.Button
         RemoveButton                    matlab.ui.control.Button
+        Plot2FDButton                   matlab.ui.control.Button
+        Plot1FDButton                   matlab.ui.control.Button
+        GridOffButton                   matlab.ui.control.StateButton
+        DELFDButton                     matlab.ui.control.Button
+        MagPhaseButtonGroup             matlab.ui.container.ButtonGroup
+        PhaseButton                     matlab.ui.control.RadioButton
+        AmplitudeButton                 matlab.ui.control.RadioButton
+        YscaleButtonGroup               matlab.ui.container.ButtonGroup
+        linearButton                    matlab.ui.control.RadioButton
+        logButton                       matlab.ui.control.RadioButton
+        ADDFDButton                     matlab.ui.control.Button
+        ALLFDButton                     matlab.ui.control.Button
         ButtonGroupFD                   matlab.ui.container.ButtonGroup
         BothButtonFD                    matlab.ui.control.RadioButton
         SampleButtonFD                  matlab.ui.control.RadioButton
         ReferenceButtonFD               matlab.ui.control.RadioButton
         FDSelectionListBox              matlab.ui.control.ListBox
-        FDSelectionListBoxLabel         matlab.ui.control.Label
-        DELFDButton                     matlab.ui.control.Button
-        ADDFDButton                     matlab.ui.control.Button
-        ALLFDButton                     matlab.ui.control.Button
         FDListBox                       matlab.ui.control.ListBox
+        FDSelectionListBoxLabel         matlab.ui.control.Label
         FDListListBoxLabel              matlab.ui.control.Label
-        Plot2FDButton                   matlab.ui.control.Button
-        Plot1FDButton                   matlab.ui.control.Button
         UIAxes4                         matlab.ui.control.UIAxes
         UIAxes3                         matlab.ui.control.UIAxes
         DataManipulationDMTab           matlab.ui.container.Tab
         JetColormapButton_DM            matlab.ui.control.StateButton
+        AssignDM_DataButton             matlab.ui.control.Button
+        SaveData_DM                     matlab.ui.control.Button
         DMTabGroup                      matlab.ui.container.TabGroup
         FrequencyBaseTab                matlab.ui.container.Tab
-        MeasurementEditField            matlab.ui.control.EditField
-        MeasurementEditFieldLabel       matlab.ui.control.Label
+        PlotButton                      matlab.ui.control.Button
         YLabelEditField                 matlab.ui.control.EditField
         YLabelEditFieldLabel            matlab.ui.control.Label
         XLabelEditField                 matlab.ui.control.EditField
         XLabelEditFieldLabel            matlab.ui.control.Label
-        GetDatafromFrequencyTHzEditField  matlab.ui.control.EditField
-        GetDatafromFrequencyTHzEditFieldLabel  matlab.ui.control.Label
         XaxisDataEditField              matlab.ui.control.EditField
         XaxisDataEditFieldLabel         matlab.ui.control.Label
-        PlotButton                      matlab.ui.control.Button
+        MeasurementEditField            matlab.ui.control.EditField
+        MeasurementEditFieldLabel       matlab.ui.control.Label
         RearrangeDataButton             matlab.ui.control.Button
         DisplayXLinesButton             matlab.ui.control.Button
+        GetDatafromFrequencyTHzEditField  matlab.ui.control.EditField
+        GetDatafromFrequencyTHzEditFieldLabel  matlab.ui.control.Label
         PeakBaseTab                     matlab.ui.container.Tab
-        MinPeakProminenceEditField      matlab.ui.control.NumericEditField
-        MinPeakProminenceEditFieldLabel  matlab.ui.control.Label
-        MeasurementEditField_2          matlab.ui.control.EditField
-        MeasurementEditField_2Label     matlab.ui.control.Label
+        PlotButton_2                    matlab.ui.control.Button
         YLabelEditField_2               matlab.ui.control.EditField
         YLabelEditField_2Label          matlab.ui.control.Label
         XLabelEditField_2               matlab.ui.control.EditField
         XLabelEditField_2Label          matlab.ui.control.Label
         XaxisDataEditField_2            matlab.ui.control.EditField
         XaxisDataEditField_2Label       matlab.ui.control.Label
-        LowerLimitTHzEditField          matlab.ui.control.NumericEditField
-        LowerLimitTHzEditFieldLabel     matlab.ui.control.Label
+        MeasurementEditField_2          matlab.ui.control.EditField
+        MeasurementEditField_2Label     matlab.ui.control.Label
+        RearrangeDataButton_2           matlab.ui.control.Button
         PeakNumSpinner                  matlab.ui.control.Spinner
         PeakNumSpinnerLabel             matlab.ui.control.Label
-        PlotButton_2                    matlab.ui.control.Button
-        RearrangeDataButton_2           matlab.ui.control.Button
-        SaveData_DM                     matlab.ui.control.Button
-        AssignDM_DataButton             matlab.ui.control.Button
+        LowerLimitTHzEditField          matlab.ui.control.NumericEditField
+        LowerLimitTHzEditFieldLabel     matlab.ui.control.Label
+        MinPeakProminenceEditField      matlab.ui.control.NumericEditField
+        MinPeakProminenceEditFieldLabel  matlab.ui.control.Label
         STEP1Panel                      matlab.ui.container.Panel
-        ImportAllDataInverseSequenceButton  matlab.ui.control.Button
         PlotmeanandrangeButton          matlab.ui.control.Button
+        PlotindividualdatasetsButton    matlab.ui.control.Button
         DPlotFrequencyxaxisPanel        matlab.ui.container.Panel
         DplotdoesnotsupportthebelowextractingfunctionLabel  matlab.ui.control.Label
+        Plot1_3DButton                  matlab.ui.control.Button
         data3DDropDown                  matlab.ui.control.DropDown
         dataDropDownLabel               matlab.ui.control.Label
-        Plot1_3DButton                  matlab.ui.control.Button
-        exABABCetcLabel                 matlab.ui.control.Label
+        CalculateButton                 matlab.ui.control.Button
         NumberofDataEditField           matlab.ui.control.NumericEditField
         NumberofDataEditFieldLabel      matlab.ui.control.Label
-        AvailableDataSetEditField       matlab.ui.control.EditField
-        AvailableDataSetEditFieldLabel  matlab.ui.control.Label
-        ImportAllDataButton             matlab.ui.control.Button
-        CalculateButton                 matlab.ui.control.Button
-        CforDropDown                    matlab.ui.control.DropDown
-        CforDropDownLabel               matlab.ui.control.Label
-        BforDropDown                    matlab.ui.control.DropDown
-        BforDropDownLabel               matlab.ui.control.Label
-        PlotindividualdatasetsButton    matlab.ui.control.Button
+        exABABCetcLabel                 matlab.ui.control.Label
         YaxisDataFormulationEditField   matlab.ui.control.EditField
         YaxisDataFormulationEditFieldLabel  matlab.ui.control.Label
         XaxisDataDropDown               matlab.ui.control.DropDown
         XaxisDataDropDownLabel          matlab.ui.control.Label
-        DefinevariablesLabel            matlab.ui.control.Label
+        CforDropDown                    matlab.ui.control.DropDown
+        CforDropDownLabel               matlab.ui.control.Label
+        BforDropDown                    matlab.ui.control.DropDown
+        BforDropDownLabel               matlab.ui.control.Label
         AforDropDown                    matlab.ui.control.DropDown
         AforDropDownLabel               matlab.ui.control.Label
+        DefinevariablesLabel            matlab.ui.control.Label
         SourceDataSetEditField          matlab.ui.control.EditField
         SourceDataSetEditFieldLabel     matlab.ui.control.Label
+        ImportAllDataInverseSequenceButton  matlab.ui.control.Button
+        ImportAllDataButton             matlab.ui.control.Button
+        AvailableDataSetEditField       matlab.ui.control.EditField
+        AvailableDataSetEditFieldLabel  matlab.ui.control.Label
         UIAxes9                         matlab.ui.control.UIAxes
         UIAxes10                        matlab.ui.control.UIAxes
+        SaveTDFDDMButton                matlab.ui.control.Button
+        ClearMemoryButton               matlab.ui.control.Button
+        DeployButton                    matlab.ui.control.Button
+        ProjectsEditField               matlab.ui.control.EditField
+        ImportTHzFilesButton            matlab.ui.control.Button
+        DEBUGMsgLabel                   matlab.ui.control.Label
+        SystemStatusLabel               matlab.ui.control.Label
+        CaTSperLabel                    matlab.ui.control.Label
+        Image                           matlab.ui.control.Image
     end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -408,7 +408,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 ax = uiaxes(fig);
                 xlabel(ax,"Time (ps)");
                 ylabel(ax,"E_{field intensity} (a.u.)");
-                ax.BoxStyle = "full";
+                ax.Box = 'on';
+                ax.LineWidth = 1;
+                ax.FontWeight = 'bold';
                 ax.Position = [10 10 800 450];
             else
                 ax = axesNum;
@@ -418,8 +420,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
             
             % reset 'NO LEGEND', 'JET COLORMAP'
-            app.LegendButton_2.Value = 0;
-            app.JetColormapButton_2.Value = 0;
+            app.LegendButton_TD.Value = 0;
+            app.JetColormapButton_TD.Value = 0;
             
 
             % deleting the legend
@@ -532,7 +534,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % Create UIAxes
                 ax = uiaxes(fig);
                 xlabel(ax,"Frequency (THz)");
-                ax.BoxStyle = "full";
+                ax.Box = 'on';
+                ax.LineWidth = 1;
+                ax.FontWeight = 'bold';
                 ax.Position = [10 10 800 450];
             else
                 ax = axesNum;
@@ -553,8 +557,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             ax.ColorOrder = lines(length(plotList));
             
             % reset 'NO LEGEND', 'JET COLORMAP'
-            app.LegendButton.Value = 0;
-            app.JetColormapButton.Value = 0;
+            app.LegendButton_FD.Value = 0;
+            app.JetColormapButton_FD.Value = 0;
             
             % if the 'grid off' button is selected, remove gridlines from
             % the plot, otherwise gridlines will be displayed on the plot
@@ -620,7 +624,23 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % frequency domain, and offers functionalities on customising graph appearance
         function plotFD_data2(app,axesNum)
             plotList = app.FD_select_2;
-            ax = axesNum;
+
+            if isequal(axesNum,"NEW")
+                % Create UIFigure and hide until all components are
+                % created
+                fig = figure('Visible', 'on');
+                fig.Position = [100 100 850 500];
+                fig.Name = "CaTSPer Frequency-domain Data";
+                % Create UIAxes
+                ax = uiaxes(fig);
+                xlabel(ax,"Frequency (THz)");
+                ax.Box = 'on';
+                ax.LineWidth = 1;
+                ax.FontWeight = 'bold';
+                ax.Position = [10 10 800 450];
+            else
+                ax = axesNum;
+            end
             
             % if no measurements are selected, no functions are executed
             if isempty(plotList)
@@ -654,8 +674,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             ax.ColorOrder = lines(length(plotList));
             
             % reset 'NO LEGEND', 'JET COLORMAP'
-            app.LegendButton.Value = 0;
-            app.JetColormapButton.Value = 0;
+            app.LegendButton_FD.Value = 0;
+            app.JetColormapButton_FD.Value = 0;
 
             % if the 'grid off' button is selected, remove gridlines from
             % the plot, otherwise gridlines will be displayed on the plot
@@ -800,8 +820,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             ax.ColorOrder = flipud(jet(length(plotList)));
             
             % reset 'NO LEGEND', 'JET COLORMAP'
-            app.LegendButton.Value = 0;
-            app.JetColormapButton.Value = 0;
+            app.LegendButton_FD.Value = 0;
+            app.JetColormapButton_FD.Value = 0;
     
             % if the size of the first dimension (row) of 'plotType' is 2, join
             % all values on the first row of 'plotType' to form one single
@@ -1509,6 +1529,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 E_sample = [zeros(1, max(0, sam_add_zero_no)), E_sample, zeros(1, max(0, -sam_add_zero_no))];
 
                 % window function
+                % please note that 'Signal Processing Toolbox' is necessary
+                % to use 'window' function below. It can be installed at
+                % MATLAB main menu 'APPS' -> 'Get More Apps' and search for
+                % 'Signal processing toolbox'.
+                
                 wf = str2func(funcName);
                 E_reference = E_reference.*window(wf,length(E_reference))';
                 E_sample = E_sample.*window(wf,length(E_sample))';
@@ -2294,7 +2319,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 
                 c = 299792458; % the speed of light
                 n_medium = 1; % refractive index of medium
-                n_reference = 1; % refractive indx of the reference
+                n_reference = 9.7; % refractive indx of the reference
 
                 % if ~isequal(app.mdReferenceThicknessDropDown.Value,"air")
                 %     uialert(fig,'n_reference is set to 1. Please confirm this','Warning');
@@ -2402,11 +2427,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
         end
 
-        % Value changed function: LegendButton_2
-        function LegendButton_2ValueChanged(app, event)
+        % Value changed function: LegendButton_TD
+        function LegendButton_TDValueChanged(app, event)
             % LEGENDButton_2ValueChanged displays or hides legend based on
             % user's specified preference
-            value = app.LegendButton_2.Value;
+            value = app.LegendButton_TD.Value;
             if isequal(value,0)
                 legend(app.UIAxes1,"hide");
                 legend(app.UIAxes2,"hide");
@@ -2416,12 +2441,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
         end
 
-        % Value changed function: JetColormapButton_2
-        function JetColormapButton_2ValueChanged(app, event)
+        % Value changed function: JetColormapButton_TD
+        function JetColormapButton_TDValueChanged(app, event)
             % JETCOLORMAPButtonValueChanged applies the jet colormap to the lines in the plot if user
             % selects the jet colormap option, otherwise the lines colormap is applied
-            value = app.JetColormapButton_2.Value;
+            value = app.JetColormapButton_TD.Value;
             idxNum = length(app.TD_select);
+
             if isequal(value,1)
                 app.UIAxes1.ColorOrder = jet(idxNum);
                 app.UIAxes2.ColorOrder = jet(idxNum);
@@ -2431,12 +2457,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
         end
 
-        % Value changed function: LegendButton
-        function LegendButtonValueChanged(app, event)
+        % Value changed function: LegendButton_FD
+        function LegendButton_FDValueChanged(app, event)
             % LEGENDButtonValueChanged displays or hides legend based on
             % user's specified preference
+            value = app.LegendButton_FD.Value;
 
-            value = app.LegendButton.Value;
              if isequal(value,0)
                 legend(app.UIAxes3,"hide");
                 legend(app.UIAxes4,"hide");
@@ -2447,13 +2473,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
         end
 
-        % Value changed function: JetColormapButton
-        function JetColormapButtonValueChanged(app, event)
+        % Value changed function: JetColormapButton_FD
+        function JetColormapButton_FDValueChanged(app, event)
             % JETCOLORMAPButton_2ValueChanged applies the jet colormap to the lines in the plot if user
             % selects the jet colormap option, otherwise the lines colormap is applied
-
-            value = app.JetColormapButton.Value;
+            value = app.JetColormapButton_FD.Value;
             idxNum = length(app.FD_select_2);
+
             if isequal(value,1)
                 app.UIAxes3.ColorOrder = jet(idxNum);
                 app.UIAxes4.ColorOrder = jet(idxNum);
@@ -2631,7 +2657,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
         % Button pushed function: PlotForCustomisationButton_FD2
         function PlotForCustomisationButton_FD2Pushed(app, event)
-            plotFD_dataNew(app);
+            %plotFD_dataNew(app);
+            plotFD_data2(app,'NEW');
         end
 
         % Button pushed function: DataManipulationButton
@@ -3942,6 +3969,68 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.CaTSperUIFigure.Name = 'Catsper';
             app.CaTSperUIFigure.Icon = fullfile(pathToMLAPP, 'CaT_logo.png');
 
+            % Create Image
+            app.Image = uiimage(app.CaTSperUIFigure);
+            app.Image.Position = [24 927 58 58];
+            app.Image.ImageSource = fullfile(pathToMLAPP, 'dotTHz_logo.png');
+
+            % Create CaTSperLabel
+            app.CaTSperLabel = uilabel(app.CaTSperUIFigure);
+            app.CaTSperLabel.FontSize = 37;
+            app.CaTSperLabel.FontWeight = 'bold';
+            app.CaTSperLabel.FontAngle = 'italic';
+            app.CaTSperLabel.Position = [81 923 158 48];
+            app.CaTSperLabel.Text = 'CaTSper';
+
+            % Create SystemStatusLabel
+            app.SystemStatusLabel = uilabel(app.CaTSperUIFigure);
+            app.SystemStatusLabel.Position = [967 959 84 22];
+            app.SystemStatusLabel.Text = 'System Status';
+
+            % Create DEBUGMsgLabel
+            app.DEBUGMsgLabel = uilabel(app.CaTSperUIFigure);
+            app.DEBUGMsgLabel.FontWeight = 'bold';
+            app.DEBUGMsgLabel.Position = [1060 958 427 22];
+            app.DEBUGMsgLabel.Text = '';
+
+            % Create ImportTHzFilesButton
+            app.ImportTHzFilesButton = uibutton(app.CaTSperUIFigure, 'push');
+            app.ImportTHzFilesButton.ButtonPushedFcn = createCallbackFcn(app, @ImportTHzFilesButtonPushed, true);
+            app.ImportTHzFilesButton.BackgroundColor = [1 1 1];
+            app.ImportTHzFilesButton.FontSize = 13;
+            app.ImportTHzFilesButton.FontWeight = 'bold';
+            app.ImportTHzFilesButton.Position = [251 923 135 29];
+            app.ImportTHzFilesButton.Text = 'Import THz Files';
+
+            % Create ProjectsEditField
+            app.ProjectsEditField = uieditfield(app.CaTSperUIFigure, 'text');
+            app.ProjectsEditField.FontWeight = 'bold';
+            app.ProjectsEditField.BackgroundColor = [0.9412 0.9412 0.9412];
+            app.ProjectsEditField.Position = [396 925 722 25];
+
+            % Create DeployButton
+            app.DeployButton = uibutton(app.CaTSperUIFigure, 'push');
+            app.DeployButton.ButtonPushedFcn = createCallbackFcn(app, @DeployButtonPushed, true);
+            app.DeployButton.BackgroundColor = [1 1 1];
+            app.DeployButton.FontSize = 13;
+            app.DeployButton.FontWeight = 'bold';
+            app.DeployButton.Position = [1129 923 120 29];
+            app.DeployButton.Text = 'Deploy';
+
+            % Create ClearMemoryButton
+            app.ClearMemoryButton = uibutton(app.CaTSperUIFigure, 'push');
+            app.ClearMemoryButton.ButtonPushedFcn = createCallbackFcn(app, @ClearMemoryButtonPushed, true);
+            app.ClearMemoryButton.FontWeight = 'bold';
+            app.ClearMemoryButton.Position = [1256 923 112 29];
+            app.ClearMemoryButton.Text = 'Clear Memory';
+
+            % Create SaveTDFDDMButton
+            app.SaveTDFDDMButton = uibutton(app.CaTSperUIFigure, 'push');
+            app.SaveTDFDDMButton.ButtonPushedFcn = createCallbackFcn(app, @SaveTDFDDMButtonPushed, true);
+            app.SaveTDFDDMButton.FontWeight = 'bold';
+            app.SaveTDFDDMButton.Position = [1374 923 109 29];
+            app.SaveTDFDDMButton.Text = 'Save TD/FD/DM';
+
             % Create TabGroup
             app.TabGroup = uitabgroup(app.CaTSperUIFigure);
             app.TabGroup.Position = [25 20 1470 889];
@@ -3984,6 +4073,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.MeasurementListBoxLabel.Position = [18 834 79 22];
             app.MeasurementListBoxLabel.Text = 'Measurement';
 
+            % Create SelectionListBoxLabel
+            app.SelectionListBoxLabel = uilabel(app.TimeDomainTDTab);
+            app.SelectionListBoxLabel.Position = [371 834 55 22];
+            app.SelectionListBoxLabel.Text = 'Selection';
+
             % Create MeasurementListBox
             app.MeasurementListBox = uilistbox(app.TimeDomainTDTab);
             app.MeasurementListBox.Items = {};
@@ -3991,237 +4085,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.MeasurementListBox.Position = [18 500 278 333];
             app.MeasurementListBox.Value = {};
 
-            % Create ADDButton
-            app.ADDButton = uibutton(app.TimeDomainTDTab, 'push');
-            app.ADDButton.ButtonPushedFcn = createCallbackFcn(app, @ADDButtonPushed, true);
-            app.ADDButton.Position = [310 704 45 45];
-            app.ADDButton.Text = 'ADD';
-
-            % Create DELButton
-            app.DELButton = uibutton(app.TimeDomainTDTab, 'push');
-            app.DELButton.ButtonPushedFcn = createCallbackFcn(app, @DELButtonPushed, true);
-            app.DELButton.Position = [310 640 45 45];
-            app.DELButton.Text = 'DEL';
-
-            % Create SelectionListBoxLabel
-            app.SelectionListBoxLabel = uilabel(app.TimeDomainTDTab);
-            app.SelectionListBoxLabel.Position = [371 834 55 22];
-            app.SelectionListBoxLabel.Text = 'Selection';
-
             % Create SelectionListBox
             app.SelectionListBox = uilistbox(app.TimeDomainTDTab);
             app.SelectionListBox.Items = {};
             app.SelectionListBox.Position = [367 500 193 333];
             app.SelectionListBox.Value = {};
-
-            % Create Plot1TDButton
-            app.Plot1TDButton = uibutton(app.TimeDomainTDTab, 'push');
-            app.Plot1TDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot1TDButtonPushed, true);
-            app.Plot1TDButton.Position = [574 664 105 45];
-            app.Plot1TDButton.Text = 'Plot 1';
-
-            % Create FFTSettingsPanel
-            app.FFTSettingsPanel = uipanel(app.TimeDomainTDTab);
-            app.FFTSettingsPanel.Title = 'FFT Settings';
-            app.FFTSettingsPanel.FontWeight = 'bold';
-            app.FFTSettingsPanel.Position = [353 57 328 309];
-
-            % Create fromLabel
-            app.fromLabel = uilabel(app.FFTSettingsPanel);
-            app.fromLabel.HorizontalAlignment = 'right';
-            app.fromLabel.Position = [143 258 59 23];
-            app.fromLabel.Text = ' from ';
-
-            % Create FromFreqEditField
-            app.FromFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
-            app.FromFreqEditField.Limits = [0 5];
-            app.FromFreqEditField.ValueDisplayFormat = '%.1f';
-            app.FromFreqEditField.Position = [206 259 40 22];
-            app.FromFreqEditField.Value = 0.2;
-
-            % Create toLabel
-            app.toLabel = uilabel(app.FFTSettingsPanel);
-            app.toLabel.HorizontalAlignment = 'right';
-            app.toLabel.Position = [242 258 25 23];
-            app.toLabel.Text = 'to';
-
-            % Create ToFreqEditField
-            app.ToFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
-            app.ToFreqEditField.Limits = [1 10];
-            app.ToFreqEditField.ValueDisplayFormat = '%.1f';
-            app.ToFreqEditField.Position = [272 259 40 22];
-            app.ToFreqEditField.Value = 2.8;
-
-            % Create MaxTimeLabel
-            app.MaxTimeLabel = uilabel(app.FFTSettingsPanel);
-            app.MaxTimeLabel.HorizontalAlignment = 'right';
-            app.MaxTimeLabel.Position = [239 88 25 23];
-            app.MaxTimeLabel.Text = 'to';
-
-            % Create ToTimeEditField
-            app.ToTimeEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
-            app.ToTimeEditField.Limits = [0 100];
-            app.ToTimeEditField.ValueDisplayFormat = '%5.2f';
-            app.ToTimeEditField.Tooltip = {'set the maximum value of the sample waveform(s)'};
-            app.ToTimeEditField.Position = [268 89 45 22];
-            app.ToTimeEditField.Value = 20;
-
-            % Create truncatebeforethe1stetalonLabel
-            app.truncatebeforethe1stetalonLabel = uilabel(app.FFTSettingsPanel);
-            app.truncatebeforethe1stetalonLabel.Position = [121 112 169 22];
-            app.truncatebeforethe1stetalonLabel.Text = '(truncate before the 1st etalon)';
-
-            % Create TransformButton
-            app.TransformButton = uibutton(app.FFTSettingsPanel, 'push');
-            app.TransformButton.ButtonPushedFcn = createCallbackFcn(app, @TransformButtonPushed, true);
-            app.TransformButton.FontWeight = 'bold';
-            app.TransformButton.Position = [136 12 178 36];
-            app.TransformButton.Text = 'Transform';
-
-            % Create FunctionDropDownLabel
-            app.FunctionDropDownLabel = uilabel(app.FFTSettingsPanel);
-            app.FunctionDropDownLabel.FontWeight = 'bold';
-            app.FunctionDropDownLabel.Position = [15 58 58 23];
-            app.FunctionDropDownLabel.Text = 'Function';
-
-            % Create FunctionDropDown
-            app.FunctionDropDown = uidropdown(app.FFTSettingsPanel);
-            app.FunctionDropDown.Items = {'barthannwin', 'blackman', 'blackmanharris', 'bohmanwin', 'chebwin', 'flattopwin', 'gausswin', 'hamming', 'hann', 'kaiser', 'nuttallwin', 'parzenwin', 'rectwin', 'taylorwin', 'triang', 'tukeywin'};
-            app.FunctionDropDown.Position = [73 59 102 22];
-            app.FunctionDropDown.Value = 'rectwin';
-
-            % Create ZeroFillingpowerofSpinnerLabel
-            app.ZeroFillingpowerofSpinnerLabel = uilabel(app.FFTSettingsPanel);
-            app.ZeroFillingpowerofSpinnerLabel.Position = [124 226 129 23];
-            app.ZeroFillingpowerofSpinnerLabel.Text = 'Zero Filling, + power of';
-
-            % Create ZeroFillingpowerofSpinner
-            app.ZeroFillingpowerofSpinner = uispinner(app.FFTSettingsPanel);
-            app.ZeroFillingpowerofSpinner.Limits = [0 4];
-            app.ZeroFillingpowerofSpinner.Position = [252 227 65 22];
-            app.ZeroFillingpowerofSpinner.Value = 1;
-
-            % Create ManualWindowpsLabel
-            app.ManualWindowpsLabel = uilabel(app.FFTSettingsPanel);
-            app.ManualWindowpsLabel.FontWeight = 'bold';
-            app.ManualWindowpsLabel.Position = [18 89 128 22];
-            app.ManualWindowpsLabel.Text = 'Manual Window (ps): ';
-
-            % Create AutoWindowButton
-            app.AutoWindowButton = uibutton(app.FFTSettingsPanel, 'state');
-            app.AutoWindowButton.ValueChangedFcn = createCallbackFcn(app, @AutoWindowButtonValueChanged, true);
-            app.AutoWindowButton.Tooltip = {'set the time_max 1st multiple reflection time'};
-            app.AutoWindowButton.Text = 'Auto Window';
-            app.AutoWindowButton.BackgroundColor = [1 1 1];
-            app.AutoWindowButton.Position = [11 112 105 23];
-
-            % Create FrequencyRangeTHzLabel
-            app.FrequencyRangeTHzLabel = uilabel(app.FFTSettingsPanel);
-            app.FrequencyRangeTHzLabel.FontWeight = 'bold';
-            app.FrequencyRangeTHzLabel.Position = [11 259 139 22];
-            app.FrequencyRangeTHzLabel.Text = 'Frequency Range (THz)';
-
-            % Create UpsamplingLabel
-            app.UpsamplingLabel = uilabel(app.FFTSettingsPanel);
-            app.UpsamplingLabel.FontWeight = 'bold';
-            app.UpsamplingLabel.Position = [11 228 74 22];
-            app.UpsamplingLabel.Text = 'Upsampling';
-
-            % Create WindowFunctionLabel
-            app.WindowFunctionLabel = uilabel(app.FFTSettingsPanel);
-            app.WindowFunctionLabel.FontWeight = 'bold';
-            app.WindowFunctionLabel.Position = [11 139 105 22];
-            app.WindowFunctionLabel.Text = 'Window Function';
-
-            % Create fromLabel_3
-            app.fromLabel_3 = uilabel(app.FFTSettingsPanel);
-            app.fromLabel_3.HorizontalAlignment = 'right';
-            app.fromLabel_3.Position = [167 89 29 22];
-            app.fromLabel_3.Text = 'from';
-
-            % Create FromTimeEditField
-            app.FromTimeEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
-            app.FromTimeEditField.Limits = [-30 50];
-            app.FromTimeEditField.ValueDisplayFormat = '%5.2f';
-            app.FromTimeEditField.Tooltip = {'Set the minimum value of the sample waveform(s)'};
-            app.FromTimeEditField.Position = [200 89 45 22];
-            app.FromTimeEditField.Value = -10;
-
-            % Create StartFrequencyTHzEditFieldLabel
-            app.StartFrequencyTHzEditFieldLabel = uilabel(app.FFTSettingsPanel);
-            app.StartFrequencyTHzEditFieldLabel.HorizontalAlignment = 'right';
-            app.StartFrequencyTHzEditFieldLabel.Position = [143 197 124 22];
-            app.StartFrequencyTHzEditFieldLabel.Text = 'Start Frequency (THz)';
-
-            % Create StartFrequencyTHzEditField
-            app.StartFrequencyTHzEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
-            app.StartFrequencyTHzEditField.Limits = [0.2 1.5];
-            app.StartFrequencyTHzEditField.ValueDisplayFormat = '%5.1f';
-            app.StartFrequencyTHzEditField.Position = [272 197 41 22];
-            app.StartFrequencyTHzEditField.Value = 0.8;
-
-            % Create UnwrappingLabel
-            app.UnwrappingLabel = uilabel(app.FFTSettingsPanel);
-            app.UnwrappingLabel.FontWeight = 'bold';
-            app.UnwrappingLabel.Position = [11 197 75 22];
-            app.UnwrappingLabel.Text = 'Unwrapping';
-
-            % Create FulllistnamingCheckBox
-            app.FulllistnamingCheckBox = uicheckbox(app.FFTSettingsPanel);
-            app.FulllistnamingCheckBox.Text = 'Full list naming';
-            app.FulllistnamingCheckBox.Position = [18 24 102 22];
-
-            % Create ExtrapolationRangeTHzLabel
-            app.ExtrapolationRangeTHzLabel = uilabel(app.FFTSettingsPanel);
-            app.ExtrapolationRangeTHzLabel.FontWeight = 'bold';
-            app.ExtrapolationRangeTHzLabel.Position = [11 166 155 22];
-            app.ExtrapolationRangeTHzLabel.Text = 'Extrapolation Range (THz)';
-
-            % Create fromLabel_2
-            app.fromLabel_2 = uilabel(app.FFTSettingsPanel);
-            app.fromLabel_2.HorizontalAlignment = 'right';
-            app.fromLabel_2.Position = [173 166 29 22];
-            app.fromLabel_2.Text = 'from';
-
-            % Create FromEpolFreqEditField
-            app.FromEpolFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
-            app.FromEpolFreqEditField.Limits = [0 5];
-            app.FromEpolFreqEditField.ValueDisplayFormat = '%5.2f';
-            app.FromEpolFreqEditField.ValueChangedFcn = createCallbackFcn(app, @FromEpolFreqEditFieldValueChanged, true);
-            app.FromEpolFreqEditField.Position = [207 166 40 22];
-            app.FromEpolFreqEditField.Value = 0.2;
-
-            % Create toLabel_2
-            app.toLabel_2 = uilabel(app.FFTSettingsPanel);
-            app.toLabel_2.HorizontalAlignment = 'right';
-            app.toLabel_2.Position = [243 166 25 22];
-            app.toLabel_2.Text = 'to';
-
-            % Create ToEpolFreqEditField
-            app.ToEpolFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
-            app.ToEpolFreqEditField.Limits = [0 5];
-            app.ToEpolFreqEditField.ValueDisplayFormat = '%5.2f';
-            app.ToEpolFreqEditField.ValueChangedFcn = createCallbackFcn(app, @ToEpolFreqEditFieldValueChanged, true);
-            app.ToEpolFreqEditField.Position = [273 166 40 22];
-            app.ToEpolFreqEditField.Value = 0.4;
-
-            % Create PlotWindowFunctionButton
-            app.PlotWindowFunctionButton = uibutton(app.FFTSettingsPanel, 'push');
-            app.PlotWindowFunctionButton.ButtonPushedFcn = createCallbackFcn(app, @PlotWindowFunctionButtonPushed, true);
-            app.PlotWindowFunctionButton.Position = [182 59 131 23];
-            app.PlotWindowFunctionButton.Text = 'Plot Window Function';
-
-            % Create Plot2TDButton
-            app.Plot2TDButton = uibutton(app.TimeDomainTDTab, 'push');
-            app.Plot2TDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot2TDButtonPushed, true);
-            app.Plot2TDButton.Position = [574 613 105 45];
-            app.Plot2TDButton.Text = 'Plot 2';
-
-            % Create ALLButton
-            app.ALLButton = uibutton(app.TimeDomainTDTab, 'push');
-            app.ALLButton.ButtonPushedFcn = createCallbackFcn(app, @ALLButtonPushed, true);
-            app.ALLButton.Position = [310 768 45 45];
-            app.ALLButton.Text = 'ALL';
 
             % Create ButtonGroupTD
             app.ButtonGroupTD = uibuttongroup(app.TimeDomainTDTab);
@@ -4243,61 +4111,52 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.BothButtonTD.Position = [11 7 65 22];
             app.BothButtonTD.Value = true;
 
-            % Create LegendButton_2
-            app.LegendButton_2 = uibutton(app.TimeDomainTDTab, 'state');
-            app.LegendButton_2.ValueChangedFcn = createCallbackFcn(app, @LegendButton_2ValueChanged, true);
-            app.LegendButton_2.Text = 'Legend';
-            app.LegendButton_2.Position = [1204 13 99 23];
+            % Create ALLButton
+            app.ALLButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.ALLButton.ButtonPushedFcn = createCallbackFcn(app, @ALLButtonPushed, true);
+            app.ALLButton.Position = [310 768 45 45];
+            app.ALLButton.Text = 'ALL';
 
-            % Create JetColormapButton_2
-            app.JetColormapButton_2 = uibutton(app.TimeDomainTDTab, 'state');
-            app.JetColormapButton_2.ValueChangedFcn = createCallbackFcn(app, @JetColormapButton_2ValueChanged, true);
-            app.JetColormapButton_2.Text = 'Jet Colormap';
-            app.JetColormapButton_2.Position = [1320 13 107 23];
+            % Create ADDButton
+            app.ADDButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.ADDButton.ButtonPushedFcn = createCallbackFcn(app, @ADDButtonPushed, true);
+            app.ADDButton.Position = [310 704 45 45];
+            app.ADDButton.Text = 'ADD';
 
             % Create GridOffButton_3
             app.GridOffButton_3 = uibutton(app.TimeDomainTDTab, 'state');
             app.GridOffButton_3.Text = 'Grid Off';
             app.GridOffButton_3.Position = [574 716 105 30];
 
-            % Create LoadData_TD
-            app.LoadData_TD = uibutton(app.TimeDomainTDTab, 'push');
-            app.LoadData_TD.ButtonPushedFcn = createCallbackFcn(app, @LoadData_TDButtonPushed, true);
-            app.LoadData_TD.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.LoadData_TD.FontWeight = 'bold';
-            app.LoadData_TD.Tooltip = {'Assign data to variable in the base workspace'};
-            app.LoadData_TD.Position = [25 13 111 30];
-            app.LoadData_TD.Text = 'Load TD_DATA';
+            % Create Plot1TDButton
+            app.Plot1TDButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.Plot1TDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot1TDButtonPushed, true);
+            app.Plot1TDButton.Position = [574 664 105 45];
+            app.Plot1TDButton.Text = 'Plot 1';
 
-            % Create SaveData_TD
-            app.SaveData_TD = uibutton(app.TimeDomainTDTab, 'push');
-            app.SaveData_TD.ButtonPushedFcn = createCallbackFcn(app, @SaveData_TDPushed, true);
-            app.SaveData_TD.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.SaveData_TD.FontWeight = 'bold';
-            app.SaveData_TD.Tooltip = {'Assign data to variable in the base workspace'};
-            app.SaveData_TD.Position = [145 13 111 30];
-            app.SaveData_TD.Text = 'Save TD_DATA';
+            % Create DELButton
+            app.DELButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.DELButton.ButtonPushedFcn = createCallbackFcn(app, @DELButtonPushed, true);
+            app.DELButton.Position = [310 640 45 45];
+            app.DELButton.Text = 'DEL';
 
-            % Create AssignTD_DataButton
-            app.AssignTD_DataButton = uibutton(app.TimeDomainTDTab, 'push');
-            app.AssignTD_DataButton.ButtonPushedFcn = createCallbackFcn(app, @AssignTD_DataButtonPushed, true);
-            app.AssignTD_DataButton.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.AssignTD_DataButton.FontWeight = 'bold';
-            app.AssignTD_DataButton.Tooltip = {'Assign data to variable in the base workspace'};
-            app.AssignTD_DataButton.Position = [265 13 220 30];
-            app.AssignTD_DataButton.Text = 'Assign TD_DATA in Workspace';
-
-            % Create CheckDynamicRangeButton
-            app.CheckDynamicRangeButton = uibutton(app.TimeDomainTDTab, 'push');
-            app.CheckDynamicRangeButton.ButtonPushedFcn = createCallbackFcn(app, @CheckDynamicRangeButtonPushed, true);
-            app.CheckDynamicRangeButton.Position = [574 500 105 61];
-            app.CheckDynamicRangeButton.Text = {'Check'; 'Dynamic'; 'Range'};
+            % Create Plot2TDButton
+            app.Plot2TDButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.Plot2TDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot2TDButtonPushed, true);
+            app.Plot2TDButton.Position = [574 613 105 45];
+            app.Plot2TDButton.Text = 'Plot 2';
 
             % Create PlotForCustomisationButton_TD
             app.PlotForCustomisationButton_TD = uibutton(app.TimeDomainTDTab, 'push');
             app.PlotForCustomisationButton_TD.ButtonPushedFcn = createCallbackFcn(app, @PlotForCustomisationButton_TDPushed, true);
             app.PlotForCustomisationButton_TD.Position = [574 567 105 40];
             app.PlotForCustomisationButton_TD.Text = {'Plot For'; 'Customisation'};
+
+            % Create CheckDynamicRangeButton
+            app.CheckDynamicRangeButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.CheckDynamicRangeButton.ButtonPushedFcn = createCallbackFcn(app, @CheckDynamicRangeButtonPushed, true);
+            app.CheckDynamicRangeButton.Position = [574 500 105 61];
+            app.CheckDynamicRangeButton.Text = {'Check'; 'Dynamic'; 'Range'};
 
             % Create GeneralInformationPanel
             app.GeneralInformationPanel = uipanel(app.TimeDomainTDTab);
@@ -4371,156 +4230,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.GeneralEtalonEditField.ValueDisplayFormat = '%5.2f';
             app.GeneralEtalonEditField.Position = [241 9 57 22];
 
-            % Create MetadataInformationPanel
-            app.MetadataInformationPanel = uipanel(app.TimeDomainTDTab);
-            app.MetadataInformationPanel.Title = 'Metadata Information';
-            app.MetadataInformationPanel.FontWeight = 'bold';
-            app.MetadataInformationPanel.Position = [18 113 316 201];
-
-            % Create SampleLabel
-            app.SampleLabel = uilabel(app.MetadataInformationPanel);
-            app.SampleLabel.HorizontalAlignment = 'right';
-            app.SampleLabel.Position = [21 11 49 22];
-            app.SampleLabel.Text = 'Sample ';
-
-            % Create mdSampleThicknessDropDown
-            app.mdSampleThicknessDropDown = uidropdown(app.MetadataInformationPanel);
-            app.mdSampleThicknessDropDown.Items = {'no', 'md1', 'md2', 'md3', 'md4'};
-            app.mdSampleThicknessDropDown.ValueChangedFcn = createCallbackFcn(app, @mdSampleThicknessDropDownValueChanged, true);
-            app.mdSampleThicknessDropDown.Position = [79 11 60 22];
-            app.mdSampleThicknessDropDown.Value = 'md1';
-
-            % Create ReferenceLabel
-            app.ReferenceLabel = uilabel(app.MetadataInformationPanel);
-            app.ReferenceLabel.HorizontalAlignment = 'right';
-            app.ReferenceLabel.Position = [164 11 60 22];
-            app.ReferenceLabel.Text = 'Reference';
-
-            % Create mdReferenceThicknessDropDown
-            app.mdReferenceThicknessDropDown = uidropdown(app.MetadataInformationPanel);
-            app.mdReferenceThicknessDropDown.Items = {'no', 'md1', 'md2', 'md3', 'md4'};
-            app.mdReferenceThicknessDropDown.ValueChangedFcn = createCallbackFcn(app, @mdReferenceThicknessDropDownValueChanged, true);
-            app.mdReferenceThicknessDropDown.Position = [234 11 60 22];
-            app.mdReferenceThicknessDropDown.Value = 'md3';
-
-            % Create md1EditFieldLabel
-            app.md1EditFieldLabel = uilabel(app.MetadataInformationPanel);
-            app.md1EditFieldLabel.HorizontalAlignment = 'right';
-            app.md1EditFieldLabel.Position = [10 149 28 22];
-            app.md1EditFieldLabel.Text = 'md1';
-
-            % Create md1EditField
-            app.md1EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
-            app.md1EditField.ValueDisplayFormat = '%6.3f';
-            app.md1EditField.ValueChangedFcn = createCallbackFcn(app, @md1EditFieldValueChanged, true);
-            app.md1EditField.Position = [54 149 50 22];
-
-            % Create md2EditFieldLabel
-            app.md2EditFieldLabel = uilabel(app.MetadataInformationPanel);
-            app.md2EditFieldLabel.HorizontalAlignment = 'right';
-            app.md2EditFieldLabel.Position = [10 123 28 22];
-            app.md2EditFieldLabel.Text = 'md2';
-
-            % Create md2EditField
-            app.md2EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
-            app.md2EditField.ValueDisplayFormat = '%6.3f';
-            app.md2EditField.ValueChangedFcn = createCallbackFcn(app, @md2EditFieldValueChanged, true);
-            app.md2EditField.Position = [54 123 50 22];
-
-            % Create md3EditFieldLabel
-            app.md3EditFieldLabel = uilabel(app.MetadataInformationPanel);
-            app.md3EditFieldLabel.HorizontalAlignment = 'right';
-            app.md3EditFieldLabel.Position = [10 98 28 22];
-            app.md3EditFieldLabel.Text = 'md3';
-
-            % Create md3EditField
-            app.md3EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
-            app.md3EditField.ValueDisplayFormat = '%6.3f';
-            app.md3EditField.ValueChangedFcn = createCallbackFcn(app, @md3EditFieldValueChanged, true);
-            app.md3EditField.Position = [54 98 50 22];
-
-            % Create md4EditFieldLabel
-            app.md4EditFieldLabel = uilabel(app.MetadataInformationPanel);
-            app.md4EditFieldLabel.HorizontalAlignment = 'right';
-            app.md4EditFieldLabel.Position = [10 73 28 22];
-            app.md4EditFieldLabel.Text = 'md4';
-
-            % Create md4EditField
-            app.md4EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
-            app.md4EditField.ValueDisplayFormat = '%6.3f';
-            app.md4EditField.ValueChangedFcn = createCallbackFcn(app, @md4EditFieldValueChanged, true);
-            app.md4EditField.Position = [54 73 50 22];
-
-            % Create ThicknessmmLabel
-            app.ThicknessmmLabel = uilabel(app.MetadataInformationPanel);
-            app.ThicknessmmLabel.FontWeight = 'bold';
-            app.ThicknessmmLabel.Position = [9 46 96 22];
-            app.ThicknessmmLabel.Text = 'Thickness (mm)';
-
-            % Create md1DesEditField
-            app.md1DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
-            app.md1DesEditField.Editable = 'off';
-            app.md1DesEditField.Position = [111 149 195 22];
-
-            % Create md2DesEditField
-            app.md2DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
-            app.md2DesEditField.Editable = 'off';
-            app.md2DesEditField.Position = [111 123 195 22];
-
-            % Create md3DesEditField
-            app.md3DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
-            app.md3DesEditField.Editable = 'off';
-            app.md3DesEditField.Position = [111 98 195 22];
-
-            % Create md4DesEditField
-            app.md4DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
-            app.md4DesEditField.Editable = 'off';
-            app.md4DesEditField.Position = [111 73 195 22];
-
-            % Create ThicknessSwitch_TD
-            app.ThicknessSwitch_TD = uiswitch(app.MetadataInformationPanel, 'slider');
-            app.ThicknessSwitch_TD.Items = {'Sample', 'Offset'};
-            app.ThicknessSwitch_TD.ValueChangedFcn = createCallbackFcn(app, @ThicknessSwitch_TDValueChanged, true);
-            app.ThicknessSwitch_TD.Position = [162 45 45 20];
-            app.ThicknessSwitch_TD.Value = 'Sample';
-
-            % Create ResetConfigurationsButton
-            app.ResetConfigurationsButton = uibutton(app.TimeDomainTDTab, 'push');
-            app.ResetConfigurationsButton.ButtonPushedFcn = createCallbackFcn(app, @ResetConfigurationsButtonPushed, true);
-            app.ResetConfigurationsButton.Position = [190 75 133 28];
-            app.ResetConfigurationsButton.Text = 'Reset Configurations';
-
             % Create DatasetInformationPanel
             app.DatasetInformationPanel = uipanel(app.TimeDomainTDTab);
             app.DatasetInformationPanel.Title = 'Dataset Information';
             app.DatasetInformationPanel.FontWeight = 'bold';
             app.DatasetInformationPanel.Position = [354 372 327 115];
-
-            % Create SampleDropDownLabel
-            app.SampleDropDownLabel = uilabel(app.DatasetInformationPanel);
-            app.SampleDropDownLabel.HorizontalAlignment = 'right';
-            app.SampleDropDownLabel.Position = [5 7 46 22];
-            app.SampleDropDownLabel.Text = 'Sample';
-
-            % Create dsSampleDropDown
-            app.dsSampleDropDown = uidropdown(app.DatasetInformationPanel);
-            app.dsSampleDropDown.Items = {'ds1', 'ds2', 'ds3', 'ds4'};
-            app.dsSampleDropDown.ValueChangedFcn = createCallbackFcn(app, @dsSampleDropDownValueChanged, true);
-            app.dsSampleDropDown.Position = [54 7 52 22];
-            app.dsSampleDropDown.Value = 'ds1';
-
-            % Create ReferenceDropDownLabel
-            app.ReferenceDropDownLabel = uilabel(app.DatasetInformationPanel);
-            app.ReferenceDropDownLabel.HorizontalAlignment = 'right';
-            app.ReferenceDropDownLabel.Position = [106 7 60 22];
-            app.ReferenceDropDownLabel.Text = 'Reference';
-
-            % Create dsReferenceDropDown
-            app.dsReferenceDropDown = uidropdown(app.DatasetInformationPanel);
-            app.dsReferenceDropDown.Items = {'no', 'ds1', 'ds2', 'ds3', 'ds4'};
-            app.dsReferenceDropDown.ValueChangedFcn = createCallbackFcn(app, @dsReferenceDropDownValueChanged, true);
-            app.dsReferenceDropDown.Position = [170 7 52 22];
-            app.dsReferenceDropDown.Value = 'ds2';
 
             % Create ds1EditFieldLabel
             app.ds1EditFieldLabel = uilabel(app.DatasetInformationPanel);
@@ -4566,6 +4280,32 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ds4DesEditField.Editable = 'off';
             app.ds4DesEditField.Position = [195 38 120 22];
 
+            % Create SampleDropDownLabel
+            app.SampleDropDownLabel = uilabel(app.DatasetInformationPanel);
+            app.SampleDropDownLabel.HorizontalAlignment = 'right';
+            app.SampleDropDownLabel.Position = [5 7 46 22];
+            app.SampleDropDownLabel.Text = 'Sample';
+
+            % Create dsSampleDropDown
+            app.dsSampleDropDown = uidropdown(app.DatasetInformationPanel);
+            app.dsSampleDropDown.Items = {'ds1', 'ds2', 'ds3', 'ds4'};
+            app.dsSampleDropDown.ValueChangedFcn = createCallbackFcn(app, @dsSampleDropDownValueChanged, true);
+            app.dsSampleDropDown.Position = [54 7 52 22];
+            app.dsSampleDropDown.Value = 'ds1';
+
+            % Create ReferenceDropDownLabel
+            app.ReferenceDropDownLabel = uilabel(app.DatasetInformationPanel);
+            app.ReferenceDropDownLabel.HorizontalAlignment = 'right';
+            app.ReferenceDropDownLabel.Position = [106 7 60 22];
+            app.ReferenceDropDownLabel.Text = 'Reference';
+
+            % Create dsReferenceDropDown
+            app.dsReferenceDropDown = uidropdown(app.DatasetInformationPanel);
+            app.dsReferenceDropDown.Items = {'no', 'ds1', 'ds2', 'ds3', 'ds4'};
+            app.dsReferenceDropDown.ValueChangedFcn = createCallbackFcn(app, @dsReferenceDropDownValueChanged, true);
+            app.dsReferenceDropDown.Position = [170 7 52 22];
+            app.dsReferenceDropDown.Value = 'ds2';
+
             % Create PumpedLabel
             app.PumpedLabel = uilabel(app.DatasetInformationPanel);
             app.PumpedLabel.HorizontalAlignment = 'right';
@@ -4578,6 +4318,351 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.dsPumpedDropDown.ValueChangedFcn = createCallbackFcn(app, @dsPumpedDropDownValueChanged, true);
             app.dsPumpedDropDown.Position = [263 7 52 22];
             app.dsPumpedDropDown.Value = 'no';
+
+            % Create FFTSettingsPanel
+            app.FFTSettingsPanel = uipanel(app.TimeDomainTDTab);
+            app.FFTSettingsPanel.Title = 'FFT Settings';
+            app.FFTSettingsPanel.FontWeight = 'bold';
+            app.FFTSettingsPanel.Position = [353 57 328 309];
+
+            % Create FrequencyRangeTHzLabel
+            app.FrequencyRangeTHzLabel = uilabel(app.FFTSettingsPanel);
+            app.FrequencyRangeTHzLabel.FontWeight = 'bold';
+            app.FrequencyRangeTHzLabel.Position = [11 259 139 22];
+            app.FrequencyRangeTHzLabel.Text = 'Frequency Range (THz)';
+
+            % Create fromLabel
+            app.fromLabel = uilabel(app.FFTSettingsPanel);
+            app.fromLabel.HorizontalAlignment = 'right';
+            app.fromLabel.Position = [143 258 59 23];
+            app.fromLabel.Text = ' from ';
+
+            % Create FromFreqEditField
+            app.FromFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
+            app.FromFreqEditField.Limits = [0 5];
+            app.FromFreqEditField.ValueDisplayFormat = '%.1f';
+            app.FromFreqEditField.Position = [206 259 40 22];
+            app.FromFreqEditField.Value = 0.2;
+
+            % Create toLabel
+            app.toLabel = uilabel(app.FFTSettingsPanel);
+            app.toLabel.HorizontalAlignment = 'right';
+            app.toLabel.Position = [242 258 25 23];
+            app.toLabel.Text = 'to';
+
+            % Create ToFreqEditField
+            app.ToFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
+            app.ToFreqEditField.Limits = [1 10];
+            app.ToFreqEditField.ValueDisplayFormat = '%.1f';
+            app.ToFreqEditField.Position = [272 259 40 22];
+            app.ToFreqEditField.Value = 2.8;
+
+            % Create UpsamplingLabel
+            app.UpsamplingLabel = uilabel(app.FFTSettingsPanel);
+            app.UpsamplingLabel.FontWeight = 'bold';
+            app.UpsamplingLabel.Position = [11 228 74 22];
+            app.UpsamplingLabel.Text = 'Upsampling';
+
+            % Create ZeroFillingpowerofSpinnerLabel
+            app.ZeroFillingpowerofSpinnerLabel = uilabel(app.FFTSettingsPanel);
+            app.ZeroFillingpowerofSpinnerLabel.Position = [124 226 129 23];
+            app.ZeroFillingpowerofSpinnerLabel.Text = 'Zero Filling, + power of';
+
+            % Create ZeroFillingpowerofSpinner
+            app.ZeroFillingpowerofSpinner = uispinner(app.FFTSettingsPanel);
+            app.ZeroFillingpowerofSpinner.Limits = [0 4];
+            app.ZeroFillingpowerofSpinner.Position = [252 227 65 22];
+            app.ZeroFillingpowerofSpinner.Value = 1;
+
+            % Create UnwrappingLabel
+            app.UnwrappingLabel = uilabel(app.FFTSettingsPanel);
+            app.UnwrappingLabel.FontWeight = 'bold';
+            app.UnwrappingLabel.Position = [11 197 75 22];
+            app.UnwrappingLabel.Text = 'Unwrapping';
+
+            % Create StartFrequencyTHzEditFieldLabel
+            app.StartFrequencyTHzEditFieldLabel = uilabel(app.FFTSettingsPanel);
+            app.StartFrequencyTHzEditFieldLabel.HorizontalAlignment = 'right';
+            app.StartFrequencyTHzEditFieldLabel.Position = [143 197 124 22];
+            app.StartFrequencyTHzEditFieldLabel.Text = 'Start Frequency (THz)';
+
+            % Create StartFrequencyTHzEditField
+            app.StartFrequencyTHzEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
+            app.StartFrequencyTHzEditField.Limits = [0.2 1.5];
+            app.StartFrequencyTHzEditField.ValueDisplayFormat = '%5.1f';
+            app.StartFrequencyTHzEditField.Position = [272 197 41 22];
+            app.StartFrequencyTHzEditField.Value = 0.8;
+
+            % Create ExtrapolationRangeTHzLabel
+            app.ExtrapolationRangeTHzLabel = uilabel(app.FFTSettingsPanel);
+            app.ExtrapolationRangeTHzLabel.FontWeight = 'bold';
+            app.ExtrapolationRangeTHzLabel.Position = [11 166 155 22];
+            app.ExtrapolationRangeTHzLabel.Text = 'Extrapolation Range (THz)';
+
+            % Create fromLabel_2
+            app.fromLabel_2 = uilabel(app.FFTSettingsPanel);
+            app.fromLabel_2.HorizontalAlignment = 'right';
+            app.fromLabel_2.Position = [173 166 29 22];
+            app.fromLabel_2.Text = 'from';
+
+            % Create FromEpolFreqEditField
+            app.FromEpolFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
+            app.FromEpolFreqEditField.Limits = [0 5];
+            app.FromEpolFreqEditField.ValueDisplayFormat = '%5.2f';
+            app.FromEpolFreqEditField.ValueChangedFcn = createCallbackFcn(app, @FromEpolFreqEditFieldValueChanged, true);
+            app.FromEpolFreqEditField.Position = [207 166 40 22];
+            app.FromEpolFreqEditField.Value = 0.2;
+
+            % Create toLabel_2
+            app.toLabel_2 = uilabel(app.FFTSettingsPanel);
+            app.toLabel_2.HorizontalAlignment = 'right';
+            app.toLabel_2.Position = [243 166 25 22];
+            app.toLabel_2.Text = 'to';
+
+            % Create ToEpolFreqEditField
+            app.ToEpolFreqEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
+            app.ToEpolFreqEditField.Limits = [0 5];
+            app.ToEpolFreqEditField.ValueDisplayFormat = '%5.2f';
+            app.ToEpolFreqEditField.ValueChangedFcn = createCallbackFcn(app, @ToEpolFreqEditFieldValueChanged, true);
+            app.ToEpolFreqEditField.Position = [273 166 40 22];
+            app.ToEpolFreqEditField.Value = 0.4;
+
+            % Create WindowFunctionLabel
+            app.WindowFunctionLabel = uilabel(app.FFTSettingsPanel);
+            app.WindowFunctionLabel.FontWeight = 'bold';
+            app.WindowFunctionLabel.Position = [11 139 105 22];
+            app.WindowFunctionLabel.Text = 'Window Function';
+
+            % Create AutoWindowButton
+            app.AutoWindowButton = uibutton(app.FFTSettingsPanel, 'state');
+            app.AutoWindowButton.ValueChangedFcn = createCallbackFcn(app, @AutoWindowButtonValueChanged, true);
+            app.AutoWindowButton.Tooltip = {'set the time_max 1st multiple reflection time'};
+            app.AutoWindowButton.Text = 'Auto Window';
+            app.AutoWindowButton.BackgroundColor = [1 1 1];
+            app.AutoWindowButton.Position = [11 112 105 23];
+
+            % Create truncatebeforethe1stetalonLabel
+            app.truncatebeforethe1stetalonLabel = uilabel(app.FFTSettingsPanel);
+            app.truncatebeforethe1stetalonLabel.Position = [121 112 169 22];
+            app.truncatebeforethe1stetalonLabel.Text = '(truncate before the 1st etalon)';
+
+            % Create ManualWindowpsLabel
+            app.ManualWindowpsLabel = uilabel(app.FFTSettingsPanel);
+            app.ManualWindowpsLabel.FontWeight = 'bold';
+            app.ManualWindowpsLabel.Position = [18 89 128 22];
+            app.ManualWindowpsLabel.Text = 'Manual Window (ps): ';
+
+            % Create fromLabel_3
+            app.fromLabel_3 = uilabel(app.FFTSettingsPanel);
+            app.fromLabel_3.HorizontalAlignment = 'right';
+            app.fromLabel_3.Position = [167 89 29 22];
+            app.fromLabel_3.Text = 'from';
+
+            % Create FromTimeEditField
+            app.FromTimeEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
+            app.FromTimeEditField.Limits = [-500 500];
+            app.FromTimeEditField.ValueDisplayFormat = '%5.2f';
+            app.FromTimeEditField.Tooltip = {'Set the minimum value of the sample waveform(s)'};
+            app.FromTimeEditField.Position = [200 89 45 22];
+            app.FromTimeEditField.Value = -10;
+
+            % Create MaxTimeLabel
+            app.MaxTimeLabel = uilabel(app.FFTSettingsPanel);
+            app.MaxTimeLabel.HorizontalAlignment = 'right';
+            app.MaxTimeLabel.Position = [239 88 25 23];
+            app.MaxTimeLabel.Text = 'to';
+
+            % Create ToTimeEditField
+            app.ToTimeEditField = uieditfield(app.FFTSettingsPanel, 'numeric');
+            app.ToTimeEditField.Limits = [-500 500];
+            app.ToTimeEditField.ValueDisplayFormat = '%5.2f';
+            app.ToTimeEditField.Tooltip = {'set the maximum value of the sample waveform(s)'};
+            app.ToTimeEditField.Position = [268 89 45 22];
+            app.ToTimeEditField.Value = 20;
+
+            % Create FunctionDropDownLabel
+            app.FunctionDropDownLabel = uilabel(app.FFTSettingsPanel);
+            app.FunctionDropDownLabel.FontWeight = 'bold';
+            app.FunctionDropDownLabel.Position = [15 58 58 23];
+            app.FunctionDropDownLabel.Text = 'Function';
+
+            % Create FunctionDropDown
+            app.FunctionDropDown = uidropdown(app.FFTSettingsPanel);
+            app.FunctionDropDown.Items = {'barthannwin', 'blackman', 'blackmanharris', 'bohmanwin', 'chebwin', 'flattopwin', 'gausswin', 'hamming', 'hann', 'kaiser', 'nuttallwin', 'parzenwin', 'rectwin', 'taylorwin', 'triang', 'tukeywin'};
+            app.FunctionDropDown.Position = [73 59 102 22];
+            app.FunctionDropDown.Value = 'rectwin';
+
+            % Create PlotWindowFunctionButton
+            app.PlotWindowFunctionButton = uibutton(app.FFTSettingsPanel, 'push');
+            app.PlotWindowFunctionButton.ButtonPushedFcn = createCallbackFcn(app, @PlotWindowFunctionButtonPushed, true);
+            app.PlotWindowFunctionButton.Position = [182 59 131 23];
+            app.PlotWindowFunctionButton.Text = 'Plot Window Function';
+
+            % Create FulllistnamingCheckBox
+            app.FulllistnamingCheckBox = uicheckbox(app.FFTSettingsPanel);
+            app.FulllistnamingCheckBox.Text = 'Full list naming';
+            app.FulllistnamingCheckBox.Position = [18 24 102 22];
+
+            % Create TransformButton
+            app.TransformButton = uibutton(app.FFTSettingsPanel, 'push');
+            app.TransformButton.ButtonPushedFcn = createCallbackFcn(app, @TransformButtonPushed, true);
+            app.TransformButton.FontWeight = 'bold';
+            app.TransformButton.Position = [136 12 178 36];
+            app.TransformButton.Text = 'Transform';
+
+            % Create MetadataInformationPanel
+            app.MetadataInformationPanel = uipanel(app.TimeDomainTDTab);
+            app.MetadataInformationPanel.Title = 'Metadata Information';
+            app.MetadataInformationPanel.FontWeight = 'bold';
+            app.MetadataInformationPanel.Position = [18 113 316 201];
+
+            % Create md1EditFieldLabel
+            app.md1EditFieldLabel = uilabel(app.MetadataInformationPanel);
+            app.md1EditFieldLabel.HorizontalAlignment = 'right';
+            app.md1EditFieldLabel.Position = [10 149 28 22];
+            app.md1EditFieldLabel.Text = 'md1';
+
+            % Create md1EditField
+            app.md1EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
+            app.md1EditField.ValueChangedFcn = createCallbackFcn(app, @md1EditFieldValueChanged, true);
+            app.md1EditField.Position = [54 149 88 22];
+
+            % Create md1DesEditField
+            app.md1DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
+            app.md1DesEditField.Editable = 'off';
+            app.md1DesEditField.Position = [151 149 155 22];
+
+            % Create md2EditFieldLabel
+            app.md2EditFieldLabel = uilabel(app.MetadataInformationPanel);
+            app.md2EditFieldLabel.HorizontalAlignment = 'right';
+            app.md2EditFieldLabel.Position = [10 123 28 22];
+            app.md2EditFieldLabel.Text = 'md2';
+
+            % Create md2EditField
+            app.md2EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
+            app.md2EditField.ValueChangedFcn = createCallbackFcn(app, @md2EditFieldValueChanged, true);
+            app.md2EditField.Position = [54 123 88 22];
+
+            % Create md2DesEditField
+            app.md2DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
+            app.md2DesEditField.Editable = 'off';
+            app.md2DesEditField.Position = [150 123 156 22];
+
+            % Create md3EditFieldLabel
+            app.md3EditFieldLabel = uilabel(app.MetadataInformationPanel);
+            app.md3EditFieldLabel.HorizontalAlignment = 'right';
+            app.md3EditFieldLabel.Position = [10 98 28 22];
+            app.md3EditFieldLabel.Text = 'md3';
+
+            % Create md3EditField
+            app.md3EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
+            app.md3EditField.ValueChangedFcn = createCallbackFcn(app, @md3EditFieldValueChanged, true);
+            app.md3EditField.Position = [54 98 88 22];
+
+            % Create md3DesEditField
+            app.md3DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
+            app.md3DesEditField.Editable = 'off';
+            app.md3DesEditField.Position = [150 98 156 22];
+
+            % Create md4EditFieldLabel
+            app.md4EditFieldLabel = uilabel(app.MetadataInformationPanel);
+            app.md4EditFieldLabel.HorizontalAlignment = 'right';
+            app.md4EditFieldLabel.Position = [10 73 28 22];
+            app.md4EditFieldLabel.Text = 'md4';
+
+            % Create md4EditField
+            app.md4EditField = uieditfield(app.MetadataInformationPanel, 'numeric');
+            app.md4EditField.ValueChangedFcn = createCallbackFcn(app, @md4EditFieldValueChanged, true);
+            app.md4EditField.Position = [54 73 88 22];
+
+            % Create md4DesEditField
+            app.md4DesEditField = uieditfield(app.MetadataInformationPanel, 'text');
+            app.md4DesEditField.Editable = 'off';
+            app.md4DesEditField.Position = [150 73 156 22];
+
+            % Create ThicknessmmLabel
+            app.ThicknessmmLabel = uilabel(app.MetadataInformationPanel);
+            app.ThicknessmmLabel.FontWeight = 'bold';
+            app.ThicknessmmLabel.Position = [9 46 96 22];
+            app.ThicknessmmLabel.Text = 'Thickness (mm)';
+
+            % Create ThicknessSwitch_TD
+            app.ThicknessSwitch_TD = uiswitch(app.MetadataInformationPanel, 'slider');
+            app.ThicknessSwitch_TD.Items = {'Sample', 'Offset'};
+            app.ThicknessSwitch_TD.ValueChangedFcn = createCallbackFcn(app, @ThicknessSwitch_TDValueChanged, true);
+            app.ThicknessSwitch_TD.Position = [162 45 45 20];
+            app.ThicknessSwitch_TD.Value = 'Sample';
+
+            % Create SampleLabel
+            app.SampleLabel = uilabel(app.MetadataInformationPanel);
+            app.SampleLabel.HorizontalAlignment = 'right';
+            app.SampleLabel.Position = [21 11 49 22];
+            app.SampleLabel.Text = 'Sample ';
+
+            % Create mdSampleThicknessDropDown
+            app.mdSampleThicknessDropDown = uidropdown(app.MetadataInformationPanel);
+            app.mdSampleThicknessDropDown.Items = {'no', 'md1', 'md2', 'md3', 'md4'};
+            app.mdSampleThicknessDropDown.ValueChangedFcn = createCallbackFcn(app, @mdSampleThicknessDropDownValueChanged, true);
+            app.mdSampleThicknessDropDown.Position = [79 11 60 22];
+            app.mdSampleThicknessDropDown.Value = 'md1';
+
+            % Create ReferenceLabel
+            app.ReferenceLabel = uilabel(app.MetadataInformationPanel);
+            app.ReferenceLabel.HorizontalAlignment = 'right';
+            app.ReferenceLabel.Position = [164 11 60 22];
+            app.ReferenceLabel.Text = 'Reference';
+
+            % Create mdReferenceThicknessDropDown
+            app.mdReferenceThicknessDropDown = uidropdown(app.MetadataInformationPanel);
+            app.mdReferenceThicknessDropDown.Items = {'no', 'md1', 'md2', 'md3', 'md4'};
+            app.mdReferenceThicknessDropDown.ValueChangedFcn = createCallbackFcn(app, @mdReferenceThicknessDropDownValueChanged, true);
+            app.mdReferenceThicknessDropDown.Position = [234 11 60 22];
+            app.mdReferenceThicknessDropDown.Value = 'md3';
+
+            % Create ResetConfigurationsButton
+            app.ResetConfigurationsButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.ResetConfigurationsButton.ButtonPushedFcn = createCallbackFcn(app, @ResetConfigurationsButtonPushed, true);
+            app.ResetConfigurationsButton.Position = [190 75 133 28];
+            app.ResetConfigurationsButton.Text = 'Reset Configurations';
+
+            % Create LoadData_TD
+            app.LoadData_TD = uibutton(app.TimeDomainTDTab, 'push');
+            app.LoadData_TD.ButtonPushedFcn = createCallbackFcn(app, @LoadData_TDButtonPushed, true);
+            app.LoadData_TD.BackgroundColor = [0.9412 0.9412 0.9412];
+            app.LoadData_TD.FontWeight = 'bold';
+            app.LoadData_TD.Tooltip = {'Assign data to variable in the base workspace'};
+            app.LoadData_TD.Position = [25 13 111 30];
+            app.LoadData_TD.Text = 'Load TD_DATA';
+
+            % Create SaveData_TD
+            app.SaveData_TD = uibutton(app.TimeDomainTDTab, 'push');
+            app.SaveData_TD.ButtonPushedFcn = createCallbackFcn(app, @SaveData_TDPushed, true);
+            app.SaveData_TD.BackgroundColor = [0.9412 0.9412 0.9412];
+            app.SaveData_TD.FontWeight = 'bold';
+            app.SaveData_TD.Tooltip = {'Assign data to variable in the base workspace'};
+            app.SaveData_TD.Position = [145 13 111 30];
+            app.SaveData_TD.Text = 'Save TD_DATA';
+
+            % Create AssignTD_DataButton
+            app.AssignTD_DataButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.AssignTD_DataButton.ButtonPushedFcn = createCallbackFcn(app, @AssignTD_DataButtonPushed, true);
+            app.AssignTD_DataButton.BackgroundColor = [0.9412 0.9412 0.9412];
+            app.AssignTD_DataButton.FontWeight = 'bold';
+            app.AssignTD_DataButton.Tooltip = {'Assign data to variable in the base workspace'};
+            app.AssignTD_DataButton.Position = [265 13 220 30];
+            app.AssignTD_DataButton.Text = 'Assign TD_DATA in Workspace';
+
+            % Create LegendButton_TD
+            app.LegendButton_TD = uibutton(app.TimeDomainTDTab, 'state');
+            app.LegendButton_TD.ValueChangedFcn = createCallbackFcn(app, @LegendButton_TDValueChanged, true);
+            app.LegendButton_TD.Text = 'Legend';
+            app.LegendButton_TD.Position = [1204 13 99 23];
+
+            % Create JetColormapButton_TD
+            app.JetColormapButton_TD = uibutton(app.TimeDomainTDTab, 'state');
+            app.JetColormapButton_TD.ValueChangedFcn = createCallbackFcn(app, @JetColormapButton_TDValueChanged, true);
+            app.JetColormapButton_TD.Text = 'Jet Colormap';
+            app.JetColormapButton_TD.Position = [1320 13 107 23];
 
             % Create FrequencyDomainFDTab
             app.FrequencyDomainFDTab = uitab(app.TabGroup);
@@ -4613,51 +4698,21 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.UIAxes4.Box = 'on';
             app.UIAxes4.Position = [715 45 750 400];
 
-            % Create Plot1FDButton
-            app.Plot1FDButton = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.Plot1FDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot1FDButtonPushed, true);
-            app.Plot1FDButton.Position = [593 556 100 45];
-            app.Plot1FDButton.Text = 'Plot 1';
-
-            % Create Plot2FDButton
-            app.Plot2FDButton = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.Plot2FDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot2FDButtonPushed, true);
-            app.Plot2FDButton.Position = [593 505 100 45];
-            app.Plot2FDButton.Text = 'Plot 2';
-
             % Create FDListListBoxLabel
             app.FDListListBoxLabel = uilabel(app.FrequencyDomainFDTab);
             app.FDListListBoxLabel.Position = [17 833 79 22];
             app.FDListListBoxLabel.Text = 'FD List';
+
+            % Create FDSelectionListBoxLabel
+            app.FDSelectionListBoxLabel = uilabel(app.FrequencyDomainFDTab);
+            app.FDSelectionListBoxLabel.Position = [439 831 79 22];
+            app.FDSelectionListBoxLabel.Text = 'FD Selection';
 
             % Create FDListBox
             app.FDListBox = uilistbox(app.FrequencyDomainFDTab);
             app.FDListBox.Items = {};
             app.FDListBox.Position = [14 496 358 336];
             app.FDListBox.Value = {};
-
-            % Create ALLFDButton
-            app.ALLFDButton = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.ALLFDButton.ButtonPushedFcn = createCallbackFcn(app, @ALLFDButtonPushed, true);
-            app.ALLFDButton.Position = [384 749 45 45];
-            app.ALLFDButton.Text = 'ALL';
-
-            % Create ADDFDButton
-            app.ADDFDButton = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.ADDFDButton.ButtonPushedFcn = createCallbackFcn(app, @ADDFDButtonPushed, true);
-            app.ADDFDButton.Position = [384 689 45 45];
-            app.ADDFDButton.Text = 'ADD';
-
-            % Create DELFDButton
-            app.DELFDButton = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.DELFDButton.ButtonPushedFcn = createCallbackFcn(app, @DELFDButtonPushed, true);
-            app.DELFDButton.Position = [384 629 45 45];
-            app.DELFDButton.Text = 'DEL';
-
-            % Create FDSelectionListBoxLabel
-            app.FDSelectionListBoxLabel = uilabel(app.FrequencyDomainFDTab);
-            app.FDSelectionListBoxLabel.Position = [439 831 79 22];
-            app.FDSelectionListBoxLabel.Text = 'FD Selection';
 
             % Create FDSelectionListBox
             app.FDSelectionListBox = uilistbox(app.FrequencyDomainFDTab);
@@ -4685,232 +4740,17 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.BothButtonFD.Text = 'Both';
             app.BothButtonFD.Position = [11 7 65 22];
 
-            % Create RemoveButton
-            app.RemoveButton = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.RemoveButton.ButtonPushedFcn = createCallbackFcn(app, @RemoveButtonPushed, true);
-            app.RemoveButton.Position = [27 456 156 30];
-            app.RemoveButton.Text = 'Remove';
+            % Create ALLFDButton
+            app.ALLFDButton = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.ALLFDButton.ButtonPushedFcn = createCallbackFcn(app, @ALLFDButtonPushed, true);
+            app.ALLFDButton.Position = [384 749 45 45];
+            app.ALLFDButton.Text = 'ALL';
 
-            % Create RemoveAllButton
-            app.RemoveAllButton = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.RemoveAllButton.ButtonPushedFcn = createCallbackFcn(app, @RemoveAllButtonPushed, true);
-            app.RemoveAllButton.Position = [205 456 156 30];
-            app.RemoveAllButton.Text = 'Remove All';
-
-            % Create AssignFD_DataButton
-            app.AssignFD_DataButton = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.AssignFD_DataButton.ButtonPushedFcn = createCallbackFcn(app, @AssignFD_DataButtonPushed, true);
-            app.AssignFD_DataButton.FontWeight = 'bold';
-            app.AssignFD_DataButton.Tooltip = {'Assign data to variable in the base workspace'};
-            app.AssignFD_DataButton.Position = [283 16 220 30];
-            app.AssignFD_DataButton.Text = 'Assign FD_DATA in Workspace';
-
-            % Create FDDataAnalysisPanel
-            app.FDDataAnalysisPanel = uipanel(app.FrequencyDomainFDTab);
-            app.FDDataAnalysisPanel.Title = 'FD Data Analysis';
-            app.FDDataAnalysisPanel.FontWeight = 'bold';
-            app.FDDataAnalysisPanel.Position = [12 92 675 344];
-
-            % Create Plot1FDButton_2
-            app.Plot1FDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
-            app.Plot1FDButton_2.ButtonPushedFcn = createCallbackFcn(app, @Plot1FDButton_2Pushed, true);
-            app.Plot1FDButton_2.Position = [554 118 104 45];
-            app.Plot1FDButton_2.Text = 'Plot 1';
-
-            % Create Plot2FDButton_2
-            app.Plot2FDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
-            app.Plot2FDButton_2.ButtonPushedFcn = createCallbackFcn(app, @Plot2FDButton_2Pushed, true);
-            app.Plot2FDButton_2.Position = [554 65 104 45];
-            app.Plot2FDButton_2.Text = 'Plot 2';
-
-            % Create MagPhaseButtonGroup_2
-            app.MagPhaseButtonGroup_2 = uibuttongroup(app.FDDataAnalysisPanel);
-            app.MagPhaseButtonGroup_2.Position = [555 201 100 50];
-
-            % Create AmplitudeButton_2
-            app.AmplitudeButton_2 = uiradiobutton(app.MagPhaseButtonGroup_2);
-            app.AmplitudeButton_2.Text = 'Amplitude';
-            app.AmplitudeButton_2.Position = [11 24 75 22];
-            app.AmplitudeButton_2.Value = true;
-
-            % Create PhaseButton_2
-            app.PhaseButton_2 = uiradiobutton(app.MagPhaseButtonGroup_2);
-            app.PhaseButton_2.Text = 'Phase';
-            app.PhaseButton_2.Position = [11 2 56 22];
-
-            % Create ALLFDButton_2
-            app.ALLFDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
-            app.ALLFDButton_2.ButtonPushedFcn = createCallbackFcn(app, @ALLFDButton_2Pushed, true);
-            app.ALLFDButton_2.Position = [8 229 45 45];
-            app.ALLFDButton_2.Text = 'ALL';
-
-            % Create ADDFDButton_2
-            app.ADDFDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
-            app.ADDFDButton_2.ButtonPushedFcn = createCallbackFcn(app, @ADDFDButton_2Pushed, true);
-            app.ADDFDButton_2.Position = [8 171 45 45];
-            app.ADDFDButton_2.Text = 'ADD';
-
-            % Create DELFDButton_2
-            app.DELFDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
-            app.DELFDButton_2.ButtonPushedFcn = createCallbackFcn(app, @DELFDButton_2Pushed, true);
-            app.DELFDButton_2.Position = [8 114 45 45];
-            app.DELFDButton_2.Text = 'DEL';
-
-            % Create DescriptionEditField_2Label
-            app.DescriptionEditField_2Label = uilabel(app.FDDataAnalysisPanel);
-            app.DescriptionEditField_2Label.Position = [230 287 66 22];
-            app.DescriptionEditField_2Label.Text = 'Description';
-
-            % Create DescriptionEditField_FD
-            app.DescriptionEditField_FD = uieditfield(app.FDDataAnalysisPanel, 'text');
-            app.DescriptionEditField_FD.Editable = 'off';
-            app.DescriptionEditField_FD.Position = [227 265 143 22];
-
-            % Create ThicknessmmPanel
-            app.ThicknessmmPanel = uipanel(app.FDDataAnalysisPanel);
-            app.ThicknessmmPanel.Title = 'Thickness(mm)';
-            app.ThicknessmmPanel.Position = [227 146 143 113];
-
-            % Create ReferenceEditFieldLabel
-            app.ReferenceEditFieldLabel = uilabel(app.ThicknessmmPanel);
-            app.ReferenceEditFieldLabel.HorizontalAlignment = 'right';
-            app.ReferenceEditFieldLabel.Position = [7 35 60 22];
-            app.ReferenceEditFieldLabel.Text = 'Reference';
-
-            % Create ReferenceEditField
-            app.ReferenceEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
-            app.ReferenceEditField.Limits = [0 Inf];
-            app.ReferenceEditField.ValueDisplayFormat = '%6.3f';
-            app.ReferenceEditField.Editable = 'off';
-            app.ReferenceEditField.Position = [77 35 57 22];
-
-            % Create SampleEditFieldLabel
-            app.SampleEditFieldLabel = uilabel(app.ThicknessmmPanel);
-            app.SampleEditFieldLabel.HorizontalAlignment = 'right';
-            app.SampleEditFieldLabel.Position = [7 64 46 22];
-            app.SampleEditFieldLabel.Text = 'Sample';
-
-            % Create SampleEditField
-            app.SampleEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
-            app.SampleEditField.Limits = [0 Inf];
-            app.SampleEditField.ValueDisplayFormat = '%6.3f';
-            app.SampleEditField.Editable = 'off';
-            app.SampleEditField.Position = [77 62 57 22];
-
-            % Create ThicknessSwitch_FD
-            app.ThicknessSwitch_FD = uiswitch(app.ThicknessmmPanel, 'slider');
-            app.ThicknessSwitch_FD.Items = {'Sample', 'Offset'};
-            app.ThicknessSwitch_FD.Position = [53 8 43 19];
-            app.ThicknessSwitch_FD.Value = 'Sample';
-
-            % Create MultipleReflectionCountPanel
-            app.MultipleReflectionCountPanel = uipanel(app.FDDataAnalysisPanel);
-            app.MultipleReflectionCountPanel.Title = 'Multiple Reflection Count';
-            app.MultipleReflectionCountPanel.Position = [227 84 144 54];
-
-            % Create SampleEditField_2Label
-            app.SampleEditField_2Label = uilabel(app.MultipleReflectionCountPanel);
-            app.SampleEditField_2Label.HorizontalAlignment = 'right';
-            app.SampleEditField_2Label.Position = [6 6 46 22];
-            app.SampleEditField_2Label.Text = 'Sample';
-
-            % Create SampleNMREditField
-            app.SampleNMREditField = uieditfield(app.MultipleReflectionCountPanel, 'numeric');
-            app.SampleNMREditField.Limits = [0 Inf];
-            app.SampleNMREditField.ValueDisplayFormat = '%.0f';
-            app.SampleNMREditField.Editable = 'off';
-            app.SampleNMREditField.Position = [92 6 42 22];
-
-            % Create CalculateOpticalParametersButton
-            app.CalculateOpticalParametersButton = uibutton(app.FDDataAnalysisPanel, 'push');
-            app.CalculateOpticalParametersButton.ButtonPushedFcn = createCallbackFcn(app, @CalculateOpticalParametersButtonPushed, true);
-            app.CalculateOpticalParametersButton.FontWeight = 'bold';
-            app.CalculateOpticalParametersButton.Position = [229 21 140 55];
-            app.CalculateOpticalParametersButton.Text = {'Calculate'; 'Optical Parameters'};
-
-            % Create FDSelectionListBox_2Label
-            app.FDSelectionListBox_2Label = uilabel(app.FDDataAnalysisPanel);
-            app.FDSelectionListBox_2Label.Position = [61 290 79 22];
-            app.FDSelectionListBox_2Label.Text = 'FD Selection';
-
-            % Create FDSelectionListBox_2
-            app.FDSelectionListBox_2 = uilistbox(app.FDDataAnalysisPanel);
-            app.FDSelectionListBox_2.Items = {};
-            app.FDSelectionListBox_2.ValueChangedFcn = createCallbackFcn(app, @FDSelectionListBox_2ValueChanged, true);
-            app.FDSelectionListBox_2.Position = [61 14 155 277];
-            app.FDSelectionListBox_2.Value = {};
-
-            % Create PlotDataButtonGroup
-            app.PlotDataButtonGroup = uibuttongroup(app.FDDataAnalysisPanel);
-            app.PlotDataButtonGroup.SelectionChangedFcn = createCallbackFcn(app, @PlotDataButtonGroupSelectionChanged, true);
-            app.PlotDataButtonGroup.Title = 'Plot Data';
-            app.PlotDataButtonGroup.Position = [383 14 159 293];
-
-            % Create TransmittanceButton
-            app.TransmittanceButton = uitogglebutton(app.PlotDataButtonGroup);
-            app.TransmittanceButton.Text = 'Transmittance';
-            app.TransmittanceButton.Position = [9 208 140 55];
-
-            % Create AbsorptionButton
-            app.AbsorptionButton = uitogglebutton(app.PlotDataButtonGroup);
-            app.AbsorptionButton.Enable = 'off';
-            app.AbsorptionButton.Text = 'Absorption';
-            app.AbsorptionButton.Position = [9 142 140 55];
-
-            % Create RefractiveIndexButton
-            app.RefractiveIndexButton = uitogglebutton(app.PlotDataButtonGroup);
-            app.RefractiveIndexButton.Enable = 'off';
-            app.RefractiveIndexButton.Text = 'Refractive Index';
-            app.RefractiveIndexButton.Position = [9 77 140 55];
-            app.RefractiveIndexButton.Value = true;
-
-            % Create DielectricConstantButton
-            app.DielectricConstantButton = uitogglebutton(app.PlotDataButtonGroup);
-            app.DielectricConstantButton.Enable = 'off';
-            app.DielectricConstantButton.Text = 'Dielectric Constant';
-            app.DielectricConstantButton.Position = [9 12 140 55];
-
-            % Create YscaleButtonGroup_2
-            app.YscaleButtonGroup_2 = uibuttongroup(app.FDDataAnalysisPanel);
-            app.YscaleButtonGroup_2.Position = [555 256 100 50];
-
-            % Create logButton_2
-            app.logButton_2 = uiradiobutton(app.YscaleButtonGroup_2);
-            app.logButton_2.Text = 'log';
-            app.logButton_2.Position = [11 24 38 22];
-            app.logButton_2.Value = true;
-
-            % Create linearButton_2
-            app.linearButton_2 = uiradiobutton(app.YscaleButtonGroup_2);
-            app.linearButton_2.Text = 'linear';
-            app.linearButton_2.Position = [11 2 51 22];
-
-            % Create PlotForCustomisationButton_FD2
-            app.PlotForCustomisationButton_FD2 = uibutton(app.FDDataAnalysisPanel, 'push');
-            app.PlotForCustomisationButton_FD2.ButtonPushedFcn = createCallbackFcn(app, @PlotForCustomisationButton_FD2Pushed, true);
-            app.PlotForCustomisationButton_FD2.Position = [554 14 103 45];
-            app.PlotForCustomisationButton_FD2.Text = {'Plot For'; 'Customisation'};
-
-            % Create RealImagButtonGroup
-            app.RealImagButtonGroup = uibuttongroup(app.FDDataAnalysisPanel);
-            app.RealImagButtonGroup.Visible = 'off';
-            app.RealImagButtonGroup.Position = [555 200 100 50];
-
-            % Create RealButton
-            app.RealButton = uiradiobutton(app.RealImagButtonGroup);
-            app.RealButton.Text = 'Real';
-            app.RealButton.Position = [11 24 58 22];
-            app.RealButton.Value = true;
-
-            % Create ImaginaryButton
-            app.ImaginaryButton = uiradiobutton(app.RealImagButtonGroup);
-            app.ImaginaryButton.Text = 'Imaginary';
-            app.ImaginaryButton.Position = [11 2 75 22];
-
-            % Create GridOffButton_2
-            app.GridOffButton_2 = uibutton(app.FDDataAnalysisPanel, 'state');
-            app.GridOffButton_2.Text = 'Grid Off';
-            app.GridOffButton_2.Position = [554 169 103 25];
+            % Create ADDFDButton
+            app.ADDFDButton = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.ADDFDButton.ButtonPushedFcn = createCallbackFcn(app, @ADDFDButtonPushed, true);
+            app.ADDFDButton.Position = [384 689 45 45];
+            app.ADDFDButton.Text = 'ADD';
 
             % Create YscaleButtonGroup
             app.YscaleButtonGroup = uibuttongroup(app.FrequencyDomainFDTab);
@@ -4942,33 +4782,251 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.PhaseButton.Text = 'Phase';
             app.PhaseButton.Position = [11 2 56 22];
 
-            % Create SaveData_FD
-            app.SaveData_FD = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.SaveData_FD.ButtonPushedFcn = createCallbackFcn(app, @SaveData_FDButtonPushed, true);
-            app.SaveData_FD.FontWeight = 'bold';
-            app.SaveData_FD.Tooltip = {'Assign data to variable in the base workspace'};
-            app.SaveData_FD.Position = [153 16 117 30];
-            app.SaveData_FD.Text = 'Save FD_DATA';
+            % Create DELFDButton
+            app.DELFDButton = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.DELFDButton.ButtonPushedFcn = createCallbackFcn(app, @DELFDButtonPushed, true);
+            app.DELFDButton.Position = [384 629 45 45];
+            app.DELFDButton.Text = 'DEL';
 
-            % Create LoadData_FD
-            app.LoadData_FD = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.LoadData_FD.ButtonPushedFcn = createCallbackFcn(app, @LoadData_FDButtonPushed, true);
-            app.LoadData_FD.FontWeight = 'bold';
-            app.LoadData_FD.Tooltip = {'Assign data to variable in the base workspace'};
-            app.LoadData_FD.Position = [27 16 116 30];
-            app.LoadData_FD.Text = 'Load FD_DATA';
+            % Create GridOffButton
+            app.GridOffButton = uibutton(app.FrequencyDomainFDTab, 'state');
+            app.GridOffButton.Text = 'Grid Off';
+            app.GridOffButton.Position = [593 607 100 25];
 
-            % Create LegendButton
-            app.LegendButton = uibutton(app.FrequencyDomainFDTab, 'state');
-            app.LegendButton.ValueChangedFcn = createCallbackFcn(app, @LegendButtonValueChanged, true);
-            app.LegendButton.Text = 'Legend';
-            app.LegendButton.Position = [1216 12 99 23];
+            % Create Plot1FDButton
+            app.Plot1FDButton = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.Plot1FDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot1FDButtonPushed, true);
+            app.Plot1FDButton.Position = [593 556 100 45];
+            app.Plot1FDButton.Text = 'Plot 1';
 
-            % Create JetColormapButton
-            app.JetColormapButton = uibutton(app.FrequencyDomainFDTab, 'state');
-            app.JetColormapButton.ValueChangedFcn = createCallbackFcn(app, @JetColormapButtonValueChanged, true);
-            app.JetColormapButton.Text = 'Jet Colormap';
-            app.JetColormapButton.Position = [1332 12 107 23];
+            % Create Plot2FDButton
+            app.Plot2FDButton = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.Plot2FDButton.ButtonPushedFcn = createCallbackFcn(app, @Plot2FDButtonPushed, true);
+            app.Plot2FDButton.Position = [593 505 100 45];
+            app.Plot2FDButton.Text = 'Plot 2';
+
+            % Create RemoveButton
+            app.RemoveButton = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.RemoveButton.ButtonPushedFcn = createCallbackFcn(app, @RemoveButtonPushed, true);
+            app.RemoveButton.Position = [27 456 156 30];
+            app.RemoveButton.Text = 'Remove';
+
+            % Create RemoveAllButton
+            app.RemoveAllButton = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.RemoveAllButton.ButtonPushedFcn = createCallbackFcn(app, @RemoveAllButtonPushed, true);
+            app.RemoveAllButton.Position = [205 456 156 30];
+            app.RemoveAllButton.Text = 'Remove All';
+
+            % Create PlotForCustomisationButton_FD1
+            app.PlotForCustomisationButton_FD1 = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.PlotForCustomisationButton_FD1.ButtonPushedFcn = createCallbackFcn(app, @PlotForCustomisationButton_FD1Pushed, true);
+            app.PlotForCustomisationButton_FD1.Position = [593 458 100 41];
+            app.PlotForCustomisationButton_FD1.Text = {'Plot For'; 'Customisation'};
+
+            % Create FDDataAnalysisPanel
+            app.FDDataAnalysisPanel = uipanel(app.FrequencyDomainFDTab);
+            app.FDDataAnalysisPanel.Title = 'FD Data Analysis';
+            app.FDDataAnalysisPanel.FontWeight = 'bold';
+            app.FDDataAnalysisPanel.Position = [12 92 686 344];
+
+            % Create FDSelectionListBox_2Label
+            app.FDSelectionListBox_2Label = uilabel(app.FDDataAnalysisPanel);
+            app.FDSelectionListBox_2Label.Position = [61 290 79 22];
+            app.FDSelectionListBox_2Label.Text = 'FD Selection';
+
+            % Create DescriptionEditField_2Label
+            app.DescriptionEditField_2Label = uilabel(app.FDDataAnalysisPanel);
+            app.DescriptionEditField_2Label.Position = [230 287 66 22];
+            app.DescriptionEditField_2Label.Text = 'Description';
+
+            % Create PlotDataButtonGroup
+            app.PlotDataButtonGroup = uibuttongroup(app.FDDataAnalysisPanel);
+            app.PlotDataButtonGroup.SelectionChangedFcn = createCallbackFcn(app, @PlotDataButtonGroupSelectionChanged, true);
+            app.PlotDataButtonGroup.Title = 'Plot Data';
+            app.PlotDataButtonGroup.Position = [413 14 141 293];
+
+            % Create TransmittanceButton
+            app.TransmittanceButton = uitogglebutton(app.PlotDataButtonGroup);
+            app.TransmittanceButton.Text = 'Transmittance';
+            app.TransmittanceButton.Position = [10 208 120 55];
+
+            % Create AbsorptionButton
+            app.AbsorptionButton = uitogglebutton(app.PlotDataButtonGroup);
+            app.AbsorptionButton.Enable = 'off';
+            app.AbsorptionButton.Text = 'Absorption';
+            app.AbsorptionButton.Position = [10 142 120 55];
+
+            % Create RefractiveIndexButton
+            app.RefractiveIndexButton = uitogglebutton(app.PlotDataButtonGroup);
+            app.RefractiveIndexButton.Enable = 'off';
+            app.RefractiveIndexButton.Text = 'Refractive Index';
+            app.RefractiveIndexButton.Position = [10 77 120 55];
+            app.RefractiveIndexButton.Value = true;
+
+            % Create DielectricConstantButton
+            app.DielectricConstantButton = uitogglebutton(app.PlotDataButtonGroup);
+            app.DielectricConstantButton.Enable = 'off';
+            app.DielectricConstantButton.Text = 'Dielectric Constant';
+            app.DielectricConstantButton.Position = [10 12 120 55];
+
+            % Create YscaleButtonGroup_2
+            app.YscaleButtonGroup_2 = uibuttongroup(app.FDDataAnalysisPanel);
+            app.YscaleButtonGroup_2.Position = [567 256 100 50];
+
+            % Create logButton_2
+            app.logButton_2 = uiradiobutton(app.YscaleButtonGroup_2);
+            app.logButton_2.Text = 'log';
+            app.logButton_2.Position = [11 24 38 22];
+            app.logButton_2.Value = true;
+
+            % Create linearButton_2
+            app.linearButton_2 = uiradiobutton(app.YscaleButtonGroup_2);
+            app.linearButton_2.Text = 'linear';
+            app.linearButton_2.Position = [11 2 51 22];
+
+            % Create FDSelectionListBox_2
+            app.FDSelectionListBox_2 = uilistbox(app.FDDataAnalysisPanel);
+            app.FDSelectionListBox_2.Items = {};
+            app.FDSelectionListBox_2.ValueChangedFcn = createCallbackFcn(app, @FDSelectionListBox_2ValueChanged, true);
+            app.FDSelectionListBox_2.Position = [61 14 155 277];
+            app.FDSelectionListBox_2.Value = {};
+
+            % Create DescriptionEditField_FD
+            app.DescriptionEditField_FD = uieditfield(app.FDDataAnalysisPanel, 'text');
+            app.DescriptionEditField_FD.Editable = 'off';
+            app.DescriptionEditField_FD.Position = [227 265 170 22];
+
+            % Create ALLFDButton_2
+            app.ALLFDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
+            app.ALLFDButton_2.ButtonPushedFcn = createCallbackFcn(app, @ALLFDButton_2Pushed, true);
+            app.ALLFDButton_2.Position = [8 229 45 45];
+            app.ALLFDButton_2.Text = 'ALL';
+
+            % Create ThicknessmmPanel
+            app.ThicknessmmPanel = uipanel(app.FDDataAnalysisPanel);
+            app.ThicknessmmPanel.Title = 'Thickness(mm)';
+            app.ThicknessmmPanel.Position = [227 146 170 113];
+
+            % Create SampleEditFieldLabel
+            app.SampleEditFieldLabel = uilabel(app.ThicknessmmPanel);
+            app.SampleEditFieldLabel.HorizontalAlignment = 'right';
+            app.SampleEditFieldLabel.Position = [4 64 46 22];
+            app.SampleEditFieldLabel.Text = 'Sample';
+
+            % Create SampleEditField
+            app.SampleEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
+            app.SampleEditField.Limits = [0 Inf];
+            app.SampleEditField.Editable = 'off';
+            app.SampleEditField.Position = [70 62 90 22];
+
+            % Create ReferenceEditFieldLabel
+            app.ReferenceEditFieldLabel = uilabel(app.ThicknessmmPanel);
+            app.ReferenceEditFieldLabel.HorizontalAlignment = 'right';
+            app.ReferenceEditFieldLabel.Position = [4 35 60 22];
+            app.ReferenceEditFieldLabel.Text = 'Reference';
+
+            % Create ReferenceEditField
+            app.ReferenceEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
+            app.ReferenceEditField.Limits = [0 Inf];
+            app.ReferenceEditField.Editable = 'off';
+            app.ReferenceEditField.Position = [71 35 87 22];
+
+            % Create ThicknessSwitch_FD
+            app.ThicknessSwitch_FD = uiswitch(app.ThicknessmmPanel, 'slider');
+            app.ThicknessSwitch_FD.Items = {'Sample', 'Offset'};
+            app.ThicknessSwitch_FD.Position = [69 8 43 19];
+            app.ThicknessSwitch_FD.Value = 'Sample';
+
+            % Create MagPhaseButtonGroup_2
+            app.MagPhaseButtonGroup_2 = uibuttongroup(app.FDDataAnalysisPanel);
+            app.MagPhaseButtonGroup_2.Position = [567 201 100 50];
+
+            % Create AmplitudeButton_2
+            app.AmplitudeButton_2 = uiradiobutton(app.MagPhaseButtonGroup_2);
+            app.AmplitudeButton_2.Text = 'Amplitude';
+            app.AmplitudeButton_2.Position = [11 24 75 22];
+            app.AmplitudeButton_2.Value = true;
+
+            % Create PhaseButton_2
+            app.PhaseButton_2 = uiradiobutton(app.MagPhaseButtonGroup_2);
+            app.PhaseButton_2.Text = 'Phase';
+            app.PhaseButton_2.Position = [11 2 56 22];
+
+            % Create RealImagButtonGroup
+            app.RealImagButtonGroup = uibuttongroup(app.FDDataAnalysisPanel);
+            app.RealImagButtonGroup.Visible = 'off';
+            app.RealImagButtonGroup.Position = [567 200 100 50];
+
+            % Create RealButton
+            app.RealButton = uiradiobutton(app.RealImagButtonGroup);
+            app.RealButton.Text = 'Real';
+            app.RealButton.Position = [11 24 58 22];
+            app.RealButton.Value = true;
+
+            % Create ImaginaryButton
+            app.ImaginaryButton = uiradiobutton(app.RealImagButtonGroup);
+            app.ImaginaryButton.Text = 'Imaginary';
+            app.ImaginaryButton.Position = [11 2 75 22];
+
+            % Create ADDFDButton_2
+            app.ADDFDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
+            app.ADDFDButton_2.ButtonPushedFcn = createCallbackFcn(app, @ADDFDButton_2Pushed, true);
+            app.ADDFDButton_2.Position = [8 171 45 45];
+            app.ADDFDButton_2.Text = 'ADD';
+
+            % Create GridOffButton_2
+            app.GridOffButton_2 = uibutton(app.FDDataAnalysisPanel, 'state');
+            app.GridOffButton_2.Text = 'Grid Off';
+            app.GridOffButton_2.Position = [566 169 103 25];
+
+            % Create DELFDButton_2
+            app.DELFDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
+            app.DELFDButton_2.ButtonPushedFcn = createCallbackFcn(app, @DELFDButton_2Pushed, true);
+            app.DELFDButton_2.Position = [8 114 45 45];
+            app.DELFDButton_2.Text = 'DEL';
+
+            % Create Plot1FDButton_2
+            app.Plot1FDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
+            app.Plot1FDButton_2.ButtonPushedFcn = createCallbackFcn(app, @Plot1FDButton_2Pushed, true);
+            app.Plot1FDButton_2.Position = [566 118 104 45];
+            app.Plot1FDButton_2.Text = 'Plot 1';
+
+            % Create MultipleReflectionCountPanel
+            app.MultipleReflectionCountPanel = uipanel(app.FDDataAnalysisPanel);
+            app.MultipleReflectionCountPanel.Title = 'Multiple Reflection Count';
+            app.MultipleReflectionCountPanel.Position = [227 84 170 54];
+
+            % Create SampleEditField_2Label
+            app.SampleEditField_2Label = uilabel(app.MultipleReflectionCountPanel);
+            app.SampleEditField_2Label.HorizontalAlignment = 'right';
+            app.SampleEditField_2Label.Position = [9 6 46 22];
+            app.SampleEditField_2Label.Text = 'Sample';
+
+            % Create SampleNMREditField
+            app.SampleNMREditField = uieditfield(app.MultipleReflectionCountPanel, 'numeric');
+            app.SampleNMREditField.Limits = [0 Inf];
+            app.SampleNMREditField.ValueDisplayFormat = '%.0f';
+            app.SampleNMREditField.Editable = 'off';
+            app.SampleNMREditField.Position = [105 6 42 22];
+
+            % Create Plot2FDButton_2
+            app.Plot2FDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
+            app.Plot2FDButton_2.ButtonPushedFcn = createCallbackFcn(app, @Plot2FDButton_2Pushed, true);
+            app.Plot2FDButton_2.Position = [566 65 104 45];
+            app.Plot2FDButton_2.Text = 'Plot 2';
+
+            % Create CalculateOpticalParametersButton
+            app.CalculateOpticalParametersButton = uibutton(app.FDDataAnalysisPanel, 'push');
+            app.CalculateOpticalParametersButton.ButtonPushedFcn = createCallbackFcn(app, @CalculateOpticalParametersButtonPushed, true);
+            app.CalculateOpticalParametersButton.FontWeight = 'bold';
+            app.CalculateOpticalParametersButton.Position = [229 21 164 55];
+            app.CalculateOpticalParametersButton.Text = {'Calculate'; 'Optical Parameters'};
+
+            % Create PlotForCustomisationButton_FD2
+            app.PlotForCustomisationButton_FD2 = uibutton(app.FDDataAnalysisPanel, 'push');
+            app.PlotForCustomisationButton_FD2.ButtonPushedFcn = createCallbackFcn(app, @PlotForCustomisationButton_FD2Pushed, true);
+            app.PlotForCustomisationButton_FD2.Position = [566 14 103 45];
+            app.PlotForCustomisationButton_FD2.Text = {'Plot For'; 'Customisation'};
 
             % Create FDDatatoLabel
             app.FDDatatoLabel = uilabel(app.FrequencyDomainFDTab);
@@ -4985,16 +5043,41 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.DataManipulationButton.Position = [97 57 295 26];
             app.DataManipulationButton.Text = 'Data Manipulation';
 
-            % Create GridOffButton
-            app.GridOffButton = uibutton(app.FrequencyDomainFDTab, 'state');
-            app.GridOffButton.Text = 'Grid Off';
-            app.GridOffButton.Position = [593 607 100 25];
+            % Create LoadData_FD
+            app.LoadData_FD = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.LoadData_FD.ButtonPushedFcn = createCallbackFcn(app, @LoadData_FDButtonPushed, true);
+            app.LoadData_FD.FontWeight = 'bold';
+            app.LoadData_FD.Tooltip = {'Assign data to variable in the base workspace'};
+            app.LoadData_FD.Position = [27 16 116 30];
+            app.LoadData_FD.Text = 'Load FD_DATA';
 
-            % Create PlotForCustomisationButton_FD1
-            app.PlotForCustomisationButton_FD1 = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.PlotForCustomisationButton_FD1.ButtonPushedFcn = createCallbackFcn(app, @PlotForCustomisationButton_FD1Pushed, true);
-            app.PlotForCustomisationButton_FD1.Position = [593 458 100 41];
-            app.PlotForCustomisationButton_FD1.Text = {'Plot For'; 'Customisation'};
+            % Create SaveData_FD
+            app.SaveData_FD = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.SaveData_FD.ButtonPushedFcn = createCallbackFcn(app, @SaveData_FDButtonPushed, true);
+            app.SaveData_FD.FontWeight = 'bold';
+            app.SaveData_FD.Tooltip = {'Assign data to variable in the base workspace'};
+            app.SaveData_FD.Position = [153 16 117 30];
+            app.SaveData_FD.Text = 'Save FD_DATA';
+
+            % Create AssignFD_DataButton
+            app.AssignFD_DataButton = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.AssignFD_DataButton.ButtonPushedFcn = createCallbackFcn(app, @AssignFD_DataButtonPushed, true);
+            app.AssignFD_DataButton.FontWeight = 'bold';
+            app.AssignFD_DataButton.Tooltip = {'Assign data to variable in the base workspace'};
+            app.AssignFD_DataButton.Position = [283 16 220 30];
+            app.AssignFD_DataButton.Text = 'Assign FD_DATA in Workspace';
+
+            % Create LegendButton_FD
+            app.LegendButton_FD = uibutton(app.FrequencyDomainFDTab, 'state');
+            app.LegendButton_FD.ValueChangedFcn = createCallbackFcn(app, @LegendButton_FDValueChanged, true);
+            app.LegendButton_FD.Text = 'Legend';
+            app.LegendButton_FD.Position = [1216 12 99 23];
+
+            % Create JetColormapButton_FD
+            app.JetColormapButton_FD = uibutton(app.FrequencyDomainFDTab, 'state');
+            app.JetColormapButton_FD.ValueChangedFcn = createCallbackFcn(app, @JetColormapButton_FDValueChanged, true);
+            app.JetColormapButton_FD.Text = 'Jet Colormap';
+            app.JetColormapButton_FD.Position = [1332 12 107 23];
 
             % Create DataManipulationDMTab
             app.DataManipulationDMTab = uitab(app.TabGroup);
@@ -5029,6 +5112,31 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.UIAxes9.Box = 'on';
             app.UIAxes9.Position = [681 9 750 400];
 
+            % Create AvailableDataSetEditFieldLabel
+            app.AvailableDataSetEditFieldLabel = uilabel(app.STEP1Panel);
+            app.AvailableDataSetEditFieldLabel.HorizontalAlignment = 'right';
+            app.AvailableDataSetEditFieldLabel.Position = [19 373 104 22];
+            app.AvailableDataSetEditFieldLabel.Text = 'Available Data Set';
+
+            % Create AvailableDataSetEditField
+            app.AvailableDataSetEditField = uieditfield(app.STEP1Panel, 'text');
+            app.AvailableDataSetEditField.Editable = 'off';
+            app.AvailableDataSetEditField.Position = [129 373 537 22];
+
+            % Create ImportAllDataButton
+            app.ImportAllDataButton = uibutton(app.STEP1Panel, 'push');
+            app.ImportAllDataButton.ButtonPushedFcn = createCallbackFcn(app, @ImportAllDataButtonPushed, true);
+            app.ImportAllDataButton.BackgroundColor = [0.902 0.902 0.902];
+            app.ImportAllDataButton.Position = [129 343 209 23];
+            app.ImportAllDataButton.Text = 'Import All Data';
+
+            % Create ImportAllDataInverseSequenceButton
+            app.ImportAllDataInverseSequenceButton = uibutton(app.STEP1Panel, 'push');
+            app.ImportAllDataInverseSequenceButton.ButtonPushedFcn = createCallbackFcn(app, @ImportAllDataInverseSequenceButtonPushed, true);
+            app.ImportAllDataInverseSequenceButton.BackgroundColor = [0.902 0.902 0.902];
+            app.ImportAllDataInverseSequenceButton.Position = [348 343 209 23];
+            app.ImportAllDataInverseSequenceButton.Text = 'Import All Data (Inverse Sequence)';
+
             % Create SourceDataSetEditFieldLabel
             app.SourceDataSetEditFieldLabel = uilabel(app.STEP1Panel);
             app.SourceDataSetEditFieldLabel.HorizontalAlignment = 'right';
@@ -5039,6 +5147,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.SourceDataSetEditField = uieditfield(app.STEP1Panel, 'text');
             app.SourceDataSetEditField.Position = [129 315 537 22];
             app.SourceDataSetEditField.Value = 'ex) 1 2 3 4 5';
+
+            % Create DefinevariablesLabel
+            app.DefinevariablesLabel = uilabel(app.STEP1Panel);
+            app.DefinevariablesLabel.Position = [24 276 95 22];
+            app.DefinevariablesLabel.Text = 'Define variables ';
 
             % Create AforDropDownLabel
             app.AforDropDownLabel = uilabel(app.STEP1Panel);
@@ -5051,41 +5164,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.AforDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractiveIndex', 'absorption', 'extinction', 'eReal', 'eImag'};
             app.AforDropDown.Position = [151 277 113 22];
             app.AforDropDown.Value = 'frequency';
-
-            % Create DefinevariablesLabel
-            app.DefinevariablesLabel = uilabel(app.STEP1Panel);
-            app.DefinevariablesLabel.Position = [24 276 95 22];
-            app.DefinevariablesLabel.Text = 'Define variables ';
-
-            % Create XaxisDataDropDownLabel
-            app.XaxisDataDropDownLabel = uilabel(app.STEP1Panel);
-            app.XaxisDataDropDownLabel.HorizontalAlignment = 'right';
-            app.XaxisDataDropDownLabel.Position = [25 241 67 22];
-            app.XaxisDataDropDownLabel.Text = 'X-axis Data';
-
-            % Create XaxisDataDropDown
-            app.XaxisDataDropDown = uidropdown(app.STEP1Panel);
-            app.XaxisDataDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractiveIndex', 'absorption', 'extinction', 'eReal', 'eImag'};
-            app.XaxisDataDropDown.Position = [151 241 115 22];
-            app.XaxisDataDropDown.Value = 'frequency';
-
-            % Create YaxisDataFormulationEditFieldLabel
-            app.YaxisDataFormulationEditFieldLabel = uilabel(app.STEP1Panel);
-            app.YaxisDataFormulationEditFieldLabel.HorizontalAlignment = 'right';
-            app.YaxisDataFormulationEditFieldLabel.Position = [24 206 133 22];
-            app.YaxisDataFormulationEditFieldLabel.Text = 'Y-axis Data Formulation';
-
-            % Create YaxisDataFormulationEditField
-            app.YaxisDataFormulationEditField = uieditfield(app.STEP1Panel, 'text');
-            app.YaxisDataFormulationEditField.Position = [181 206 382 22];
-            app.YaxisDataFormulationEditField.Value = 'A';
-
-            % Create PlotindividualdatasetsButton
-            app.PlotindividualdatasetsButton = uibutton(app.STEP1Panel, 'push');
-            app.PlotindividualdatasetsButton.ButtonPushedFcn = createCallbackFcn(app, @PlotindividualdatasetsButtonPushed, true);
-            app.PlotindividualdatasetsButton.Enable = 'off';
-            app.PlotindividualdatasetsButton.Position = [411 64 231 30];
-            app.PlotindividualdatasetsButton.Text = 'Plot (individual data sets)';
 
             % Create BforDropDownLabel
             app.BforDropDownLabel = uilabel(app.STEP1Panel);
@@ -5111,30 +5189,33 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.CforDropDown.Position = [454 277 113 22];
             app.CforDropDown.Value = 'frequency';
 
-            % Create CalculateButton
-            app.CalculateButton = uibutton(app.STEP1Panel, 'push');
-            app.CalculateButton.ButtonPushedFcn = createCallbackFcn(app, @CalculateButtonPushed, true);
-            app.CalculateButton.BackgroundColor = [1 1 1];
-            app.CalculateButton.Position = [411 103 231 30];
-            app.CalculateButton.Text = 'Calculate';
+            % Create XaxisDataDropDownLabel
+            app.XaxisDataDropDownLabel = uilabel(app.STEP1Panel);
+            app.XaxisDataDropDownLabel.HorizontalAlignment = 'right';
+            app.XaxisDataDropDownLabel.Position = [25 241 67 22];
+            app.XaxisDataDropDownLabel.Text = 'X-axis Data';
 
-            % Create ImportAllDataButton
-            app.ImportAllDataButton = uibutton(app.STEP1Panel, 'push');
-            app.ImportAllDataButton.ButtonPushedFcn = createCallbackFcn(app, @ImportAllDataButtonPushed, true);
-            app.ImportAllDataButton.BackgroundColor = [0.902 0.902 0.902];
-            app.ImportAllDataButton.Position = [129 343 209 23];
-            app.ImportAllDataButton.Text = 'Import All Data';
+            % Create XaxisDataDropDown
+            app.XaxisDataDropDown = uidropdown(app.STEP1Panel);
+            app.XaxisDataDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractiveIndex', 'absorption', 'extinction', 'eReal', 'eImag'};
+            app.XaxisDataDropDown.Position = [151 241 115 22];
+            app.XaxisDataDropDown.Value = 'frequency';
 
-            % Create AvailableDataSetEditFieldLabel
-            app.AvailableDataSetEditFieldLabel = uilabel(app.STEP1Panel);
-            app.AvailableDataSetEditFieldLabel.HorizontalAlignment = 'right';
-            app.AvailableDataSetEditFieldLabel.Position = [19 373 104 22];
-            app.AvailableDataSetEditFieldLabel.Text = 'Available Data Set';
+            % Create YaxisDataFormulationEditFieldLabel
+            app.YaxisDataFormulationEditFieldLabel = uilabel(app.STEP1Panel);
+            app.YaxisDataFormulationEditFieldLabel.HorizontalAlignment = 'right';
+            app.YaxisDataFormulationEditFieldLabel.Position = [24 206 133 22];
+            app.YaxisDataFormulationEditFieldLabel.Text = 'Y-axis Data Formulation';
 
-            % Create AvailableDataSetEditField
-            app.AvailableDataSetEditField = uieditfield(app.STEP1Panel, 'text');
-            app.AvailableDataSetEditField.Editable = 'off';
-            app.AvailableDataSetEditField.Position = [129 373 537 22];
+            % Create YaxisDataFormulationEditField
+            app.YaxisDataFormulationEditField = uieditfield(app.STEP1Panel, 'text');
+            app.YaxisDataFormulationEditField.Position = [181 206 382 22];
+            app.YaxisDataFormulationEditField.Value = 'A';
+
+            % Create exABABCetcLabel
+            app.exABABCetcLabel = uilabel(app.STEP1Panel);
+            app.exABABCetcLabel.Position = [182 183 129 22];
+            app.exABABCetcLabel.Text = 'ex) A./B , (A+B).*C, etc';
 
             % Create NumberofDataEditFieldLabel
             app.NumberofDataEditFieldLabel = uilabel(app.STEP1Panel);
@@ -5147,21 +5228,17 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.NumberofDataEditField.Editable = 'off';
             app.NumberofDataEditField.Position = [131 152 71 22];
 
-            % Create exABABCetcLabel
-            app.exABABCetcLabel = uilabel(app.STEP1Panel);
-            app.exABABCetcLabel.Position = [182 183 129 22];
-            app.exABABCetcLabel.Text = 'ex) A./B , (A+B).*C, etc';
+            % Create CalculateButton
+            app.CalculateButton = uibutton(app.STEP1Panel, 'push');
+            app.CalculateButton.ButtonPushedFcn = createCallbackFcn(app, @CalculateButtonPushed, true);
+            app.CalculateButton.BackgroundColor = [1 1 1];
+            app.CalculateButton.Position = [411 103 231 30];
+            app.CalculateButton.Text = 'Calculate';
 
             % Create DPlotFrequencyxaxisPanel
             app.DPlotFrequencyxaxisPanel = uipanel(app.STEP1Panel);
             app.DPlotFrequencyxaxisPanel.Title = '3D Plot (Frequency x-axis)';
             app.DPlotFrequencyxaxisPanel.Position = [39 26 345 71];
-
-            % Create Plot1_3DButton
-            app.Plot1_3DButton = uibutton(app.DPlotFrequencyxaxisPanel, 'push');
-            app.Plot1_3DButton.ButtonPushedFcn = createCallbackFcn(app, @Plot1_3DButtonPushed, true);
-            app.Plot1_3DButton.Position = [216 20 114 23];
-            app.Plot1_3DButton.Text = '3D Plot 1';
 
             % Create dataDropDownLabel
             app.dataDropDownLabel = uilabel(app.DPlotFrequencyxaxisPanel);
@@ -5175,11 +5252,24 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.data3DDropDown.Position = [53 21 152 22];
             app.data3DDropDown.Value = 'no available data';
 
+            % Create Plot1_3DButton
+            app.Plot1_3DButton = uibutton(app.DPlotFrequencyxaxisPanel, 'push');
+            app.Plot1_3DButton.ButtonPushedFcn = createCallbackFcn(app, @Plot1_3DButtonPushed, true);
+            app.Plot1_3DButton.Position = [216 20 114 23];
+            app.Plot1_3DButton.Text = '3D Plot 1';
+
             % Create DplotdoesnotsupportthebelowextractingfunctionLabel
             app.DplotdoesnotsupportthebelowextractingfunctionLabel = uilabel(app.DPlotFrequencyxaxisPanel);
             app.DplotdoesnotsupportthebelowextractingfunctionLabel.FontSize = 10;
             app.DplotdoesnotsupportthebelowextractingfunctionLabel.Position = [41 0 249 22];
             app.DplotdoesnotsupportthebelowextractingfunctionLabel.Text = '*3D plot doesnot support the below extracting function.';
+
+            % Create PlotindividualdatasetsButton
+            app.PlotindividualdatasetsButton = uibutton(app.STEP1Panel, 'push');
+            app.PlotindividualdatasetsButton.ButtonPushedFcn = createCallbackFcn(app, @PlotindividualdatasetsButtonPushed, true);
+            app.PlotindividualdatasetsButton.Enable = 'off';
+            app.PlotindividualdatasetsButton.Position = [411 64 231 30];
+            app.PlotindividualdatasetsButton.Text = 'Plot (individual data sets)';
 
             % Create PlotmeanandrangeButton
             app.PlotmeanandrangeButton = uibutton(app.STEP1Panel, 'push');
@@ -5188,29 +5278,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.PlotmeanandrangeButton.Position = [411 26 231 30];
             app.PlotmeanandrangeButton.Text = 'Plot (mean and range)';
 
-            % Create ImportAllDataInverseSequenceButton
-            app.ImportAllDataInverseSequenceButton = uibutton(app.STEP1Panel, 'push');
-            app.ImportAllDataInverseSequenceButton.ButtonPushedFcn = createCallbackFcn(app, @ImportAllDataInverseSequenceButtonPushed, true);
-            app.ImportAllDataInverseSequenceButton.BackgroundColor = [0.902 0.902 0.902];
-            app.ImportAllDataInverseSequenceButton.Position = [348 343 209 23];
-            app.ImportAllDataInverseSequenceButton.Text = 'Import All Data (Inverse Sequence)';
-
-            % Create AssignDM_DataButton
-            app.AssignDM_DataButton = uibutton(app.DataManipulationDMTab, 'push');
-            app.AssignDM_DataButton.ButtonPushedFcn = createCallbackFcn(app, @AssignDM_DataButtonPushed, true);
-            app.AssignDM_DataButton.FontWeight = 'bold';
-            app.AssignDM_DataButton.Tooltip = {'Assign data to variable in the base workspace'};
-            app.AssignDM_DataButton.Position = [148 22 220 30];
-            app.AssignDM_DataButton.Text = 'Assign DM_DATA in Workspace';
-
-            % Create SaveData_DM
-            app.SaveData_DM = uibutton(app.DataManipulationDMTab, 'push');
-            app.SaveData_DM.ButtonPushedFcn = createCallbackFcn(app, @SaveData_DMButtonPushed, true);
-            app.SaveData_DM.FontWeight = 'bold';
-            app.SaveData_DM.Tooltip = {'Assign data to variable in the base workspace'};
-            app.SaveData_DM.Position = [27 22 113 30];
-            app.SaveData_DM.Text = 'Save DM_DATA';
-
             % Create DMTabGroup
             app.DMTabGroup = uitabgroup(app.DataManipulationDMTab);
             app.DMTabGroup.Position = [25 109 648 280];
@@ -5218,6 +5285,17 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create FrequencyBaseTab
             app.FrequencyBaseTab = uitab(app.DMTabGroup);
             app.FrequencyBaseTab.Title = 'Frequency Base';
+
+            % Create GetDatafromFrequencyTHzEditFieldLabel
+            app.GetDatafromFrequencyTHzEditFieldLabel = uilabel(app.FrequencyBaseTab);
+            app.GetDatafromFrequencyTHzEditFieldLabel.HorizontalAlignment = 'right';
+            app.GetDatafromFrequencyTHzEditFieldLabel.Position = [17 204 171 22];
+            app.GetDatafromFrequencyTHzEditFieldLabel.Text = 'Get Data from Frequency(THz)';
+
+            % Create GetDatafromFrequencyTHzEditField
+            app.GetDatafromFrequencyTHzEditField = uieditfield(app.FrequencyBaseTab, 'text');
+            app.GetDatafromFrequencyTHzEditField.Position = [202 204 252 22];
+            app.GetDatafromFrequencyTHzEditField.Value = '1';
 
             % Create DisplayXLinesButton
             app.DisplayXLinesButton = uibutton(app.FrequencyBaseTab, 'push');
@@ -5232,13 +5310,15 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.RearrangeDataButton.Position = [104 170 518 23];
             app.RearrangeDataButton.Text = 'Re-arrange Data';
 
-            % Create PlotButton
-            app.PlotButton = uibutton(app.FrequencyBaseTab, 'push');
-            app.PlotButton.ButtonPushedFcn = createCallbackFcn(app, @PlotButtonPushed, true);
-            app.PlotButton.BackgroundColor = [0.902 0.902 0.902];
-            app.PlotButton.Enable = 'off';
-            app.PlotButton.Position = [329 22 295 30];
-            app.PlotButton.Text = 'Plot';
+            % Create MeasurementEditFieldLabel
+            app.MeasurementEditFieldLabel = uilabel(app.FrequencyBaseTab);
+            app.MeasurementEditFieldLabel.HorizontalAlignment = 'right';
+            app.MeasurementEditFieldLabel.Position = [19 138 79 23];
+            app.MeasurementEditFieldLabel.Text = 'Measurement';
+
+            % Create MeasurementEditField
+            app.MeasurementEditField = uieditfield(app.FrequencyBaseTab, 'text');
+            app.MeasurementEditField.Position = [104 138 520 22];
 
             % Create XaxisDataEditFieldLabel
             app.XaxisDataEditFieldLabel = uilabel(app.FrequencyBaseTab);
@@ -5249,17 +5329,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create XaxisDataEditField
             app.XaxisDataEditField = uieditfield(app.FrequencyBaseTab, 'text');
             app.XaxisDataEditField.Position = [104 104 520 22];
-
-            % Create GetDatafromFrequencyTHzEditFieldLabel
-            app.GetDatafromFrequencyTHzEditFieldLabel = uilabel(app.FrequencyBaseTab);
-            app.GetDatafromFrequencyTHzEditFieldLabel.HorizontalAlignment = 'right';
-            app.GetDatafromFrequencyTHzEditFieldLabel.Position = [17 204 171 22];
-            app.GetDatafromFrequencyTHzEditFieldLabel.Text = 'Get Data from Frequency(THz)';
-
-            % Create GetDatafromFrequencyTHzEditField
-            app.GetDatafromFrequencyTHzEditField = uieditfield(app.FrequencyBaseTab, 'text');
-            app.GetDatafromFrequencyTHzEditField.Position = [202 204 252 22];
-            app.GetDatafromFrequencyTHzEditField.Value = '1';
 
             % Create XLabelEditFieldLabel
             app.XLabelEditFieldLabel = uilabel(app.FrequencyBaseTab);
@@ -5281,33 +5350,42 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.YLabelEditField = uieditfield(app.FrequencyBaseTab, 'text');
             app.YLabelEditField.Position = [365 69 259 22];
 
-            % Create MeasurementEditFieldLabel
-            app.MeasurementEditFieldLabel = uilabel(app.FrequencyBaseTab);
-            app.MeasurementEditFieldLabel.HorizontalAlignment = 'right';
-            app.MeasurementEditFieldLabel.Position = [19 138 79 23];
-            app.MeasurementEditFieldLabel.Text = 'Measurement';
-
-            % Create MeasurementEditField
-            app.MeasurementEditField = uieditfield(app.FrequencyBaseTab, 'text');
-            app.MeasurementEditField.Position = [104 138 520 22];
+            % Create PlotButton
+            app.PlotButton = uibutton(app.FrequencyBaseTab, 'push');
+            app.PlotButton.ButtonPushedFcn = createCallbackFcn(app, @PlotButtonPushed, true);
+            app.PlotButton.BackgroundColor = [0.902 0.902 0.902];
+            app.PlotButton.Enable = 'off';
+            app.PlotButton.Position = [329 22 295 30];
+            app.PlotButton.Text = 'Plot';
 
             % Create PeakBaseTab
             app.PeakBaseTab = uitab(app.DMTabGroup);
             app.PeakBaseTab.Title = 'Peak Base';
 
-            % Create RearrangeDataButton_2
-            app.RearrangeDataButton_2 = uibutton(app.PeakBaseTab, 'push');
-            app.RearrangeDataButton_2.ButtonPushedFcn = createCallbackFcn(app, @RearrangeDataButton_2Pushed, true);
-            app.RearrangeDataButton_2.BackgroundColor = [0.902 0.902 0.902];
-            app.RearrangeDataButton_2.Position = [103 164 521 23];
-            app.RearrangeDataButton_2.Text = 'Re-arrange Data';
+            % Create MinPeakProminenceEditFieldLabel
+            app.MinPeakProminenceEditFieldLabel = uilabel(app.PeakBaseTab);
+            app.MinPeakProminenceEditFieldLabel.HorizontalAlignment = 'right';
+            app.MinPeakProminenceEditFieldLabel.Position = [45 199 126 22];
+            app.MinPeakProminenceEditFieldLabel.Text = 'Min. Peak Prominence';
 
-            % Create PlotButton_2
-            app.PlotButton_2 = uibutton(app.PeakBaseTab, 'push');
-            app.PlotButton_2.ButtonPushedFcn = createCallbackFcn(app, @PlotButton_2Pushed, true);
-            app.PlotButton_2.BackgroundColor = [0.902 0.902 0.902];
-            app.PlotButton_2.Position = [347 20 275 30];
-            app.PlotButton_2.Text = 'Plot';
+            % Create MinPeakProminenceEditField
+            app.MinPeakProminenceEditField = uieditfield(app.PeakBaseTab, 'numeric');
+            app.MinPeakProminenceEditField.Limits = [0 Inf];
+            app.MinPeakProminenceEditField.ValueChangedFcn = createCallbackFcn(app, @MinPeakProminenceEditFieldValueChanged, true);
+            app.MinPeakProminenceEditField.Position = [178 199 74 22];
+
+            % Create LowerLimitTHzEditFieldLabel
+            app.LowerLimitTHzEditFieldLabel = uilabel(app.PeakBaseTab);
+            app.LowerLimitTHzEditFieldLabel.HorizontalAlignment = 'right';
+            app.LowerLimitTHzEditFieldLabel.Position = [267 199 100 22];
+            app.LowerLimitTHzEditFieldLabel.Text = 'Lower Limit (THz)';
+
+            % Create LowerLimitTHzEditField
+            app.LowerLimitTHzEditField = uieditfield(app.PeakBaseTab, 'numeric');
+            app.LowerLimitTHzEditField.Limits = [0 4];
+            app.LowerLimitTHzEditField.ValueChangedFcn = createCallbackFcn(app, @LowerLimitTHzEditFieldValueChanged, true);
+            app.LowerLimitTHzEditField.Position = [373 199 54 22];
+            app.LowerLimitTHzEditField.Value = 1;
 
             % Create PeakNumSpinnerLabel
             app.PeakNumSpinnerLabel = uilabel(app.PeakBaseTab);
@@ -5322,18 +5400,22 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.PeakNumSpinner.Position = [566 200 64 22];
             app.PeakNumSpinner.Value = 1;
 
-            % Create LowerLimitTHzEditFieldLabel
-            app.LowerLimitTHzEditFieldLabel = uilabel(app.PeakBaseTab);
-            app.LowerLimitTHzEditFieldLabel.HorizontalAlignment = 'right';
-            app.LowerLimitTHzEditFieldLabel.Position = [267 199 100 22];
-            app.LowerLimitTHzEditFieldLabel.Text = 'Lower Limit (THz)';
+            % Create RearrangeDataButton_2
+            app.RearrangeDataButton_2 = uibutton(app.PeakBaseTab, 'push');
+            app.RearrangeDataButton_2.ButtonPushedFcn = createCallbackFcn(app, @RearrangeDataButton_2Pushed, true);
+            app.RearrangeDataButton_2.BackgroundColor = [0.902 0.902 0.902];
+            app.RearrangeDataButton_2.Position = [103 164 521 23];
+            app.RearrangeDataButton_2.Text = 'Re-arrange Data';
 
-            % Create LowerLimitTHzEditField
-            app.LowerLimitTHzEditField = uieditfield(app.PeakBaseTab, 'numeric');
-            app.LowerLimitTHzEditField.Limits = [0 4];
-            app.LowerLimitTHzEditField.ValueChangedFcn = createCallbackFcn(app, @LowerLimitTHzEditFieldValueChanged, true);
-            app.LowerLimitTHzEditField.Position = [373 199 54 22];
-            app.LowerLimitTHzEditField.Value = 1;
+            % Create MeasurementEditField_2Label
+            app.MeasurementEditField_2Label = uilabel(app.PeakBaseTab);
+            app.MeasurementEditField_2Label.HorizontalAlignment = 'right';
+            app.MeasurementEditField_2Label.Position = [18 132 79 23];
+            app.MeasurementEditField_2Label.Text = 'Measurement';
+
+            % Create MeasurementEditField_2
+            app.MeasurementEditField_2 = uieditfield(app.PeakBaseTab, 'text');
+            app.MeasurementEditField_2.Position = [103 132 519 22];
 
             % Create XaxisDataEditField_2Label
             app.XaxisDataEditField_2Label = uilabel(app.PeakBaseTab);
@@ -5365,95 +5447,34 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.YLabelEditField_2 = uieditfield(app.PeakBaseTab, 'text');
             app.YLabelEditField_2.Position = [418 65 204 22];
 
-            % Create MeasurementEditField_2Label
-            app.MeasurementEditField_2Label = uilabel(app.PeakBaseTab);
-            app.MeasurementEditField_2Label.HorizontalAlignment = 'right';
-            app.MeasurementEditField_2Label.Position = [18 132 79 23];
-            app.MeasurementEditField_2Label.Text = 'Measurement';
+            % Create PlotButton_2
+            app.PlotButton_2 = uibutton(app.PeakBaseTab, 'push');
+            app.PlotButton_2.ButtonPushedFcn = createCallbackFcn(app, @PlotButton_2Pushed, true);
+            app.PlotButton_2.BackgroundColor = [0.902 0.902 0.902];
+            app.PlotButton_2.Position = [347 20 275 30];
+            app.PlotButton_2.Text = 'Plot';
 
-            % Create MeasurementEditField_2
-            app.MeasurementEditField_2 = uieditfield(app.PeakBaseTab, 'text');
-            app.MeasurementEditField_2.Position = [103 132 519 22];
+            % Create SaveData_DM
+            app.SaveData_DM = uibutton(app.DataManipulationDMTab, 'push');
+            app.SaveData_DM.ButtonPushedFcn = createCallbackFcn(app, @SaveData_DMButtonPushed, true);
+            app.SaveData_DM.FontWeight = 'bold';
+            app.SaveData_DM.Tooltip = {'Assign data to variable in the base workspace'};
+            app.SaveData_DM.Position = [27 22 113 30];
+            app.SaveData_DM.Text = 'Save DM_DATA';
 
-            % Create MinPeakProminenceEditFieldLabel
-            app.MinPeakProminenceEditFieldLabel = uilabel(app.PeakBaseTab);
-            app.MinPeakProminenceEditFieldLabel.HorizontalAlignment = 'right';
-            app.MinPeakProminenceEditFieldLabel.Position = [45 199 126 22];
-            app.MinPeakProminenceEditFieldLabel.Text = 'Min. Peak Prominence';
-
-            % Create MinPeakProminenceEditField
-            app.MinPeakProminenceEditField = uieditfield(app.PeakBaseTab, 'numeric');
-            app.MinPeakProminenceEditField.Limits = [0 Inf];
-            app.MinPeakProminenceEditField.ValueChangedFcn = createCallbackFcn(app, @MinPeakProminenceEditFieldValueChanged, true);
-            app.MinPeakProminenceEditField.Position = [178 199 74 22];
+            % Create AssignDM_DataButton
+            app.AssignDM_DataButton = uibutton(app.DataManipulationDMTab, 'push');
+            app.AssignDM_DataButton.ButtonPushedFcn = createCallbackFcn(app, @AssignDM_DataButtonPushed, true);
+            app.AssignDM_DataButton.FontWeight = 'bold';
+            app.AssignDM_DataButton.Tooltip = {'Assign data to variable in the base workspace'};
+            app.AssignDM_DataButton.Position = [148 22 220 30];
+            app.AssignDM_DataButton.Text = 'Assign DM_DATA in Workspace';
 
             % Create JetColormapButton_DM
             app.JetColormapButton_DM = uibutton(app.DataManipulationDMTab, 'state');
             app.JetColormapButton_DM.ValueChangedFcn = createCallbackFcn(app, @JetColormapButton_DMValueChanged, true);
             app.JetColormapButton_DM.Text = 'Jet Colormap';
             app.JetColormapButton_DM.Position = [559 23 107 26];
-
-            % Create SystemStatusLabel
-            app.SystemStatusLabel = uilabel(app.CaTSperUIFigure);
-            app.SystemStatusLabel.Position = [967 959 84 22];
-            app.SystemStatusLabel.Text = 'System Status';
-
-            % Create DEBUGMsgLabel
-            app.DEBUGMsgLabel = uilabel(app.CaTSperUIFigure);
-            app.DEBUGMsgLabel.FontWeight = 'bold';
-            app.DEBUGMsgLabel.Position = [1060 958 427 22];
-            app.DEBUGMsgLabel.Text = '';
-
-            % Create ClearMemoryButton
-            app.ClearMemoryButton = uibutton(app.CaTSperUIFigure, 'push');
-            app.ClearMemoryButton.ButtonPushedFcn = createCallbackFcn(app, @ClearMemoryButtonPushed, true);
-            app.ClearMemoryButton.FontWeight = 'bold';
-            app.ClearMemoryButton.Position = [1256 923 112 29];
-            app.ClearMemoryButton.Text = 'Clear Memory';
-
-            % Create SaveTDFDDMButton
-            app.SaveTDFDDMButton = uibutton(app.CaTSperUIFigure, 'push');
-            app.SaveTDFDDMButton.ButtonPushedFcn = createCallbackFcn(app, @SaveTDFDDMButtonPushed, true);
-            app.SaveTDFDDMButton.FontWeight = 'bold';
-            app.SaveTDFDDMButton.Position = [1374 923 109 29];
-            app.SaveTDFDDMButton.Text = 'Save TD/FD/DM';
-
-            % Create CaTSperLabel
-            app.CaTSperLabel = uilabel(app.CaTSperUIFigure);
-            app.CaTSperLabel.FontSize = 37;
-            app.CaTSperLabel.FontWeight = 'bold';
-            app.CaTSperLabel.FontAngle = 'italic';
-            app.CaTSperLabel.Position = [81 923 158 48];
-            app.CaTSperLabel.Text = 'CaTSper';
-
-            % Create ImportTHzFilesButton
-            app.ImportTHzFilesButton = uibutton(app.CaTSperUIFigure, 'push');
-            app.ImportTHzFilesButton.ButtonPushedFcn = createCallbackFcn(app, @ImportTHzFilesButtonPushed, true);
-            app.ImportTHzFilesButton.BackgroundColor = [1 1 1];
-            app.ImportTHzFilesButton.FontSize = 13;
-            app.ImportTHzFilesButton.FontWeight = 'bold';
-            app.ImportTHzFilesButton.Position = [251 923 135 29];
-            app.ImportTHzFilesButton.Text = 'Import THz Files';
-
-            % Create ProjectsEditField
-            app.ProjectsEditField = uieditfield(app.CaTSperUIFigure, 'text');
-            app.ProjectsEditField.FontWeight = 'bold';
-            app.ProjectsEditField.BackgroundColor = [0.9412 0.9412 0.9412];
-            app.ProjectsEditField.Position = [396 925 722 25];
-
-            % Create Image
-            app.Image = uiimage(app.CaTSperUIFigure);
-            app.Image.Position = [24 927 58 58];
-            app.Image.ImageSource = fullfile(pathToMLAPP, 'dotTHz_logo.png');
-
-            % Create DeployButton
-            app.DeployButton = uibutton(app.CaTSperUIFigure, 'push');
-            app.DeployButton.ButtonPushedFcn = createCallbackFcn(app, @DeployButtonPushed, true);
-            app.DeployButton.BackgroundColor = [1 1 1];
-            app.DeployButton.FontSize = 13;
-            app.DeployButton.FontWeight = 'bold';
-            app.DeployButton.Position = [1129 923 120 29];
-            app.DeployButton.Text = 'Deploy';
 
             % Show the figure after all components are created
             app.CaTSperUIFigure.Visible = 'on';
