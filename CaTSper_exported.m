@@ -3376,8 +3376,15 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
             
             try
-                question = "Select effective thickness";
+                question = "Select Effective Thickness";
                 thicknessOption = questdlg('Select Effective Thickness','Thickness Information','Sample','Sample-Reference Offset','No information','Sample');
+            catch
+                return;
+            end
+
+            try
+                question = "Select Peak Polarity";
+                peakOption = questdlg('Is the referencing peak positive?','Peak Polarity','Positive','Negative','Positive');                    
             catch
                 return;
             end
@@ -3431,8 +3438,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 for idx = 1:measNum
                     
                     % dataset extraction
-                    dn = ListItems{idx};
-                    dsList = ["ds1","ds2","ds3","ds4"];
+                    dn = ListItems{idx}; % data name list
+                    dsList = ["ds1","ds2","ds3","ds4"]; % datasets
                     totalDsCnt = 4;
 
                     for dsNum = 1:4
@@ -3440,6 +3447,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
                         try
                            dsTemp = h5read(fullpath,dnTemp);
+
+                           if peakOption == "Negative"
+                               dsTemp(2,:) = dsTemp(2,:)*-1;
+                           end
+
                            TD_data.ds{idxCap+idx-1,dsNum} = dsTemp;
                         catch
                             totalDsCnt = totalDsCnt - 1;
