@@ -1,25 +1,30 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1197358341" file="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App.prj" location="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer" name="App" preferred-package-location="C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="3850984408" file="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App.prj" location="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer" name="App" preferred-package-location="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>CaTSper</param.appname>
-    <param.icon />
-    <param.icons />
+    <param.icon>${PROJECT_ROOT}\App_resources\icon.ico</param.icon>
+    <param.icons>
+      <file>${PROJECT_ROOT}\App_resources\icon_48.png</file>
+      <file>${PROJECT_ROOT}\App_resources\icon_32.png</file>
+      <file>${PROJECT_ROOT}\App_resources\icon_24.png</file>
+      <file>${PROJECT_ROOT}\App_resources\icon_16.png</file>
+    </param.icons>
     <param.version>1.0</param.version>
     <param.authnamewatermark>Terahertz Applications Group</param.authnamewatermark>
     <param.email>jl2112@cam.ac.uk</param.email>
     <param.company>University of Cambridge</param.company>
     <param.summary>Terahertz Spectrum Analyser</param.summary>
     <param.description>The dotTHz proeject compatible spectrum analyser</param.description>
-    <param.screenshot>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTx_SA\CaTSper_splash.png</param.screenshot>
+    <param.screenshot>${PROJECT_ROOT}\CaTSper_splash.png</param.screenshot>
     <param.guid />
-    <param.installpath.string>\dotTHz\CaTSper\</param.installpath.string>
+    <param.installpath.string>\CaTSper\</param.installpath.string>
     <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
-    <param.logo>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTx_SA\installer_image.png</param.logo>
+    <param.logo>${PROJECT_ROOT}\installer_image.png</param.logo>
     <param.install.notes />
     <param.target.install.notes />
-    <param.intermediate>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA</param.intermediate>
-    <param.files.only>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA</param.files.only>
-    <param.output>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA</param.output>
-    <param.logdir>C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA</param.logdir>
+    <param.intermediate>${PROJECT_ROOT}\App\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\App\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\App\for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}\App</param.logdir>
     <param.enable.clean.build>false</param.enable.clean.build>
     <param.user.defined.mcr.options />
     <param.target.type>subtarget.standalone</param.target.type>
@@ -43,13 +48,15 @@
 	 -?  print help on how to use the application 
 	 input arguments</param.help.text>
     <unset>
-      <param.icon />
-      <param.icons />
       <param.version />
       <param.guid />
       <param.installpath.combo />
       <param.install.notes />
       <param.target.install.notes />
+      <param.intermediate />
+      <param.files.only />
+      <param.output />
+      <param.logdir />
       <param.enable.clean.build />
       <param.user.defined.mcr.options />
       <param.target.type />
@@ -70,16 +77,18 @@
       <file>${PROJECT_ROOT}\CaTSper.mlapp</file>
     </fileset.main>
     <fileset.resources />
-    <fileset.package />
+    <fileset.package>
+      <file>${PROJECT_ROOT}\Sample files\config_default.json</file>
+    </fileset.package>
     <fileset.depfun>
       <file>${PROJECT_ROOT}\CaT_logo.png</file>
       <file>${PROJECT_ROOT}\dotTHz_logo.png</file>
       <file>${PROJECT_ROOT}\DR_Checker.mlapp</file>
     </fileset.depfun>
     <build-deliverables>
-      <file location="C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA" name="readme.txt" optional="true">C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA\readme.txt</file>
-      <file location="C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA" name="CaTSper.exe" optional="false">C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA\CaTSper.exe</file>
-      <file location="C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA" name="splash.png" optional="false">C:\Users\Jongmin Lee\Desktop\dotTHz\CaTSper_SA\splash.png</file>
+      <file location="${PROJECT_ROOT}\App\for_testing" name="CaTSper.exe" optional="false">C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App\for_testing\CaTSper.exe</file>
+      <file location="${PROJECT_ROOT}\App\for_testing" name="splash.png" optional="false">C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\App\for_testing" name="readme.txt" optional="true">C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App\for_testing\readme.txt</file>
     </build-deliverables>
     <workflow />
     <matlab>
