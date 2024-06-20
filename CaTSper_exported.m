@@ -1045,10 +1045,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
         end
         
         function loadDefaultSettings(app)
-            %Read the configuration file
-            % mPath = fileparts(which(mfilename));
-            % addpath(genpath(mPath));    
-
             try
                 configFile = 'config_default.json';
                 configData = jsondecode(fileread(configFile));
@@ -1079,7 +1075,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.dsSampleDropDown.Value = configData.Dataset_Settings.Sample;
             app.dsReferenceDropDown.Value = configData.Dataset_Settings.Reference;
             app.dsPumpedDropDown.Value = configData.Dataset_Settings.Pump;
-
         end
         
         function mdThicknessSync(app,measIdx)
@@ -3970,8 +3965,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % Button pushed function: SetCurrentSettingsDefaultButton
         function SetCurrentSettingsDefaultButtonPushed(app, event)
             % Read JSON-formatted text
-            % mPath = fileparts(which(mfilename));
-            % addpath(genpath(mPath));    
             try
                 configFile = 'config_default.json';
                 configData = jsondecode(fileread(configFile));
@@ -4032,12 +4025,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.CaTSperUIFigure = uifigure('Visible', 'off');
             app.CaTSperUIFigure.Position = [100 100 1518 992];
             app.CaTSperUIFigure.Name = 'Catsper';
-            app.CaTSperUIFigure.Icon = fullfile(pathToMLAPP, 'CaT_logo.png');
+            app.CaTSperUIFigure.Icon = fullfile(pathToMLAPP, 'Images', 'CaT_logo.png');
 
             % Create Image
             app.Image = uiimage(app.CaTSperUIFigure);
             app.Image.Position = [24 927 58 58];
-            app.Image.ImageSource = fullfile(pathToMLAPP, 'dotTHz_logo.png');
+            app.Image.ImageSource = fullfile(pathToMLAPP, 'Images', 'dotTHz_logo.png');
 
             % Create CaTSperLabel
             app.CaTSperLabel = uilabel(app.CaTSperUIFigure);

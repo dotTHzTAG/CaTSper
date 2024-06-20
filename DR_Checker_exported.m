@@ -360,7 +360,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             app.DynamicRangeCheckerUIFigure = uifigure('Visible', 'off');
             app.DynamicRangeCheckerUIFigure.Position = [100 100 843 693];
             app.DynamicRangeCheckerUIFigure.Name = 'Dynamic Range Checker';
-            app.DynamicRangeCheckerUIFigure.Icon = fullfile(pathToMLAPP, 'CaT_logo.png');
+            app.DynamicRangeCheckerUIFigure.Icon = fullfile(pathToMLAPP, 'Images', 'CaT_logo.png');
 
             % Create UIAxes1
             app.UIAxes1 = uiaxes(app.DynamicRangeCheckerUIFigure);
@@ -530,7 +530,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             % Create Image
             app.Image = uiimage(app.DynamicRangeCheckerUIFigure);
             app.Image.Position = [15 638 48 49];
-            app.Image.ImageSource = fullfile(pathToMLAPP, 'dotTHz_logo.png');
+            app.Image.ImageSource = fullfile(pathToMLAPP, 'Images', 'dotTHz_logo.png');
 
             % Show the figure after all components are created
             app.DynamicRangeCheckerUIFigure.Visible = 'on';
