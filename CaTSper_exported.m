@@ -5,12 +5,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
         CaTSperUIFigure                 matlab.ui.Figure
         TabGroup                        matlab.ui.container.TabGroup
         TimeDomainTDTab                 matlab.ui.container.Tab
+        SetCurrentSettingsDefaultButton  matlab.ui.control.Button
         JetColormapButton_TD            matlab.ui.control.StateButton
         LegendButton_TD                 matlab.ui.control.StateButton
         AssignTD_DataButton             matlab.ui.control.Button
         SaveData_TD                     matlab.ui.control.Button
         LoadData_TD                     matlab.ui.control.Button
-        ResetConfigurationsButton       matlab.ui.control.Button
+        ResetSettingsButton             matlab.ui.control.Button
         MetadataInformationPanel        matlab.ui.container.Panel
         mdReferenceThicknessDropDown    matlab.ui.control.DropDown
         ReferenceLabel                  matlab.ui.control.Label
@@ -1045,14 +1046,15 @@ classdef CaTSper_exported < matlab.apps.AppBase
         
         function loadDefaultSettings(app)
             %Read the configuration file
-            mPath = fileparts(which(mfilename));
-            addpath(genpath(mPath));    
+            % mPath = fileparts(which(mfilename));
+            % addpath(genpath(mPath));    
+
             try
                 configFile = 'config_default.json';
                 configData = jsondecode(fileread(configFile));
            catch ME
                 fig = app.CaTSperUIFigure;
-                uialert(fig,'config_default.json file is missing.','warning');
+                uialert(fig, sprintf('Failed to read configuration JSON file: %s', ME.message), 'Error');
                 return;
             end
 
@@ -3665,8 +3667,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
         end
 
-        % Button pushed function: ResetConfigurationsButton
-        function ResetConfigurationsButtonPushed(app, event)
+        % Button pushed function: ResetSettingsButton
+        function ResetSettingsButtonPushed(app, event)
             loadDefaultSettings(app);
         end
 
@@ -3963,6 +3965,57 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
             lgd = {funcName, "Ref_org", "Ref_win", strcat(sampleID,"_org"),strcat(sampleID,"_win")};
             legend(ax,(lgd),'Interpreter','none');            
+        end
+
+        % Button pushed function: SetCurrentSettingsDefaultButton
+        function SetCurrentSettingsDefaultButtonPushed(app, event)
+            % Read JSON-formatted text
+            % mPath = fileparts(which(mfilename));
+            % addpath(genpath(mPath));    
+            try
+                configFile = 'config_default.json';
+                configData = jsondecode(fileread(configFile));
+           catch ME
+                fig = app.CaTSperUIFigure;
+                uialert(fig,'config_default.json file is missing.','warning');
+                return;
+            end   
+
+            % Set the current setting values
+            configData.FFT_Settings.DR_boundary = app.DR_boundary;
+            configData.FFT_Settings.Frequency_Range(1) = app.FromFreqEditField.Value;
+            configData.FFT_Settings.Frequency_Range(2) = app.ToFreqEditField.Value;
+            configData.FFT_Settings.FFT_Upsampling = app.ZeroFillingpowerofSpinner.Value;
+            configData.FFT_Settings.Unwrapping_Start_Frequency = app.StartFrequencyTHzEditField.Value;
+            configData.FFT_Settings.Extrapolation_Frequency_Range(1) = app.FromEpolFreqEditField.Value;
+            configData.FFT_Settings.Extrapolation_Frequency_Range(2) = app.ToEpolFreqEditField.Value;
+            configData.FFT_Settings.Window_Function_Range(1) = app.FromTimeEditField.Value;
+            configData.FFT_Settings.Window_Function_Range(2) = app.ToTimeEditField.Value;
+            configData.FFT_Settings.Apodisation_Function = app.FunctionDropDown.Value;
+
+            % Thickness metadata
+            configData.Metadata_Settings.Sample_Thickness = app.mdSampleThicknessDropDown.Value;
+            configData.Metadata_Settings.Reference_Thickness = app.mdReferenceThicknessDropDown.Value;
+
+            % Sample and referenece dataset
+            configData.Dataset_Settings.Sample = app.dsSampleDropDown.Value;
+            configData.Dataset_Settings.Reference = app.dsReferenceDropDown.Value;
+            configData.Dataset_Settings.Pump = app.dsPumpedDropDown.Value;
+            assignin("base","configData",configData);
+
+            % Write the updated configData back to the JSON file
+            try
+                jsonText = jsonencode(configData, 'PrettyPrint', true);
+                fid = fopen(configFile, 'w');
+                if fid == -1
+                    error('Cannot open file for writing: %s', configFile);
+                end
+                fwrite(fid, jsonText, 'char');
+                fclose(fid);
+                uialert(app.CaTSperUIFigure, 'Configuration saved successfully.', 'Success');
+            catch ME
+                uialert(app.CaTSperUIFigure, sprintf('Failed to save configuration: %s', ME.message), 'Error');
+            end
         end
     end
 
@@ -4631,11 +4684,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.mdReferenceThicknessDropDown.Position = [234 11 60 22];
             app.mdReferenceThicknessDropDown.Value = 'md3';
 
-            % Create ResetConfigurationsButton
-            app.ResetConfigurationsButton = uibutton(app.TimeDomainTDTab, 'push');
-            app.ResetConfigurationsButton.ButtonPushedFcn = createCallbackFcn(app, @ResetConfigurationsButtonPushed, true);
-            app.ResetConfigurationsButton.Position = [190 75 133 28];
-            app.ResetConfigurationsButton.Text = 'Reset Configurations';
+            % Create ResetSettingsButton
+            app.ResetSettingsButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.ResetSettingsButton.ButtonPushedFcn = createCallbackFcn(app, @ResetSettingsButtonPushed, true);
+            app.ResetSettingsButton.Position = [219 69 107 28];
+            app.ResetSettingsButton.Text = 'Reset Settings';
 
             % Create LoadData_TD
             app.LoadData_TD = uibutton(app.TimeDomainTDTab, 'push');
@@ -4675,6 +4728,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.JetColormapButton_TD.ValueChangedFcn = createCallbackFcn(app, @JetColormapButton_TDValueChanged, true);
             app.JetColormapButton_TD.Text = 'Jet Colormap';
             app.JetColormapButton_TD.Position = [1320 13 107 23];
+
+            % Create SetCurrentSettingsDefaultButton
+            app.SetCurrentSettingsDefaultButton = uibutton(app.TimeDomainTDTab, 'push');
+            app.SetCurrentSettingsDefaultButton.ButtonPushedFcn = createCallbackFcn(app, @SetCurrentSettingsDefaultButtonPushed, true);
+            app.SetCurrentSettingsDefaultButton.Position = [24 69 188 28];
+            app.SetCurrentSettingsDefaultButton.Text = 'Set Current Settings Default';
 
             % Create FrequencyDomainFDTab
             app.FrequencyDomainFDTab = uitab(app.TabGroup);

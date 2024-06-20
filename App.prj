@@ -1,6 +1,6 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="3850984408" file="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App.prj" location="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer" name="App" preferred-package-location="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
-    <param.appname>CaTSper</param.appname>
+  <configuration build-checksum="2113527633" file="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App.prj" location="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer" name="App" preferred-package-location="C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>CaTSPer</param.appname>
     <param.icon>${PROJECT_ROOT}\App_resources\icon.ico</param.icon>
     <param.icons>
       <file>${PROJECT_ROOT}\App_resources\icon_48.png</file>
@@ -9,17 +9,17 @@
       <file>${PROJECT_ROOT}\App_resources\icon_16.png</file>
     </param.icons>
     <param.version>1.0</param.version>
-    <param.authnamewatermark>Terahertz Applications Group</param.authnamewatermark>
+    <param.authnamewatermark>Terahertz Applications Team</param.authnamewatermark>
     <param.email>jl2112@cam.ac.uk</param.email>
     <param.company>University of Cambridge</param.company>
-    <param.summary>Terahertz Spectrum Analyser</param.summary>
-    <param.description>The dotTHz proeject compatible spectrum analyser</param.description>
+    <param.summary>The doTHz project Terahertz Spectrum Analyser</param.summary>
+    <param.description />
     <param.screenshot>${PROJECT_ROOT}\CaTSper_splash.png</param.screenshot>
     <param.guid />
-    <param.installpath.string>\CaTSper\</param.installpath.string>
+    <param.installpath.string>\CaTSPer\</param.installpath.string>
     <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
     <param.logo>${PROJECT_ROOT}\installer_image.png</param.logo>
-    <param.install.notes />
+    <param.install.notes>* Run CaTSPer.exe as administrator</param.install.notes>
     <param.target.install.notes />
     <param.intermediate>${PROJECT_ROOT}\App\for_testing</param.intermediate>
     <param.files.only>${PROJECT_ROOT}\App\for_redistribution_files_only</param.files.only>
@@ -33,7 +33,7 @@
     <param.package.mcr>false</param.package.mcr>
     <param.no.mcr>false</param.no.mcr>
     <param.web.mcr.name>CaTSperInstaller_web</param.web.mcr.name>
-    <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
+    <param.package.mcr.name>CaTSPerAppInstaller_mcr</param.package.mcr.name>
     <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
     <param.windows.command.prompt>true</param.windows.command.prompt>
     <param.create.log>false</param.create.log>
@@ -49,9 +49,9 @@
 	 input arguments</param.help.text>
     <unset>
       <param.version />
+      <param.description />
       <param.guid />
       <param.installpath.combo />
-      <param.install.notes />
       <param.target.install.notes />
       <param.intermediate />
       <param.files.only />
@@ -64,7 +64,6 @@
       <param.web.mcr />
       <param.package.mcr />
       <param.no.mcr />
-      <param.package.mcr.name />
       <param.no.mcr.name />
       <param.windows.command.prompt />
       <param.create.log />
@@ -78,15 +77,16 @@
     </fileset.main>
     <fileset.resources />
     <fileset.package>
-      <file>${PROJECT_ROOT}\Sample files\config_default.json</file>
+      <file>C:\Users\Jongmin Lee\Desktop\config_default.json</file>
     </fileset.package>
     <fileset.depfun>
+      <file>${PROJECT_ROOT}\App\for_redistribution_files_only\config_default.json</file>
       <file>${PROJECT_ROOT}\CaT_logo.png</file>
       <file>${PROJECT_ROOT}\dotTHz_logo.png</file>
       <file>${PROJECT_ROOT}\DR_Checker.mlapp</file>
     </fileset.depfun>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\App\for_testing" name="CaTSper.exe" optional="false">C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App\for_testing\CaTSper.exe</file>
+      <file location="${PROJECT_ROOT}\App\for_testing" name="CaTSPer.exe" optional="false">C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App\for_testing\CaTSPer.exe</file>
       <file location="${PROJECT_ROOT}\App\for_testing" name="splash.png" optional="false">C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App\for_testing\splash.png</file>
       <file location="${PROJECT_ROOT}\App\for_testing" name="readme.txt" optional="true">C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\App\for_testing\readme.txt</file>
     </build-deliverables>
