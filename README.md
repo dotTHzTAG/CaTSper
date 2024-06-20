@@ -20,7 +20,7 @@ Please download the installation file, entitled 'CaTSperInstaller_web.exe,' and 
  -	Check ‘Run as administrator]
  -	[OK], [OK]
 
-<img src="/Images/CaTSper_splash.png" height ="150">
+   <img src="/Images/CaTSper_splash.png" height ="300">
 
 **For source code modification**
 CaTSper.mlapp is a MATLAB App-Designer (version r2023a) file and runs on MATLAB environment. If MATLAB is not installed in your PC, please visit https://uk.mathworks.com/products/matlab.html and install the latest version before you run CaTSper. 
