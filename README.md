@@ -21,6 +21,8 @@ Please download [CaTSperInstaller_web.exe](CaTSperInstaller_web.exe) and run it 
  -	Check **Run as administrator.**
  -	Click **OK** and **OK**
 
+ *Please run CaTSPer as administrator!!!*
+ 
  <img src="/Images/dotTHzProject_logo.png" height ="150">
 
 **For the source code modification**
