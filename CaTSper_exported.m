@@ -4513,7 +4513,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create fromLabel_3
             app.fromLabel_3 = uilabel(app.FFTSettingsPanel);
             app.fromLabel_3.HorizontalAlignment = 'right';
-            app.fromLabel_3.Position = [167 89 29 22];
+            app.fromLabel_3.Position = [144 89 29 22];
             app.fromLabel_3.Text = 'from';
 
             % Create FromTimeEditField
@@ -4521,13 +4521,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FromTimeEditField.Limits = [-500 500];
             app.FromTimeEditField.ValueDisplayFormat = '%5.2f';
             app.FromTimeEditField.Tooltip = {'Set the minimum value of the sample waveform(s)'};
-            app.FromTimeEditField.Position = [200 89 45 22];
+            app.FromTimeEditField.Position = [177 89 45 22];
             app.FromTimeEditField.Value = -10;
 
             % Create MaxTimeLabel
             app.MaxTimeLabel = uilabel(app.FFTSettingsPanel);
             app.MaxTimeLabel.HorizontalAlignment = 'right';
-            app.MaxTimeLabel.Position = [239 88 25 23];
+            app.MaxTimeLabel.Position = [229 88 25 23];
             app.MaxTimeLabel.Text = 'to';
 
             % Create ToTimeEditField
@@ -4535,7 +4535,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ToTimeEditField.Limits = [-500 500];
             app.ToTimeEditField.ValueDisplayFormat = '%5.2f';
             app.ToTimeEditField.Tooltip = {'set the maximum value of the sample waveform(s)'};
-            app.ToTimeEditField.Position = [268 89 45 22];
+            app.ToTimeEditField.Position = [258 89 45 22];
             app.ToTimeEditField.Value = 20;
 
             % Create FunctionDropDownLabel
