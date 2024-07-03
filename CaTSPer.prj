@@ -83,6 +83,7 @@
       <file>${PROJECT_ROOT}\DR_Checker.mlapp</file>
       <file>${PROJECT_ROOT}\Images\CaT_logo.png</file>
       <file>${PROJECT_ROOT}\Images\dotTHz_logo.png</file>
+      <file>${PROJECT_ROOT}\Images\icon.png</file>
     </fileset.depfun>
     <build-deliverables>
       <file location="${PROJECT_ROOT}\CaTSPer\for_testing" name="readme.txt" optional="true">C:\Users\Jongmin Lee\Documents\GitHub\CaTSPer\CaTSPer\for_testing\readme.txt</file>
