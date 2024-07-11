@@ -40,4 +40,13 @@ Please follow the instructions below.
  - **.\images\dotTHz_logo.png** : logo image
 3. Double click **CaTSper.mlapp** to launch the software.
 
+*Note: 'Sigal Processing Toolbox' is necessary to fully operate the app.*
+
+**Installation Process**
+ 1. Open MATLAB: Launch MATLAB on your computer.
+ 2. Open Add-Ons Explorer: Click on the "Add-Ons" button on the MATLAB toolbar. This will open the Add-Ons Explorer.
+ 3. Search for the Toolbox: In the Add-Ons Explorer, type "Signal Processing Toolbox" into the search bar and press Enter.
+ 4. Select the Toolbox: From the search results, locate the "Signal Processing Toolbox" and click on it.
+ 5. Install the Toolbox: Click the "Install" button. If prompted, follow the on-screen instructions to complete the installation. You may need to log in with your MathWorks account.
+
 For detailed descriptions for CaTSper and step-by-step tutorial, please visit [dotTHz documentation](https://github.com/dotTHzTAG/Documentation).
