@@ -113,7 +113,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         AssignFD_DataButton             matlab.ui.control.Button
         SaveData_FD                     matlab.ui.control.Button
         LoadData_FD                     matlab.ui.control.Button
-        DataManipulationButton          matlab.ui.control.Button
+        DataManagementButton            matlab.ui.control.Button
         FDDatatoLabel                   matlab.ui.control.Label
         FDDataAnalysisPanel             matlab.ui.container.Panel
         PlotForCustomisationButton_FD2  matlab.ui.control.Button
@@ -176,7 +176,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         FDListListBoxLabel              matlab.ui.control.Label
         UIAxes4                         matlab.ui.control.UIAxes
         UIAxes3                         matlab.ui.control.UIAxes
-        DataManipulationDMTab           matlab.ui.container.Tab
+        DataManagmentDMTab              matlab.ui.container.Tab
         JetColormapButton_DM            matlab.ui.control.StateButton
         AssignDM_DataButton             matlab.ui.control.Button
         SaveData_DM                     matlab.ui.control.Button
@@ -284,9 +284,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
         FD_select  %frequency data selection
         FD_select_2  %frequency data selection in FD data analysis section
         FD_config
-        DM_count % the number of data manipulation data
+        DM_count % the number of data management data
         DM_data % data manipluation data
-        DM_peaks % data MAnipulation peaks 
+        DM_peaks % data management peaks 
         DR_boundary % dynamic range checker freqeuncy boundary
         PRJ_count % the number of project files imported
     end
@@ -970,7 +970,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % extracting frequency values in the data set
                 freq = app.FD_data.frequency{idx};
                 dmData = app.DM_data.base{idx};
-                % extracting calculated data manipulation values (detailed
+                % extracting calculated data management values (detailed
                 % later in another function) in the dataset
                 lb = sum(freq<=lowLimit); % lower boundary
 
@@ -1019,7 +1019,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.AbsorptionButton.Enable = tf;
             app.RefractiveIndexButton.Enable = tf;
             app.DielectricConstantButton.Enable = tf;
-            app.DataManipulationButton.Enable = tf;            
+            app.DataManagementButton.Enable = tf;            
         end
              
         
@@ -1045,6 +1045,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         end
         
         function loadDefaultSettings(app)
+            %#exclude config_default.json
             try
                 configFile = 'config_default.json';
                 configData = jsondecode(fileread(configFile));
@@ -2658,10 +2659,10 @@ classdef CaTSper_exported < matlab.apps.AppBase
             plotFD_data2(app,'NEW');
         end
 
-        % Button pushed function: DataManipulationButton
-        function DataManipulationButtonPushed(app, event)
-            % dataManipulationButtonPushed extracts values and arrays in the
-            % frequency domain tab to the data manipulation tab, and sets up th
+        % Button pushed function: DataManagementButton
+        function DataManagementButtonPushed(app, event)
+            % datamanagementButtonPushed extracts values and arrays in the
+            % frequency domain tab to the data management tab, and sets up th
             % drop down menu
             
             % extracting arrays and values
@@ -2682,7 +2683,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % Button pushed function: ImportAllDataButton
         function ImportAllDataButtonPushed(app, event)
             % IMPORTALLDATAButtonPushed imports all datasets to the source data
-            % set list in the DM tab and makes them available for data manipulation
+            % set list in the DM tab and makes them available for data management
         
             dataList = app.FD_select_2;
             app.SourceDataSetEditField.Value = num2str(dataList);
@@ -3140,11 +3141,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % Button pushed function: SaveTDFDDMButton
         function SaveTDFDDMButtonPushed(app, event)
             % SAVETDFDDMButtonPushed saves selected or all time domain data,
-            % all frequency domain and data manipulation data
+            % all frequency domain and data management data
 
             % preparing to save TD_data
             % creates a dialouge box asking if user would like to save all
-            % data (time domain, frequency domain and data manipulation),
+            % data (time domain, frequency domain and data management),
             % and provides three options for response
             question = 'Do you want to save all data?';
             answer = questdlg(question,'Data Range','Yes','No, only selected data','Yes');
@@ -3206,7 +3207,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             FD_data = app.FD_data;
                         
             % preparing to save DM_data
-            % extract the data manipulation data and assign them to parameters
+            % extract the data management data and assign them to parameters
             DM_ListItems = app.SourceDataSetEditField.Value;
             DM_data = app.DM_data;
 
@@ -3218,7 +3219,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % Button pushed function: SaveData_DM
         function SaveData_DMButtonPushed(app, event)
             % SaveData_DMButtonPushed saves data generated from the data
-            % manipulation tab as a *.mat file
+            % management tab as a *.mat file
             
             % open a dialouge box for saving file as *.mat format or for any file format
             filter = {'*.mat';'*.*'};
@@ -3236,7 +3237,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             ListItems = app.FDListBox.Items;
             ListItems2 = app.FDSelectionListBox_2.Items;
             DM_data = app.DM_data;
-            % save data manipulation data
+            % save data management data
             save(fullfile,'DM_data');
         end
 
@@ -3624,7 +3625,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         function ImportAllDataInverseSequenceButtonPushed(app, event)
             % IMPORTALLDATA (Inverse Sequence) ButtonPushed imports all
             % datasets to the source data in inverse order
-            % set list in the DM tab and makes them available for data manipulation
+            % set list in the DM tab and makes them available for data management
         
             dataList = app.FD_select_2;
             dataList = fliplr(dataList);
@@ -3964,7 +3965,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
         % Button pushed function: SetCurrentSettingsDefaultButton
         function SetCurrentSettingsDefaultButtonPushed(app, event)
+            %#exclude config_default.json
             % Read JSON-formatted text
+            
             try
                 configFile = 'config_default.json';
                 configData = jsondecode(fileread(configFile));
@@ -4023,9 +4026,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create CaTSperUIFigure and hide until all components are created
             app.CaTSperUIFigure = uifigure('Visible', 'off');
-            app.CaTSperUIFigure.Position = [100 100 1518 992];
+            app.CaTSperUIFigure.Color = [0.9412 0.9412 0.9412];
+            app.CaTSperUIFigure.Position = [10 50 1518 992];
             app.CaTSperUIFigure.Name = 'Catsper';
-            app.CaTSperUIFigure.Icon = fullfile(pathToMLAPP, 'Images', 'CaT_logo.png');
+            app.CaTSperUIFigure.Icon = fullfile(pathToMLAPP, 'Images', 'icon.png');
+            app.CaTSperUIFigure.Scrollable = 'on';
 
             % Create Image
             app.Image = uiimage(app.CaTSperUIFigure);
@@ -5098,14 +5103,14 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FDDatatoLabel.Position = [27 59 69 22];
             app.FDDatatoLabel.Text = 'FD Data to ';
 
-            % Create DataManipulationButton
-            app.DataManipulationButton = uibutton(app.FrequencyDomainFDTab, 'push');
-            app.DataManipulationButton.ButtonPushedFcn = createCallbackFcn(app, @DataManipulationButtonPushed, true);
-            app.DataManipulationButton.FontWeight = 'bold';
-            app.DataManipulationButton.Enable = 'off';
-            app.DataManipulationButton.Tooltip = {'Assign data to variable in the base workspace'};
-            app.DataManipulationButton.Position = [97 57 295 26];
-            app.DataManipulationButton.Text = 'Data Manipulation';
+            % Create DataManagementButton
+            app.DataManagementButton = uibutton(app.FrequencyDomainFDTab, 'push');
+            app.DataManagementButton.ButtonPushedFcn = createCallbackFcn(app, @DataManagementButtonPushed, true);
+            app.DataManagementButton.FontWeight = 'bold';
+            app.DataManagementButton.Enable = 'off';
+            app.DataManagementButton.Tooltip = {'Assign data to variable in the base workspace'};
+            app.DataManagementButton.Position = [97 57 295 26];
+            app.DataManagementButton.Text = 'Data Management';
 
             % Create LoadData_FD
             app.LoadData_FD = uibutton(app.FrequencyDomainFDTab, 'push');
@@ -5143,12 +5148,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.JetColormapButton_FD.Text = 'Jet Colormap';
             app.JetColormapButton_FD.Position = [1332 12 107 23];
 
-            % Create DataManipulationDMTab
-            app.DataManipulationDMTab = uitab(app.TabGroup);
-            app.DataManipulationDMTab.Title = 'Data Manipulation (DM)';
+            % Create DataManagmentDMTab
+            app.DataManagmentDMTab = uitab(app.TabGroup);
+            app.DataManagmentDMTab.Title = 'Data Managment (DM)';
 
             % Create UIAxes10
-            app.UIAxes10 = uiaxes(app.DataManipulationDMTab);
+            app.UIAxes10 = uiaxes(app.DataManagmentDMTab);
             title(app.UIAxes10, 'PLOT 2')
             app.UIAxes10.FontWeight = 'bold';
             app.UIAxes10.XTickLabelRotation = 0;
@@ -5159,7 +5164,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.UIAxes10.Position = [697 8 750 400];
 
             % Create STEP1Panel
-            app.STEP1Panel = uipanel(app.DataManipulationDMTab);
+            app.STEP1Panel = uipanel(app.DataManagmentDMTab);
             app.STEP1Panel.Title = 'STEP 1';
             app.STEP1Panel.Position = [13 418 1437 436];
 
@@ -5343,7 +5348,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.PlotmeanandrangeButton.Text = 'Plot (mean and range)';
 
             % Create DMTabGroup
-            app.DMTabGroup = uitabgroup(app.DataManipulationDMTab);
+            app.DMTabGroup = uitabgroup(app.DataManagmentDMTab);
             app.DMTabGroup.Position = [25 109 648 280];
 
             % Create FrequencyBaseTab
@@ -5519,7 +5524,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.PlotButton_2.Text = 'Plot';
 
             % Create SaveData_DM
-            app.SaveData_DM = uibutton(app.DataManipulationDMTab, 'push');
+            app.SaveData_DM = uibutton(app.DataManagmentDMTab, 'push');
             app.SaveData_DM.ButtonPushedFcn = createCallbackFcn(app, @SaveData_DMButtonPushed, true);
             app.SaveData_DM.FontWeight = 'bold';
             app.SaveData_DM.Tooltip = {'Assign data to variable in the base workspace'};
@@ -5527,7 +5532,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.SaveData_DM.Text = 'Save DM_DATA';
 
             % Create AssignDM_DataButton
-            app.AssignDM_DataButton = uibutton(app.DataManipulationDMTab, 'push');
+            app.AssignDM_DataButton = uibutton(app.DataManagmentDMTab, 'push');
             app.AssignDM_DataButton.ButtonPushedFcn = createCallbackFcn(app, @AssignDM_DataButtonPushed, true);
             app.AssignDM_DataButton.FontWeight = 'bold';
             app.AssignDM_DataButton.Tooltip = {'Assign data to variable in the base workspace'};
@@ -5535,7 +5540,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.AssignDM_DataButton.Text = 'Assign DM_DATA in Workspace';
 
             % Create JetColormapButton_DM
-            app.JetColormapButton_DM = uibutton(app.DataManipulationDMTab, 'state');
+            app.JetColormapButton_DM = uibutton(app.DataManagmentDMTab, 'state');
             app.JetColormapButton_DM.ValueChangedFcn = createCallbackFcn(app, @JetColormapButton_DMValueChanged, true);
             app.JetColormapButton_DM.Text = 'Jet Colormap';
             app.JetColormapButton_DM.Position = [559 23 107 26];

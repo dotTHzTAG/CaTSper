@@ -1,0 +1,32 @@
+{
+  "FFT_Settings": {
+    "Frequency_Range": [
+      0.2,
+      3
+    ],
+    "FFT_Upsampling": 2,
+    "Unwrapping_Start_Frequency": 0.8,
+    "Extrapolation_Frequency_Range": [
+      0.2,
+      0.3
+    ],
+    "Window_Function_Range": [
+      -5,
+      50
+    ],
+    "Apodisation_Function": "rectwin",
+    "DR_boundary": [
+      0.2,
+      5
+    ]
+  },
+  "Metadata_Settings": {
+    "Sample_Thickness": "md1",
+    "Reference_Thickness": "no"
+  },
+  "Dataset_Settings": {
+    "Sample": "ds1",
+    "Reference": "ds2",
+    "Pump": "no"
+  }
+}
