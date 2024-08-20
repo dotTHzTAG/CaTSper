@@ -289,6 +289,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
         DM_peaks % data management peaks 
         DR_boundary % dynamic range checker freqeuncy boundary
         PRJ_count % the number of project files imported
+        configFile % configuration file details
+        %#exclude config_default.json
     end
     
     properties (Access = private)
@@ -1047,8 +1049,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         function loadDefaultSettings(app)
             %#exclude config_default.json
             try
-                configFile = 'config_default.json';
-                configData = jsondecode(fileread(configFile));
+                configData = jsondecode(fileread(app.configFile));
            catch ME
                 fig = app.CaTSperUIFigure;
                 uialert(fig, sprintf('Failed to read configuration JSON file: %s', ME.message), 'Error');
@@ -1237,7 +1238,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.PRJ_count = 0;
             app.filename = [];
             loadDefaultSettings(app);
-
+            app.configFile = 'config_default.json';
+            if isdeployed
+                appRoot = ctfroot;
+                appRoot = extractBefore(appRoot,'CaTSPer.app');
+                app.configFile = [appRoot,app.configFile];
+            end
         end
 
         % Value changed function: MeasurementListBox
@@ -1318,8 +1324,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.GeneralEtalonEditField.Value = etl_t;
 
             % display metadata descriptions
-            mdList = strsplit(mdDescription,',');
-            mdSize = size(mdList,2);
+            try
+                mdList = strsplit(mdDescription,',');
+                mdSize = size(mdList,2);
+            catch
+                mdList = '';
+                mdSize = 0;
+            end
 
             if mdSize >= 1 , app.md1DesEditField.Value = mdList{1}; , end;
             if mdSize >= 2 , app.md2DesEditField.Value = mdList{2}; , end;
@@ -1327,8 +1338,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             if mdSize >= 4 , app.md4DesEditField.Value = mdList{4}; , end;
 
             % display dataset descriptions
-            dsList = strsplit(dsDescription,',');
-            dsSize = size(dsList,2);
+            try
+                dsList = strsplit(dsDescription,',');
+                dsSize = size(dsList,2);
+            catch
+                dsList = '';
+                dsSize = 0;
+            end
 
             if dsSize >= 1 , app.ds1DesEditField.Value = dsList{1}; , end;
             if dsSize >= 2 , app.ds2DesEditField.Value = dsList{2}; , end;
@@ -3969,8 +3985,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Read JSON-formatted text
             
             try
-                configFile = 'config_default.json';
-                configData = jsondecode(fileread(configFile));
+                configData = jsondecode(fileread(app.configFile));
            catch ME
                 fig = app.CaTSperUIFigure;
                 uialert(fig,'config_default.json file is missing.','warning');
@@ -4002,9 +4017,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Write the updated configData back to the JSON file
             try
                 jsonText = jsonencode(configData, 'PrettyPrint', true);
-                fid = fopen(configFile, 'w');
+                fid = fopen(app.configFile, 'w');
                 if fid == -1
-                    error('Cannot open file for writing: %s', configFile);
+                    error('Cannot open file for writing: %s', app.configFile);
                 end
                 fwrite(fid, jsonText, 'char');
                 fclose(fid);
