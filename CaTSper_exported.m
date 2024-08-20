@@ -289,7 +289,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         DM_peaks % data management peaks 
         DR_boundary % dynamic range checker freqeuncy boundary
         PRJ_count % the number of project files imported
-        configFile % configuration file details
+        configFile % configuration file
         %#exclude config_default.json
     end
     
@@ -1047,12 +1047,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
         end
         
         function loadDefaultSettings(app)
-            %#exclude config_default.json
             try
                 configData = jsondecode(fileread(app.configFile));
            catch ME
                 fig = app.CaTSperUIFigure;
-                uialert(fig, sprintf('Failed to read configuration JSON file: %s', ME.message), 'Error');
+                uialert(fig, sprintf('Failed to read config_default.json: %s', ME.message), 'Error');
                 return;
             end
 
@@ -1237,13 +1236,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
         function startupFcn(app)
             app.PRJ_count = 0;
             app.filename = [];
-            loadDefaultSettings(app);
             app.configFile = 'config_default.json';
             if isdeployed
                 appRoot = ctfroot;
                 appRoot = extractBefore(appRoot,'CaTSPer.app');
                 app.configFile = [appRoot,app.configFile];
             end
+            loadDefaultSettings(app);
         end
 
         % Value changed function: MeasurementListBox
