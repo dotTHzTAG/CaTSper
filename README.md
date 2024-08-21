@@ -7,7 +7,7 @@
 
 Please download the installer and run it on your local computer as decribed below. 
 
-** For Windows**
+## For Windows
 
 *MATLAB Application Installation:*
  -	Download and run [CaTSperInstaller_Windows_web.exe](CaTSperInstaller_Windows_web.exe) (an internect connection is necessary for installation.)
@@ -23,9 +23,9 @@ Please download the installer and run it on your local computer as decribed belo
  -	Check **Run as administrator.**
  -	Click **OK** and **OK**
 
- *Please run CaTSPer as administrator!!!*
+> *Please run CaTSPer as administrator!!!*
 
- **For Mac OS**
+## For Mac OS
  
 *MATLAB Application Installation:*
  -	Download and run [CaTSperInstaller_Mac_web.app](CaTSperInstaller_Mac_web.app) (an internect connection is necessary for installation.)
@@ -42,13 +42,13 @@ Please download the installer and run it on your local computer as decribed belo
  
  <img src="/Images/dotTHzProject_logo.png" height ="150">
 
-**For the source code modification**
+## For the source code modification
 
 CaTSper.mlapp is a MATLAB App-Designer (version r2023a) file and runs on MATLAB environment. If MATLAB is not installed in your PC, please visit https://uk.mathworks.com/products/matlab.html and install the latest version before you run CaTSper. 
 
 In the repository, there is a pair of .mlapp and .m files. Basically, .m file is a text version of .mlapp for code-reviewing and version-tracking and not necessary for running the tool. In case you modify *.mlapp file and commit it back to the repository, please update and upload the associated .m file as well so that users can easily track the changes in the code.
 
-Please follow the instructions below.
+*Please follow the instructions below.*
 1. **MATLAB** needs to be installed in your computer to modify CaTSper.
 2. Download *.mlapp and \images files.
  - **CaTSper.mlapp** : CaTSper MATLAB App-designer file
@@ -56,10 +56,9 @@ Please follow the instructions below.
  - **.\images\CaT_logo.png** : logo image
  - **.\images\dotTHz_logo.png** : logo image
 3. Double click **CaTSper.mlapp** to launch the software.
+> Note: 'Sigal Processing Toolbox' is necessary to fully operate the app.*
 
-*Note: 'Sigal Processing Toolbox' is necessary to fully operate the app.*
-
-**Installation Process**
+*Installation Process*
  1. Open MATLAB: Launch MATLAB on your computer.
  2. Open Add-Ons Explorer: Click on the "Add-Ons" button on the MATLAB toolbar. This will open the Add-Ons Explorer.
  3. Search for the Toolbox: In the Add-Ons Explorer, type "Signal Processing Toolbox" into the search bar and press Enter.
