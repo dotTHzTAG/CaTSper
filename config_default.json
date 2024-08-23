@@ -19,7 +19,8 @@
   },
   "Metadata_Settings": {
     "Sample_Thickness": "md1",
-    "Reference_Thickness": "md3"
+    "Reference_Thickness": "md3",
+    "Thickness_Unit": "(mm)"
   },
   "Dataset_Settings": {
     "Sample": "ds1",

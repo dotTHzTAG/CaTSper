@@ -13,12 +13,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
         LoadData_TD                     matlab.ui.control.Button
         ResetSettingsButton             matlab.ui.control.Button
         MetadataInformationPanel        matlab.ui.container.Panel
+        ThicknessDropDown               matlab.ui.control.DropDown
+        ThicknessDropDownLabel          matlab.ui.control.Label
         mdReferenceThicknessDropDown    matlab.ui.control.DropDown
         ReferenceLabel                  matlab.ui.control.Label
         mdSampleThicknessDropDown       matlab.ui.control.DropDown
         SampleLabel                     matlab.ui.control.Label
         ThicknessSwitch_TD              matlab.ui.control.Switch
-        ThicknessmmLabel                matlab.ui.control.Label
         md4DesEditField                 matlab.ui.control.EditField
         md4EditField                    matlab.ui.control.NumericEditField
         md4EditFieldLabel               matlab.ui.control.Label
@@ -289,6 +290,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         DM_peaks % data management peaks 
         DR_boundary % dynamic range checker freqeuncy boundary
         PRJ_count % the number of project files imported
+        thicknessUnit % cm, mm, um, and nm
         configFile % configuration file
         %#exclude config_default.json
     end
@@ -305,6 +307,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % extracting the thickness value from the imported time
             % domain data for one measurement
             thickness = app.TD_data.metadata{TDindex}.thickness;
+            thicknessUnit = app.thicknessUnit;
             % extracting the time delay value from the imported time
             % domain data for one measurement
             delta_t = app.TD_data.metadata{TDindex}.timeDelay;
@@ -315,8 +318,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % calculate time domain effective refractive index, and
                 % round the value to 4 s.f. (3 d.p. equivalent)
                 % time delay value is in units of pico seconds
-                % thickness value is in units of milimetre
-                n_eff = round((delta_t*10^-12*3e8/(thickness*10^-3) + 1)*1000)/1000;
+                n_eff = round((delta_t*10^-12*3e8/(thickness*thicknessUnit) + 1)*1000)/1000;
                 % calculate the time delay for pulse to reach detector,
                 % when one internal reflection occurs
                 % time delay with one internation reflection = time delay
@@ -325,7 +327,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % sample thickness
                 % the second term is calculated from thickness information and the n_eff value
                 % determined from above
-                etl_t = delta_t + 2*thickness*10^-3*n_eff/3e8*10^12;
+                etl_t = delta_t + 2*thickness*thicknessUnit*n_eff/3e8*10^12;
             else
                 % if thickness value is zero, set values to zero automatically
                 n_eff = 0;
@@ -1071,6 +1073,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Default thickness metadata
             app.mdSampleThicknessDropDown.Value = configData.Metadata_Settings.Sample_Thickness;
             app.mdReferenceThicknessDropDown.Value = configData.Metadata_Settings.Reference_Thickness;
+            app.ThicknessDropDown.Value = configData.Metadata_Settings.Thickness_Unit;
 
             % Default sample and referenece dataset
             app.dsSampleDropDown.Value = configData.Dataset_Settings.Sample;
@@ -1242,7 +1245,10 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 appRoot = extractBefore(appRoot,'CaTSPer.app');
                 app.configFile = [appRoot,app.configFile];
             end
-            loadDefaultSettings(app);
+            try
+                loadDefaultSettings(app)
+            end
+            ThicknessDropDownValueChanged(app)
         end
 
         % Value changed function: MeasurementListBox
@@ -2311,6 +2317,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % thickness information can be either the sample thickness
                 % or the offset between the reference and sample thickness,
                 % which can be determined by ThicknessSwitch on the GUI.
+                thicknessUnit = app.thicknessUnit;
 
                 sam_thickness = app.FD_data.metadata{FDindex}.sam_thickness;
                 ref_thickness = app.FD_data.metadata{FDindex}.ref_thickness;
@@ -2341,7 +2348,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 % calculate the refractive index of the sample using values
                 % extracted from frequency domain calculations
                 n_sample = c.*app.FD_data.transmit_phase{FDindex}./...
-                    (2*pi*app.FD_data.frequency{FDindex}.*eff_thickness*10^-3) + 1;
+                    (2*pi*app.FD_data.frequency{FDindex}.*eff_thickness*thicknessUnit) + 1;
                 
                 % calculate the absorption coefficient, the logartihm base is e.
                 % the following procedures references equation two in the work by Jepsen
@@ -2507,6 +2514,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % CHECKDYNAMICRANGEButtonPushed performs fast fourier transform on the sample measurements,
             % calculates the transmittance and absorption coefficient, and then
             % open the DR checker app together with these values 
+            thicknessUnit = app.thicknessUnit;
 
             % display warning message if no items are selected
             TDindex = app.SelectionListBox.Value;
@@ -2649,7 +2657,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             n_medium = 1; % refractive index of medium
             n_reference = 1; % refractive indx of the reference
             eff_thickness = app.TD_data.metadata{TDindex}.eff_thickness;
-            n_sample = c.*transmPha./(2*pi*FD_frequency.*eff_thickness*10^-3) + 1;
+            n_sample = c.*transmPha./(2*pi*FD_frequency.*eff_thickness*thicknessUnit) + 1;
             ref_factor = 4*n_medium*n_reference/((n_medium + n_reference).^2);
             sam_factor = 4*n_medium*n_sample/((n_medium + n_sample).^2);
             scaleFactor = ref_factor/sam_factor;
@@ -3381,6 +3389,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
         % Button pushed function: DeployButton
         function DeployButtonPushed(app, event)
+            thicknessUnit = app.thicknessUnit;
             
             if ~app.PRJ_count
                 fig = app.CaTSperUIFigure;
@@ -3389,15 +3398,15 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
             
             try
-                question = "Select Effective Thickness";
-                thicknessOption = questdlg('Select Effective Thickness','Thickness Information','Sample','Sample-Reference Offset','No information','Sample');
+                question = "Select Effective Thickness (Please check the current thickness unit for correct calculation)";
+                thicknessOption = questdlg(question,'Thickness Information','Sample','Sample-Reference Offset','No information','Sample');
             catch
                 return;
             end
 
             try
-                question = "Select Peak Polarity";
-                peakOption = questdlg('Is the referencing peak positive?','Peak Polarity','Positive','Negative','Positive');                    
+                question = "Is the referencing peak positive?";
+                peakOption = questdlg(question,'Peak Polarity','Positive','Negative','Positive');                    
             catch
                 return;
             end
@@ -3506,10 +3515,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     mdList = ["md1","md2","md3","md4","md5","md5","md6","md7"];
 
                     for mdNum = 1:7
-                        mdTemp = h5readatt(fullpath,dn,mdList(mdNum));
                         try
+                            mdTemp = h5readatt(fullpath,dn,mdList(mdNum));
                             TD_data.metadata{idxCap+idx-1}.md{mdNum} = mdTemp;
                         catch
+                            TD_data.metadata{idxCap+idx-1}.md{mdNum} = '';
                         end
                     end
 
@@ -3561,12 +3571,36 @@ classdef CaTSper_exported < matlab.apps.AppBase
                             n_eff = 0;
                             etl_t = 0;
                         else
-                            n_eff = timeDelay*10^-12*3e8/(eff_thickness*10^-3) + 1;
-                            etl_t = timeDelay + (2*eff_thickness*10^-3*n_eff/3e8)*10^12;
+                            n_eff = timeDelay*10^-12*3e8/(eff_thickness*thicknessUnit) + 1;
+                            etl_t = timeDelay + (2*eff_thickness*thicknessUnit*n_eff/3e8)*10^12;
                         end
                         TD_data.metadata{idxCap+idx-1}.timeDelay = timeDelay;
                         TD_data.metadata{idxCap+idx-1}.refractiveIndex = n_eff;
                         TD_data.metadata{idxCap+idx-1}.internalReflection = etl_t;
+                    end
+
+                    try
+                        description = h5readatt(fullpath,dn,"description");
+                    catch
+                        description = '';
+                    end
+
+                    try
+                        mdDescription = h5readatt(fullpath,dn,"mdDescription");
+                    catch
+                        mdDescription = '';
+                    end
+
+                    try 
+                        dsDescription = h5readatt(fullpath,dn,"dsDescription");
+                    catch
+                        dsDescription = '';
+                    end
+
+                    try
+                        time = h5readatt(fullpath,dn,"time");
+                    catch
+                        time = '';
                     end
 
                     % extract other data and information relating to the
@@ -3576,10 +3610,10 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     TD_data.metadata{idxCap+idx-1}.sampleName = dn(2:end);
                     TD_data.metadata{idxCap+idx-1}.scanLength = size(TD_data.ds{idxCap+idx-1,sampleDsNum},2);
                     TD_data.metadata{idxCap+idx-1}.xSpacing = mean(diff(TD_data.ds{idxCap+idx-1,sampleDsNum}(1,:)));
-                    TD_data.metadata{idxCap+idx-1}.description = h5readatt(fullpath,dn,"description");
-                    TD_data.metadata{idxCap+idx-1}.mdDescription = h5readatt(fullpath,dn,"mdDescription");
-                    TD_data.metadata{idxCap+idx-1}.dsDescription = h5readatt(fullpath,dn,"dsDescription");
-                    TD_data.metadata{idxCap+idx-1}.time = h5readatt(fullpath,dn,"time");
+                    TD_data.metadata{idxCap+idx-1}.description = description;
+                    TD_data.metadata{idxCap+idx-1}.mdDescription = mdDescription;
+                    TD_data.metadata{idxCap+idx-1}.dsDescription = dsDescription;
+                    TD_data.metadata{idxCap+idx-1}.time = time;
                     
                     TD_data.metadata{idxCap+idx-1}.sam_thickness = sam_thickness; 
                     TD_data.metadata{idxCap+idx-1}.ref_thickness = ref_thickness;
@@ -3591,28 +3625,21 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     % extract the name of the instrument model
                     % insProfile = extractBefore(h5readatt(fullpath,dn,"instrument"),'/');
                     % userProfile = extractBefore(h5readatt(fullpath,dn,"user"),'/');
-                    insProfile = h5readatt(fullpath,dn,"instrument");
-                    userProfile = h5readatt(fullpath,dn,"user");
-    
-                    % if the instrument model is not specified, leave the
-                    % corresponding field empty
-                    if isequal(insProfile,"<missing>")
-                        TD_data.metadata{idxCap+idx-1}.instrument = '';
-                    % if the instrument model is specified, assign the value to
-                    % the corresponding field
-                    else
-                        TD_data.metadata{idxCap+idx-1}.instrument = insProfile;
+                    try
+                        insProfile = h5readatt(fullpath,dn,"instrument");
+                    catch
+                        insProfile = '';
                     end
 
-                    if isequal(userProfile,"<missing>")
-                        TD_data.metadata{idxCap+idx-1}.user = '';
-                    % if the instrument model is specified, assign the value to
-                    % the corresponding field
-                    else
-                        TD_data.metadata{idxCap+idx-1}.user = userProfile;
+                    try
+                        userProfile = h5readatt(fullpath,dn,"user");
+                    catch
+                        userProfile = '';
                     end
     
-                end
+                    TD_data.metadata{idxCap+idx-1}.instrument = insProfile;
+                    TD_data.metadata{idxCap+idx-1}.user = userProfile;    
+                end                
                 idxCap = idxCap + measNum;
             end
 
@@ -4006,6 +4033,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Thickness metadata
             configData.Metadata_Settings.Sample_Thickness = app.mdSampleThicknessDropDown.Value;
             configData.Metadata_Settings.Reference_Thickness = app.mdReferenceThicknessDropDown.Value;
+            configData.Metadata_Settings.Thickness_Unit = app.ThicknessDropDown.Value;
 
             % Sample and referenece dataset
             configData.Dataset_Settings.Sample = app.dsSampleDropDown.Value;
@@ -4026,6 +4054,22 @@ classdef CaTSper_exported < matlab.apps.AppBase
             catch ME
                 uialert(app.CaTSperUIFigure, sprintf('Failed to save configuration: %s', ME.message), 'Error');
             end
+        end
+
+        % Value changed function: ThicknessDropDown
+        function ThicknessDropDownValueChanged(app, event)
+            value = app.ThicknessDropDown.Value;
+            switch value
+                case '(cm)'
+                    thicknessUnit = 10^-2;
+                case '(mm)'
+                    thicknessUnit = 10^-3;
+                case '(um)'
+                    thicknessUnit = 10^-6;
+                otherwise
+                    thicknessUnit = 10^-9;
+            end
+            app.thicknessUnit = thicknessUnit;
         end
     end
 
@@ -4657,17 +4701,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.md4DesEditField.Editable = 'off';
             app.md4DesEditField.Position = [150 73 156 22];
 
-            % Create ThicknessmmLabel
-            app.ThicknessmmLabel = uilabel(app.MetadataInformationPanel);
-            app.ThicknessmmLabel.FontWeight = 'bold';
-            app.ThicknessmmLabel.Position = [9 46 96 22];
-            app.ThicknessmmLabel.Text = 'Thickness (mm)';
-
             % Create ThicknessSwitch_TD
             app.ThicknessSwitch_TD = uiswitch(app.MetadataInformationPanel, 'slider');
             app.ThicknessSwitch_TD.Items = {'Sample', 'Offset'};
             app.ThicknessSwitch_TD.ValueChangedFcn = createCallbackFcn(app, @ThicknessSwitch_TDValueChanged, true);
-            app.ThicknessSwitch_TD.Position = [162 45 45 20];
+            app.ThicknessSwitch_TD.Position = [204 43 45 20];
             app.ThicknessSwitch_TD.Value = 'Sample';
 
             % Create SampleLabel
@@ -4695,6 +4733,19 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.mdReferenceThicknessDropDown.ValueChangedFcn = createCallbackFcn(app, @mdReferenceThicknessDropDownValueChanged, true);
             app.mdReferenceThicknessDropDown.Position = [234 11 60 22];
             app.mdReferenceThicknessDropDown.Value = 'md3';
+
+            % Create ThicknessDropDownLabel
+            app.ThicknessDropDownLabel = uilabel(app.MetadataInformationPanel);
+            app.ThicknessDropDownLabel.HorizontalAlignment = 'right';
+            app.ThicknessDropDownLabel.Position = [12 42 62 22];
+            app.ThicknessDropDownLabel.Text = 'Thickness ';
+
+            % Create ThicknessDropDown
+            app.ThicknessDropDown = uidropdown(app.MetadataInformationPanel);
+            app.ThicknessDropDown.Items = {'(cm)', '(mm)', '(um)', '(nm)'};
+            app.ThicknessDropDown.ValueChangedFcn = createCallbackFcn(app, @ThicknessDropDownValueChanged, true);
+            app.ThicknessDropDown.Position = [79 42 67 22];
+            app.ThicknessDropDown.Value = '(mm)';
 
             % Create ResetSettingsButton
             app.ResetSettingsButton = uibutton(app.TimeDomainTDTab, 'push');

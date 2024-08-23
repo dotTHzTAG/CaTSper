@@ -81,7 +81,7 @@ GitHub Documentation
     </fileset.main>
     <fileset.resources />
     <fileset.package>
-      <file>${PROJECT_ROOT}\Sample files\config_default.json</file>
+      <file>${PROJECT_ROOT}\config_default.json</file>
     </fileset.package>
     <fileset.depfun>
       <file>${PROJECT_ROOT}\DR_Checker.mlapp</file>

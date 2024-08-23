@@ -1,20 +1,30 @@
 {
-    "FFT_Settings":{
-        "Frequency_Range":[0.2,3.0],
-        "FFT_Upsampling":2,
-        "Unwrapping_Start_Frequency":0.8,
-        "Extrapolation_Frequency_Range":[0.20,0.40],
-        "Window_Function_Range":[-5,10],
-        "Apodisation_Function":"rectwin",
-        "DR_boundary":[0.2,5.0]
-    },    
-    "Metadata_Settings":{
-        "Sample_Thickness":"md1",
-        "Reference_Thickness":"no"
-    },
-    "Dataset_Settings":{
-        "Sample":"ds1",
-        "Reference":"ds2",
-        "Pump":"no"
-    }
+  "FFT_Settings": {
+    "Frequency_Range": [
+      0.2,
+      3
+    ],
+    "FFT_Upsampling": 1,
+    "Unwrapping_Start_Frequency": 0.8,
+    "Extrapolation_Frequency_Range": [
+      0.2,
+      0.4
+    ],
+    "Window_Function_Range": [
+      -10,
+      20
+    ],
+    "Apodisation_Function": "rectwin",
+    "DR_boundary": []
+  },
+  "Metadata_Settings": {
+    "Sample_Thickness": "md1",
+    "Reference_Thickness": "md3",
+    "Thickness_Unit": "(mm)"
+  },
+  "Dataset_Settings": {
+    "Sample": "ds1",
+    "Reference": "ds2",
+    "Pump": "no"
+  }
 }
