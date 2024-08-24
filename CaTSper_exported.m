@@ -133,7 +133,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
         MagPhaseButtonGroup_2           matlab.ui.container.ButtonGroup
         PhaseButton_2                   matlab.ui.control.RadioButton
         AmplitudeButton_2               matlab.ui.control.RadioButton
-        ThicknessmmPanel                matlab.ui.container.Panel
+        ThicknessPanel                  matlab.ui.container.Panel
+        ThicknessUnitLabel              matlab.ui.control.Label
         ThicknessSwitch_FD              matlab.ui.control.Switch
         ReferenceEditField              matlab.ui.control.NumericEditField
         ReferenceEditFieldLabel         matlab.ui.control.Label
@@ -148,7 +149,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         PlotDataButtonGroup             matlab.ui.container.ButtonGroup
         DielectricConstantButton        matlab.ui.control.ToggleButton
         RefractiveIndexButton           matlab.ui.control.ToggleButton
-        AbsorptionButton                matlab.ui.control.ToggleButton
+        AbsorptionCoefficientButton     matlab.ui.control.ToggleButton
         TransmittanceButton             matlab.ui.control.ToggleButton
         DescriptionEditField_2Label     matlab.ui.control.Label
         FDSelectionListBox_2Label       matlab.ui.control.Label
@@ -360,11 +361,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FD_data.transmit_amplitude(FDindex) = [];
             app.FD_data.transmit_phase(FDindex) = [];
             
-            if isfield(app.FD_data,'absorptions')
-               app.FD_data.absorption(FDindex) = [];
-                app.FD_data.refractiveIndex(FDindex) = [];
-                app.FD_data.eReal(FDindex) = [];
-                app.FD_data.eImag(FDindex) = [];
+            if isfield(app.FD_data,'absorption_coefficient')
+               app.FD_data.absorption_coefficient(FDindex) = [];
+                app.FD_data.refractive_index(FDindex) = [];
+                app.FD_data.dielectric_constant_real(FDindex) = [];
+                app.FD_data.dielectric_constant_imaginary(FDindex) = [];
             end            
         end
         
@@ -724,19 +725,19 @@ classdef CaTSper_exported < matlab.apps.AppBase
                       plot(ax,fd_base,fd_transmit,'linewidth',1);
                       title(ax,'Transmittance');
                     % plotting absorption coefficient against frequency
-                    case "Absorption"
-                      fd_absorption = app.FD_data.absorption{idx};
-                      plot(ax,fd_base,fd_absorption,'linewidth',1);
-                      ylabel(ax,'Absorption coefficient (cm^{-1})');
-                      title(ax,'Absorption');
+                    case "Absorption Coefficient"
+                      fd_absorption_coefficient = app.FD_data.absorption_coefficient{idx};
+                      plot(ax,fd_base,fd_absorption_coefficient,'linewidth',1);
+                      ylabel(ax,'Absorption Coefficient (cm^{-1})');
+                      title(ax,'Absorption Coefficient');
                     case "Refractive Index"
                       % plotting real part of refractive index against frequency
                       if isequal(realImag,'Real')
-                          fd_refIdx = app.FD_data.refractiveIndex{idx};
+                          fd_refIdx = app.FD_data.refractive_index{idx};
                           ylabel(ax,'n',"FontSize",13);
                       else
                       % plotting imaginary part of refractive index against frequency
-                          fd_refIdx = app.FD_data.extinction{idx};
+                          fd_refIdx = app.FD_data.extinction_coefficient{idx};
                           ylabel(ax,'\kappa',"FontSize",13);
                       end
                       plot(ax,fd_base,fd_refIdx,'linewidth',1);
@@ -744,11 +745,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     otherwise
                       % plotting real part of dielectric constant against frequency
                       if isequal(realImag,'Real')
-                          fd_dielectric = app.FD_data.eReal{idx};
+                          fd_dielectric = app.FD_data.dielectric_constant_real{idx};
                           ylabel(ax,'\epsilon\prime',"FontSize",13);
                       % plotting imaginary part of dielectric constant against frequency
                       else
-                          fd_dielectric = app.FD_data.eImag{idx};
+                          fd_dielectric = app.FD_data.dielectric_constant_imaginary{idx};
                           ylabel(ax,'\epsilon\prime\prime',"FontSize",13);
                       end
                       plot(ax,fd_base,fd_dielectric,'Linewidth',1);
@@ -771,7 +772,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % constant functions are inactivated before measurements are added
         function FD_PlotData_reset(app)
 %           app.TransmittanceButton.Enable = true;
-            app.AbsorptionButton.Enable = false;
+            app.AbsorptionCoefficientButton.Enable = false;
             app.RefractiveIndexButton.Enable = false;
             app.DielectricConstantButton.Enable = false;
         end
@@ -798,7 +799,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 return;
             end
             
-            % extracting the plot type selected (transmittance, absorption, refractive index or dielectric constant)
+            % extracting the plot type selected (transmittance, absorption coefficient, refractive index or dielectric constant)
             plotType = app.PlotDataButtonGroup.SelectedObject.Text;
             % extracting the corresponding information to be plotted, this is
             % different for different chosen plot types
@@ -858,27 +859,27 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 switch plotType
                     % plotting amplitude/phase (depending on choice)
                     % against frequency
-                    case 'TRANSMITTANCE'
+                    case 'Transmittance'
                       plot(ax,fd_base,fd_transmit,'linewidth',1);
                       title(ax,'Transmittance');
                     % plotting absorption coefficient against frequency
-                    case 'ABSORPTION'
-                      fd_absorption = app.FD_data.absorption{idx};
-                      plot(ax,fd_base,fd_absorption,'linewidth',1);
-                      ylabel(ax,'Absorption coefficient (cm^{-1})');
-                      title(ax,'Absorption');
+                    case 'Absorption coefficient'
+                      fd_absorption_coefficient = app.FD_data.absorption_coefficient{idx};
+                      plot(ax,fd_base,fd_absorption_coefficient,'linewidth',1);
+                      ylabel(ax,'Absorption Coefficient (cm^{-1})');
+                      title(ax,'Absorption Coefficient');
                     % plotting refractive index against frequency
-                    case 'REFRACTIVE'
-                      fd_refIdx = app.FD_data.refractiveIndex{idx};
+                    case 'Refractive Index'
+                      fd_refIdx = app.FD_data.refractive_index{idx};
                       plot(ax,fd_base,fd_refIdx,'linewidth',1);
                       title(ax,'Refractive Index')
                     otherwise
                       % plotting real part of dielectric constant against frequency
                       if isequal(realImag,'Real')
-                          fd_dielectric = app.FD_data.eReal{idx};
+                          fd_dielectric = app.FD_data.dielectric_constant_real{idx};
                       else
                       % plotting imaginary part of dielectric constant against frequency
-                          fd_dielectric = app.FD_data.eImag{idx};
+                          fd_dielectric = app.FD_data.dielectric_constant_imaginary{idx};
                       end
                       plot(ax,fd_base,fd_dielectric,'Linewidth',1);
                       title(ax,'Dielectric Constant');                       
@@ -1020,7 +1021,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % AdvFDbuttonsEnable enables/disables a set of buttons in the
         % frequency domain tab
         function AdvFDbuttonsEnable(app,tf)
-            app.AbsorptionButton.Enable = tf;
+            app.AbsorptionCoefficientButton.Enable = tf;
             app.RefractiveIndexButton.Enable = tf;
             app.DielectricConstantButton.Enable = tf;
             app.DataManagementButton.Enable = tf;            
@@ -2363,27 +2364,27 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 scaledTransmitMag = ...
                     app.FD_data.transmit_amplitude{FDindex}.*scaleFactor;
                 
-                absorption = -2./(eff_thickness*0.1).*log(scaledTransmitMag); % unit: cm^-1
+                absorption_coefficient = -2./(eff_thickness*0.1).*log(scaledTransmitMag); % unit: cm^-1
                 % calcuate extinction coefficients
-                % 100 is for compensating cm to m in absorption calculation
+                % 100 is for compensating cm to m in absorption coefficient calculation
                 % absorption = 4pi*f*k/c -> k = c*absorption/4pi*f
-                extinction = c*100*absorption./(4*pi*app.FD_data.frequency{FDindex});
+                extinction_coefficient = c*100*absorption_coefficient./(4*pi*app.FD_data.frequency{FDindex});
 
                 % storing calculated values
-                app.FD_data.refractiveIndex{FDindex} = n_sample;
-                app.FD_data.absorption{FDindex} = absorption; 
-                app.FD_data.extinction{FDindex} = extinction;
+                app.FD_data.refractive_index{FDindex} = n_sample;
+                app.FD_data.absorption_coefficient{FDindex} = absorption_coefficient; 
+                app.FD_data.extinction_coefficient{FDindex} = extinction_coefficient;
                 
                 % calculate real and imaginary parts of the dielectric constancts
-                eReal = n_sample.^2 - extinction.^2;
-                eImag = 2 * n_sample.*extinction;
+                dielectric_constant_real = n_sample.^2 - extinction_coefficient.^2;
+                dielectric_constant_imaginary = 2 * n_sample.*extinction_coefficient;
                 
-                app.FD_data.eReal{FDindex} = eReal;
-                app.FD_data.eImag{FDindex} = eImag;
+                app.FD_data.dielectric_constant_real{FDindex} = dielectric_constant_real;
+                app.FD_data.dielectric_constant_imaginary{FDindex} = dielectric_constant_imaginary;
                 
             end
             
-            % enable absorption, refractive index, dielectric constant btn
+            % enable absorption coefficient, refractive index, dielectric constant btn
             AdvFDbuttonsEnable(app,1);
         end
 
@@ -2663,12 +2664,12 @@ classdef CaTSper_exported < matlab.apps.AppBase
             scaleFactor = ref_factor/sam_factor;
             scaledTransmitMag = transmAmp*scaleFactor;
                 
-            absorption = -2./(eff_thickness*0.1).*log(scaledTransmitMag); % unit: cm^-1
+            absoptionCoefficient = -2./(eff_thickness*0.1).*log(scaledTransmitMag); % unit: cm^-1
   
             % Find the selected item in the list box
             refF = abs(FD_frequency);
             refE = abs(FD_reference);
-            samA = absorption;
+            samA = absoptionCoefficient;
             sampleID = strjoin(app.TD_data.measList{TDindex});
             n_eff = app.TD_data.metadata{TDindex}.refractiveIndex;
             
@@ -2696,7 +2697,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.data3DDropDown.Items = dataList2;
             app.data3DDropDown.ItemsData = dataList2v;
             app.DM_data.set = 'FD_data';
-            itemList = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractiveIndex', 'absorption', 'extinction', 'eReal', 'eImag'};
+            itemList = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractive_index', 'absorption_coefficient', 'extinction_coefficient', 'dielectric_constant_real', 'dielectric_constant_imaginary'};
             app.AforDropDown.Items = itemList;
             app.BforDropDown.Items = itemList;
             app.CforDropDown.Items = itemList;
@@ -4059,6 +4060,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
         % Value changed function: ThicknessDropDown
         function ThicknessDropDownValueChanged(app, event)
             value = app.ThicknessDropDown.Value;
+            app.ThicknessUnitLabel.Text = value;
             switch value
                 case '(cm)'
                     thicknessUnit = 10^-2;
@@ -4977,31 +4979,31 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.PlotDataButtonGroup = uibuttongroup(app.FDDataAnalysisPanel);
             app.PlotDataButtonGroup.SelectionChangedFcn = createCallbackFcn(app, @PlotDataButtonGroupSelectionChanged, true);
             app.PlotDataButtonGroup.Title = 'Plot Data';
-            app.PlotDataButtonGroup.Position = [413 14 141 293];
+            app.PlotDataButtonGroup.Position = [396 14 158 293];
 
             % Create TransmittanceButton
             app.TransmittanceButton = uitogglebutton(app.PlotDataButtonGroup);
             app.TransmittanceButton.Text = 'Transmittance';
-            app.TransmittanceButton.Position = [10 208 120 55];
+            app.TransmittanceButton.Position = [10 208 138 55];
 
-            % Create AbsorptionButton
-            app.AbsorptionButton = uitogglebutton(app.PlotDataButtonGroup);
-            app.AbsorptionButton.Enable = 'off';
-            app.AbsorptionButton.Text = 'Absorption';
-            app.AbsorptionButton.Position = [10 142 120 55];
+            % Create AbsorptionCoefficientButton
+            app.AbsorptionCoefficientButton = uitogglebutton(app.PlotDataButtonGroup);
+            app.AbsorptionCoefficientButton.Enable = 'off';
+            app.AbsorptionCoefficientButton.Text = 'Absorption Coefficient';
+            app.AbsorptionCoefficientButton.Position = [10 142 138 55];
 
             % Create RefractiveIndexButton
             app.RefractiveIndexButton = uitogglebutton(app.PlotDataButtonGroup);
             app.RefractiveIndexButton.Enable = 'off';
             app.RefractiveIndexButton.Text = 'Refractive Index';
-            app.RefractiveIndexButton.Position = [10 77 120 55];
+            app.RefractiveIndexButton.Position = [10 77 138 55];
             app.RefractiveIndexButton.Value = true;
 
             % Create DielectricConstantButton
             app.DielectricConstantButton = uitogglebutton(app.PlotDataButtonGroup);
             app.DielectricConstantButton.Enable = 'off';
             app.DielectricConstantButton.Text = 'Dielectric Constant';
-            app.DielectricConstantButton.Position = [10 12 120 55];
+            app.DielectricConstantButton.Position = [10 12 138 55];
 
             % Create YscaleButtonGroup_2
             app.YscaleButtonGroup_2 = uibuttongroup(app.FDDataAnalysisPanel);
@@ -5028,7 +5030,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create DescriptionEditField_FD
             app.DescriptionEditField_FD = uieditfield(app.FDDataAnalysisPanel, 'text');
             app.DescriptionEditField_FD.Editable = 'off';
-            app.DescriptionEditField_FD.Position = [227 265 170 22];
+            app.DescriptionEditField_FD.Position = [227 265 153 22];
 
             % Create ALLFDButton_2
             app.ALLFDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
@@ -5036,40 +5038,45 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.ALLFDButton_2.Position = [8 229 45 45];
             app.ALLFDButton_2.Text = 'ALL';
 
-            % Create ThicknessmmPanel
-            app.ThicknessmmPanel = uipanel(app.FDDataAnalysisPanel);
-            app.ThicknessmmPanel.Title = 'Thickness(mm)';
-            app.ThicknessmmPanel.Position = [227 146 170 113];
+            % Create ThicknessPanel
+            app.ThicknessPanel = uipanel(app.FDDataAnalysisPanel);
+            app.ThicknessPanel.Title = 'Thickness';
+            app.ThicknessPanel.Position = [227 146 153 113];
 
             % Create SampleEditFieldLabel
-            app.SampleEditFieldLabel = uilabel(app.ThicknessmmPanel);
+            app.SampleEditFieldLabel = uilabel(app.ThicknessPanel);
             app.SampleEditFieldLabel.HorizontalAlignment = 'right';
             app.SampleEditFieldLabel.Position = [4 64 46 22];
             app.SampleEditFieldLabel.Text = 'Sample';
 
             % Create SampleEditField
-            app.SampleEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
+            app.SampleEditField = uieditfield(app.ThicknessPanel, 'numeric');
             app.SampleEditField.Limits = [0 Inf];
             app.SampleEditField.Editable = 'off';
-            app.SampleEditField.Position = [70 62 90 22];
+            app.SampleEditField.Position = [70 62 73 22];
 
             % Create ReferenceEditFieldLabel
-            app.ReferenceEditFieldLabel = uilabel(app.ThicknessmmPanel);
+            app.ReferenceEditFieldLabel = uilabel(app.ThicknessPanel);
             app.ReferenceEditFieldLabel.HorizontalAlignment = 'right';
             app.ReferenceEditFieldLabel.Position = [4 35 60 22];
             app.ReferenceEditFieldLabel.Text = 'Reference';
 
             % Create ReferenceEditField
-            app.ReferenceEditField = uieditfield(app.ThicknessmmPanel, 'numeric');
+            app.ReferenceEditField = uieditfield(app.ThicknessPanel, 'numeric');
             app.ReferenceEditField.Limits = [0 Inf];
             app.ReferenceEditField.Editable = 'off';
-            app.ReferenceEditField.Position = [71 35 87 22];
+            app.ReferenceEditField.Position = [71 35 72 22];
 
             % Create ThicknessSwitch_FD
-            app.ThicknessSwitch_FD = uiswitch(app.ThicknessmmPanel, 'slider');
+            app.ThicknessSwitch_FD = uiswitch(app.ThicknessPanel, 'slider');
             app.ThicknessSwitch_FD.Items = {'Sample', 'Offset'};
-            app.ThicknessSwitch_FD.Position = [69 8 43 19];
+            app.ThicknessSwitch_FD.Position = [59 6 43 19];
             app.ThicknessSwitch_FD.Value = 'Sample';
+
+            % Create ThicknessUnitLabel
+            app.ThicknessUnitLabel = uilabel(app.ThicknessPanel);
+            app.ThicknessUnitLabel.Position = [61 91 33 22];
+            app.ThicknessUnitLabel.Text = '(mm)';
 
             % Create MagPhaseButtonGroup_2
             app.MagPhaseButtonGroup_2 = uibuttongroup(app.FDDataAnalysisPanel);
@@ -5128,7 +5135,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % Create MultipleReflectionCountPanel
             app.MultipleReflectionCountPanel = uipanel(app.FDDataAnalysisPanel);
             app.MultipleReflectionCountPanel.Title = 'Multiple Reflection Count';
-            app.MultipleReflectionCountPanel.Position = [227 84 170 54];
+            app.MultipleReflectionCountPanel.Position = [227 84 153 54];
 
             % Create SampleEditField_2Label
             app.SampleEditField_2Label = uilabel(app.MultipleReflectionCountPanel);
@@ -5141,7 +5148,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.SampleNMREditField.Limits = [0 Inf];
             app.SampleNMREditField.ValueDisplayFormat = '%.0f';
             app.SampleNMREditField.Editable = 'off';
-            app.SampleNMREditField.Position = [105 6 42 22];
+            app.SampleNMREditField.Position = [94 6 49 22];
 
             % Create Plot2FDButton_2
             app.Plot2FDButton_2 = uibutton(app.FDDataAnalysisPanel, 'push');
@@ -5153,7 +5160,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.CalculateOpticalParametersButton = uibutton(app.FDDataAnalysisPanel, 'push');
             app.CalculateOpticalParametersButton.ButtonPushedFcn = createCallbackFcn(app, @CalculateOpticalParametersButtonPushed, true);
             app.CalculateOpticalParametersButton.FontWeight = 'bold';
-            app.CalculateOpticalParametersButton.Position = [229 21 164 55];
+            app.CalculateOpticalParametersButton.Position = [233 21 141 55];
             app.CalculateOpticalParametersButton.Text = {'Calculate'; 'Optical Parameters'};
 
             % Create PlotForCustomisationButton_FD2
@@ -5294,32 +5301,32 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create AforDropDown
             app.AforDropDown = uidropdown(app.Panel);
-            app.AforDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractiveIndex', 'absorption', 'extinction', 'eReal', 'eImag'};
-            app.AforDropDown.Position = [151 291 113 22];
+            app.AforDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractive_index', 'absorption_coefficient', 'extinction_coefficient', 'dielectric_constant_real', 'dielectric_constant_imaginary'};
+            app.AforDropDown.Position = [151 291 140 22];
             app.AforDropDown.Value = 'frequency';
 
             % Create BforDropDownLabel
             app.BforDropDownLabel = uilabel(app.Panel);
             app.BforDropDownLabel.HorizontalAlignment = 'right';
-            app.BforDropDownLabel.Position = [268 291 31 22];
+            app.BforDropDownLabel.Position = [294 290 31 22];
             app.BforDropDownLabel.Text = 'B for';
 
             % Create BforDropDown
             app.BforDropDown = uidropdown(app.Panel);
-            app.BforDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractiveIndex', 'absorption', 'extinction', 'eReal', 'eImag'};
-            app.BforDropDown.Position = [303 291 113 22];
+            app.BforDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractive_index', 'absorption_coefficient', 'extinction_coefficient', 'dielectric_constant_real', 'dielectric_constant_imaginary'};
+            app.BforDropDown.Position = [329 290 140 22];
             app.BforDropDown.Value = 'frequency';
 
             % Create CforDropDownLabel
             app.CforDropDownLabel = uilabel(app.Panel);
             app.CforDropDownLabel.HorizontalAlignment = 'right';
-            app.CforDropDownLabel.Position = [417 291 32 22];
+            app.CforDropDownLabel.Position = [474 290 32 22];
             app.CforDropDownLabel.Text = 'C for';
 
             % Create CforDropDown
             app.CforDropDown = uidropdown(app.Panel);
-            app.CforDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractiveIndex', 'absorption', 'extinction', 'eReal', 'eImag'};
-            app.CforDropDown.Position = [454 291 113 22];
+            app.CforDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractive_index', 'absorption_coefficient', 'extinction_coefficient', 'dielectric_constant_real', 'dielectric_constant_imaginary'};
+            app.CforDropDown.Position = [511 290 140 22];
             app.CforDropDown.Value = 'frequency';
 
             % Create XaxisDataDropDownLabel
@@ -5330,8 +5337,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create XaxisDataDropDown
             app.XaxisDataDropDown = uidropdown(app.Panel);
-            app.XaxisDataDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractiveIndex', 'absorption', 'extinction', 'eReal', 'eImag'};
-            app.XaxisDataDropDown.Position = [151 255 115 22];
+            app.XaxisDataDropDown.Items = {'frequency', 'ref_amplitude', 'ref_phase', 'sam_amplitude', 'sam_phase', 'transmit_amplitude', 'transmit_phase', 'refractive_index', 'absorption_coefficient', 'extinction_coefficient', 'dielectric_constant_real', 'dielectric_constant_imaginary'};
+            app.XaxisDataDropDown.Position = [151 255 140 22];
             app.XaxisDataDropDown.Value = 'frequency';
 
             % Create YaxisDataFormulationEditFieldLabel
