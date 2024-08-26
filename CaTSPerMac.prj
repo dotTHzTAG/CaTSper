@@ -86,7 +86,7 @@ ${DYLD_LIBRARY_PATH}:MR/R2023b/runtime/maca64:MR/R2023b/sys/os/maca64:MR/R2023b/
     </fileset.main>
     <fileset.resources />
     <fileset.package>
-      <file>${PROJECT_ROOT}/Sample files/config_default.json</file>
+      <file>${PROJECT_ROOT}/config_default.json</file>
     </fileset.package>
     <fileset.depfun>
       <file>${PROJECT_ROOT}/DR_Checker.mlapp</file>
@@ -114,7 +114,7 @@ ${DYLD_LIBRARY_PATH}:MR/R2023b/runtime/maca64:MR/R2023b/sys/os/maca64:MR/R2023b/
       <vista>false</vista>
       <linux>false</linux>
       <solaris>false</solaris>
-      <osver>14.5</osver>
+      <osver>14.6.1</osver>
       <os32>true</os32>
       <os64>false</os64>
       <arch>maci64</arch>
