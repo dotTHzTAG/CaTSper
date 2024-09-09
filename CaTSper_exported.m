@@ -4051,7 +4051,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 end
                 fwrite(fid, jsonText, 'char');
                 fclose(fid);
-                uialert(app.CaTSperUIFigure, 'Configuration saved successfully.', 'Success');
+                uialert(app.CaTSperUIFigure, 'Configuration saved','Success',"Icon","success");
             catch ME
                 uialert(app.CaTSperUIFigure, sprintf('Failed to save configuration: %s', ME.message), 'Error');
             end

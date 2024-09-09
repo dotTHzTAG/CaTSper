@@ -2,7 +2,7 @@
   "FFT_Settings": {
     "Frequency_Range": [
       0.2,
-      3
+      3.5
     ],
     "FFT_Upsampling": 1,
     "Unwrapping_Start_Frequency": 0.8,
