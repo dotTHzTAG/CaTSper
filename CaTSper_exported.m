@@ -3262,18 +3262,34 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     return;
                 end
             end
+            
+            if iscell(filename) % 'filename' can ba a cell structure when multiple files were selected. 
+                fileNum = length(filename);
+            else
+                filename = {filename};
+                fileNum = 1;
+            end
+            
+            for idx = 1:fileNum
+                % if the imported file is already exist in the list,
+                % just return
+                for cnt = 1:PRJ_count
+                    if isequal(app.filename{cnt},filename{idx})
+                        return;
+                    end
+                end
 
-            for idx = 1:length(filename)
                 PRJ_count = PRJ_count + 1;
                 fileinfo = strcat(filepath,filename{idx});
                 app.filename{PRJ_count} = filename{idx};
                 app.fullpathname{PRJ_count} = fileinfo;
-            end
-
+            
             allFileList = strjoin(app.filename,',');
             allFileList = strrep(allFileList,'.thz','');
             app.ProjectsEditField.Value = allFileList;
-                      
+
+            end
+                                 
             % initialization
             app.TD_select = [];
             app.FD_select = [];
