@@ -5,8 +5,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
         CaTSperUIFigure                 matlab.ui.Figure
         TabGroup                        matlab.ui.container.TabGroup
         TimeDomainTDTab                 matlab.ui.container.Tab
+        ColorOrderDropDown_TD           matlab.ui.control.DropDown
+        ColorOrderLabel                 matlab.ui.control.Label
         SetCurrentSettingsDefaultButton  matlab.ui.control.Button
-        JetColormapButton_TD            matlab.ui.control.StateButton
         LegendButton_TD                 matlab.ui.control.StateButton
         AssignTD_DataButton             matlab.ui.control.Button
         SaveData_TD                     matlab.ui.control.Button
@@ -109,7 +110,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
         UIAxes1                         matlab.ui.control.UIAxes
         UIAxes2                         matlab.ui.control.UIAxes
         FrequencyDomainFDTab            matlab.ui.container.Tab
-        JetColormapButton_FD            matlab.ui.control.StateButton
+        ColorOrderDropDown_FD           matlab.ui.control.DropDown
+        ColorOrderLabel_2               matlab.ui.control.Label
         LegendButton_FD                 matlab.ui.control.StateButton
         AssignFD_DataButton             matlab.ui.control.Button
         SaveData_FD                     matlab.ui.control.Button
@@ -179,7 +181,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
         UIAxes4                         matlab.ui.control.UIAxes
         UIAxes3                         matlab.ui.control.UIAxes
         DataManagmentDMTab              matlab.ui.container.Tab
-        JetColormapButton_DM            matlab.ui.control.StateButton
         AssignDM_DataButton             matlab.ui.control.Button
         SaveData_DM                     matlab.ui.control.Button
         DMTabGroup                      matlab.ui.container.TabGroup
@@ -215,6 +216,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
         MinPeakProminenceEditField      matlab.ui.control.NumericEditField
         MinPeakProminenceEditFieldLabel  matlab.ui.control.Label
         Panel                           matlab.ui.container.Panel
+        GridOffButton_DM                matlab.ui.control.StateButton
+        ColorOrderDropDown_DM           matlab.ui.control.DropDown
+        ColorOrderLabel_3               matlab.ui.control.Label
         PlotmeanandrangeButton          matlab.ui.control.Button
         PlotindividualdatasetsButton    matlab.ui.control.Button
         DPlotFrequencyxaxisPanel        matlab.ui.container.Panel
@@ -425,10 +429,9 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 cla(ax)
             end
             
-            % reset 'NO LEGEND', 'JET COLORMAP'
-            app.LegendButton_TD.Value = 0;
-            app.JetColormapButton_TD.Value = 0;
-            
+            showLegend = app.LegendButton_TD.Value;
+            cmap = app.ColorOrderDropDown_TD.Value;
+            cOrderFunction = str2func(cmap);
 
             % deleting the legend
             legend(ax,'off');
@@ -437,6 +440,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % specifying number of different colours required for plotting
             % as the number of items to be plotted
             colorNum = length(plotList);
+            colorOrder = cOrderFunction(colorNum);
+            
+            if isequal(plotType,'Both')
+                colorOrder = reshape(repmat(colorOrder',2,1), 3, 2*colorNum)';
+            end
             
             % if 'app.GridOffButton_3.Value' = 1 (i.e. the button on the app
             % is pressed), gridlines on the graph is turned off; otherwise,
@@ -447,16 +455,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 grid(ax,"on")
             end
             
-            % if 'Both' is selected for the plot type, double the number of
-            % colours required for graph plotting, since for each sample, both the
-            % reference and the sample measurement will be plotted
-            if isequal(plotType,'Both')
-                colorNum = colorNum * 2;
-            end
             
             % plotting all selected measurements (sample only,
             % reference only or both sample and reference, depends on what one
             % selects) in time domain
+            lgd = {};
+            ax.ColorOrder = colorOrder;
+
             for idx = plotList
 
                 dsNum_Sample = app.TD_data.dsNum_Sample{idx};
@@ -481,38 +486,38 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 td_sample = app.TD_data.ds{idx,dsNum_Sample}(2,:);
                 % extracting sample name
                 sampleID = strjoin(app.TD_data.measList{idx});
-%                 assignin('base',"td_Base",td_base);
-%                 assignin('base',"td_sample",td_sample);
                 
                 % plotting graphs according one's selection
                 switch plotType
                     % plotting sample measurements only
                     case 'Sample'
                       plot(ax,td_time,td_sample,'linewidth',1);
-                      lgd{cnt} = sampleID;
-                      cnt = cnt + 1;
+                      lgd = [lgd; sampleID];
                     % plotting reference measurments only
                     case 'Reference'
                       plot(ax,td_time,td_reference,'linewidth',1);
+                      lgd = [lgd; strcat(sampleID,'_Ref')];
                     % plotting both sample and reference measurements
                     otherwise
                       plot(ax,td_time,td_reference,td_time,td_sample,...
                           'linewidth',1);
+                      lgd = [lgd; strcat(sampleID,'_Ref'); sampleID];
                 end
             end
             
-            % if only sample measurements are plotted, automatically display legend
-            % values as the measurement names
-            if isequal(plotType,'Sample')
-                legend(ax,(lgd),'Interpreter','none');
+            legend(ax,(lgd),'Interpreter','none');
+
+            if showLegend
+                legend(ax,"show");
+            else
+                legend(ax,"hide");
             end
+            %%end
             % the colour of each line is set by the color map
             % auto-generated by the 'lines' function, which is a function of
             % the required number of colours
-            ax.ColorOrder = lines(colorNum);
+
             hold(ax,"off")  
-            
-            
         end
         
         % plotFD_data plots the frequency domain values, choices can be made on plotting reference 
@@ -557,14 +562,18 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % setting y-axis scale based on the selected choice of log or
             % linear
             ax.YScale = (Yscale);
-            % the colour of each line is set by the color map
-            % auto-generated by the 'lines' function, and the function is based
-            % on the number of items to be plotted
-            ax.ColorOrder = lines(length(plotList));
             
-            % reset 'NO LEGEND', 'JET COLORMAP'
-            app.LegendButton_FD.Value = 0;
-            app.JetColormapButton_FD.Value = 0;
+            showLegend = app.LegendButton_FD.Value;
+            cmap = app.ColorOrderDropDown_FD.Value;
+            cOrderFunction = str2func(cmap);
+            colorNum = length(plotList);
+            colorOrder = cOrderFunction(colorNum);
+
+            if isequal(plotType,'Both')
+                colorOrder = reshape(repmat(colorOrder',2,1), 3, 2*colorNum)';
+            end
+
+            ax.ColorOrder = colorOrder;
             
             % if the 'grid off' button is selected, remove gridlines from
             % the plot, otherwise gridlines will be displayed on the plot
@@ -602,26 +611,30 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     % plotting sample measurements only
                     case 'Sample'
                       plot(ax,fd_base,fd_sample,'linewidth',1);
-                      lgd{cnt} = sampleID;
-                      cnt = cnt + 1;
+                      lgd = [lgd; sampleID];
                     % plotting reference measurements only
                     case 'Reference'
                       plot(ax,fd_base,fd_reference,'linewidth',1);
+                      lgd = [lgd; strcat(sampleID,'_Ref')];
                     % plotting both sample and refeence measurements
                     otherwise
                       plot(ax,fd_base,fd_reference...
                           ,fd_base,fd_sample,'linewidth',1);
+                      lgd = [lgd; strcat(sampleID,'_Ref');sampleID];
                 end
                 
             end
             
             % if only sample measurements are plotted, automatically display legend
             % values as the measurement names
-            if isequal(plotType,'Sample')
-                legend(ax,(lgd),'Location',"best",'Interpreter','none');
+            legend(ax,(lgd),'Location',"best",'Interpreter','none');
+
+            if showLegend
+                legend(ax,"show");
+            else
                 legend(ax,"hide");
-            end
-            
+            end 
+
             hold(ax,"off")
             
         end
@@ -674,14 +687,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % setting y-axis scale based on the selected parameter to be
             % plotted
             ax.YScale = (Yscale);
-            % the colour of each line is set by the color map
-            % auto-generated by the 'lines' function, and the function is based
-            % on the number of items to be plotted
-            ax.ColorOrder = lines(length(plotList));
-            
-            % reset 'NO LEGEND', 'JET COLORMAP'
-            app.LegendButton_FD.Value = 0;
-            app.JetColormapButton_FD.Value = 0;
+
+            showLegend = app.LegendButton_FD.Value;
+            cmap = app.ColorOrderDropDown_FD.Value;
+            cOrderFunction = str2func(cmap);
+            colorNum = length(plotList);
+            colorOrder = cOrderFunction(colorNum);
+            ax.ColorOrder = colorOrder;
 
             % if the 'grid off' button is selected, remove gridlines from
             % the plot, otherwise gridlines will be displayed on the plot
@@ -704,8 +716,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
                 fd_base = app.FD_data.frequency{idx} * 10^-12;
                 % extracting sample name for legend
                 sampleID = app.FD_data.measList{idx};
-                lgd{cnt} = sampleID;
-                cnt = cnt + 1;
+                lgd = [lgd; sampleID];
 
                 % if 'amplitude' option is chosen, plot amplitude values as
                 % y-values; and similarly for 'phase' option                
@@ -754,17 +765,20 @@ classdef CaTSper_exported < matlab.apps.AppBase
                       end
                       plot(ax,fd_base,fd_dielectric,'Linewidth',1);
                       title(ax,'Dielectric Constant');                       
-                end
-                
+                end                
             end
             
             % place legend in the most optimal location and display legend
             % values as the measurement names
             legend(ax,(lgd),'Location',"best",'Interpreter','none');
-            legend(ax,"hide");
+
+            if showLegend
+                legend(ax,"show");
+            else
+                legend(ax,"hide");
+            end
+
             hold(ax,"off")
-            
-            
         end
         
         % FD_PlotData_reset resets the buttons in FD data analysis tab to
@@ -776,123 +790,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.RefractiveIndexButton.Enable = false;
             app.DielectricConstantButton.Enable = false;
         end
-        
-        % plotFD_dataNew plots information (four possible options) extracted from terahertz data in
-        % frequency domain, and offers functionalities on customising graph appearance
-        function plotFD_dataNew(app)
-            % Create UIFigure and hide until all components are created
-            fig = figure('Visible', 'on');
-            fig.Position = [100 100 1200 800];
-            fig.Name = app.ProjectsEditField.Value;
-
-            % Create UIAxes
-            ax = uiaxes(fig);
-            xlabel(ax, 'Frequency (THz)')
-            ax.Position = [20 10 1140 780];
-%             ax.YLim = [0 100];
-
-            % if nothing is to be plotted, no functions will be executed    
-             plotList = app.FD_select_2;
-            
-            % if nothing is to be plotted, no functions will be executed
-            if isempty(plotList)
-                return;
-            end
-            
-            % extracting the plot type selected (transmittance, absorption coefficient, refractive index or dielectric constant)
-            plotType = app.PlotDataButtonGroup.SelectedObject.Text;
-            % extracting the corresponding information to be plotted, this is
-            % different for different chosen plot types
-            plotInfo = app.MagPhaseButtonGroup_2.SelectedObject.Text;
-            % extracting the choice of plotting a linear or log graph
-            Yscale = app.YscaleButtonGroup_2.SelectedObject.Text;
-            % extracting the choice of plotting real or imaginary values
-            realImag = app.RealImagButtonGroup.SelectedObject.Text;
-            cnt = 1;
-            lgd = {};        
-            
-            % deleting graphics objects, that are specified by 'ax', from
-            % the axes
-            cla(ax)
-            % deleting the legend
-            legend(ax,'off');
-            hold(ax,"on")
-            % setting y-axis scale based on the selected parameter to be
-            % plotted
-            ax.YScale = (Yscale);
-            % the colour of each line is set by the color map
-            % auto-generated by the 'lines' function, and the function is based
-            % on the number of items to be plotted
-            ax.ColorOrder = flipud(jet(length(plotList)));
-            
-            % reset 'NO LEGEND', 'JET COLORMAP'
-            app.LegendButton_FD.Value = 0;
-            app.JetColormapButton_FD.Value = 0;
-    
-            % if the size of the first dimension (row) of 'plotType' is 2, join
-            % all values on the first row of 'plotType' to form one single
-            % string
-            if size(plotType,1) == 2;
-                plotType = strjoin(plotType(1));
-            end
-            
-            % converting frequency values to THz
-            for idx = plotList
-                fd_base = app.FD_data.frequency{idx} * 10^-12;
-                % extracting sample name for legend
-                sampleID = app.FD_data.measList{idx};
-                lgd{cnt} = sampleID;
-                cnt = cnt + 1;
-%                 pause(1);
-                
-                % if 'amplitude' option is chosen, plot amplitude values as
-                % y-values; and similarly for 'phase' option
-                if isequal(plotInfo,'Amplitude')
-                    fd_transmit = app.FD_data.transmit_amplitude{idx};
-                    ylabel(ax,'Amplitude');
-                else
-                    fd_transmit = app.FD_data.transmit_phase{idx};
-                    ylabel(ax,'Phase');
-                end
-
-                % plotting corresponding graphs based on selected option
-                switch plotType
-                    % plotting amplitude/phase (depending on choice)
-                    % against frequency
-                    case 'Transmittance'
-                      plot(ax,fd_base,fd_transmit,'linewidth',1);
-                      title(ax,'Transmittance');
-                    % plotting absorption coefficient against frequency
-                    case 'Absorption coefficient'
-                      fd_absorption_coefficient = app.FD_data.absorption_coefficient{idx};
-                      plot(ax,fd_base,fd_absorption_coefficient,'linewidth',1);
-                      ylabel(ax,'Absorption Coefficient (cm^{-1})');
-                      title(ax,'Absorption Coefficient');
-                    % plotting refractive index against frequency
-                    case 'Refractive Index'
-                      fd_refIdx = app.FD_data.refractive_index{idx};
-                      plot(ax,fd_base,fd_refIdx,'linewidth',1);
-                      title(ax,'Refractive Index')
-                    otherwise
-                      % plotting real part of dielectric constant against frequency
-                      if isequal(realImag,'Real')
-                          fd_dielectric = app.FD_data.dielectric_constant_real{idx};
-                      else
-                      % plotting imaginary part of dielectric constant against frequency
-                          fd_dielectric = app.FD_data.dielectric_constant_imaginary{idx};
-                      end
-                      plot(ax,fd_base,fd_dielectric,'Linewidth',1);
-                      title(ax,'Dielectric Constant');                       
-                end
-                legend(ax,sampleID,'Interpreter','none');
-            end
-            
-            % place legend in the most optimal location and display legend
-            % values as the measurement names
-            legend(ax,(lgd),'Location',"best",'Interpreter','none');
-            hold(ax,"off")            
-        end
-        
         
         % TDSunwrap unwraps the phase values from 0.8 THz (due to high SNR) to both directions,
         % and then corrects the phase values in low THz (<0.1 THz) via
@@ -2462,7 +2359,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
         end
 
-        % Value changed function: JetColormapButton_TD
+        % Callback function
         function JetColormapButton_TDValueChanged(app, event)
             % JETCOLORMAPButtonValueChanged applies the jet colormap to the lines in the plot if user
             % selects the jet colormap option, otherwise the lines colormap is applied
@@ -2494,7 +2391,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             
         end
 
-        % Value changed function: JetColormapButton_FD
+        % Callback function
         function JetColormapButton_FDValueChanged(app, event)
             % JETCOLORMAPButton_2ValueChanged applies the jet colormap to the lines in the plot if user
             % selects the jet colormap option, otherwise the lines colormap is applied
@@ -2679,7 +2576,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
         % Button pushed function: PlotForCustomisationButton_FD2
         function PlotForCustomisationButton_FD2Pushed(app, event)
-            %plotFD_dataNew(app);
             plotFD_data2(app,'NEW');
         end
 
@@ -2765,8 +2661,11 @@ classdef CaTSper_exported < matlab.apps.AppBase
 %                 display("no data to plot")
 %                 return;
 %             end
-            
+
+            cmap = app.ColorOrderDropDown_DM.Value;
+            cmapFunction = str2func(cmap);
             ax = app.UIAxes9;
+            ax.reset;
             
             % deleting graphics objects, that are specified by 'ax', from the axes
             cla(ax);
@@ -2775,6 +2674,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % extract input value from Y axis data formulation
             ax.YLabel.String = app.YaxisDataFormulationEditField.Value;
             hold(ax,"on");
+            ax.ColorOrder = cmapFunction(length(dataList));
             
             % extract chosen X axis data value
             xData = app.XaxisDataDropDown.Value;
@@ -2794,15 +2694,18 @@ classdef CaTSper_exported < matlab.apps.AppBase
             ylabel = strrep(app.YaxisDataFormulationEditField.Value,'A',A);
             ylabel = strrep(ylabel,'B',B);
             ylabel = strrep(ylabel,'C',C);
-            grid(ax,"on");
+
+            if app.GridOffButton_DM.Value
+                grid(ax,"off");
+            else
+                grid(ax,"on");
+            end
             
             % put axis labels on plot
-            ax.reset;
             ax.YLabel.String = ylabel;
             ax.YLabel.Interpreter = "none";
             ax.XLabel.String = app.XaxisDataDropDown.Value;
             hold(ax,"off");
-            
         end
 
         % Button pushed function: DisplayXLinesButton
@@ -3088,7 +2991,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.FDSelectionListBox_2.ItemsData = (1:length(ListItems));
         end
 
-        % Value changed function: JetColormapButton_DM
+        % Callback function
         function JetColormapButton_DMValueChanged(app, event)
             % JETCOLORMAPButton_DMValueChanged plots data sets using the jet
             % colormap or the lines colormap based on the selection by user
@@ -3341,7 +3244,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
             % and assigns the data to corresponding fields in the app
 
             % open a dialouge box for user to select a *.thz file from a folder
-            [filename, filepath] = uigetfile('*.thz');
+            [filename, filepath] = uigetfile('*.thz','MultiSelect','on');
             
             % if either the file name or file path has a value of 0, do not
             % continue to execute the function
@@ -3359,17 +3262,33 @@ classdef CaTSper_exported < matlab.apps.AppBase
                     return;
                 end
             end
-
-            PRJ_count = PRJ_count + 1;
-
-            fileinfo = strcat(filepath,filename);
-            app.filename{PRJ_count} = filename;
-            app.fullpathname{PRJ_count} = fileinfo;
-   
-            allFileList = strjoin(app.filename,',');
-            allFileList = strrep(allFileList,'.thz','');          
-            app.ProjectsEditField.Value = allFileList;
             
+            if iscell(filename) % 'filename' can ba a cell structure when multiple files were selected. 
+                fileNum = length(filename);
+            else
+                filename = {filename};
+                fileNum = 1;
+            end
+            
+            for idx = 1:fileNum
+                % if the imported file is already exist in the list,
+                % just return
+                for cnt = 1:PRJ_count
+                    if isequal(app.filename{cnt},filename{idx})
+                        return;
+                    end
+                end
+
+                PRJ_count = PRJ_count + 1;
+                fileinfo = strcat(filepath,filename{idx});
+                app.filename{PRJ_count} = filename{idx};
+                app.fullpathname{PRJ_count} = fileinfo;
+                           
+                allFileList = strjoin(app.filename,',');       
+                app.ProjectsEditField.Value = allFileList;
+            end
+
+                       
             % initialization
             app.TD_select = [];
             app.FD_select = [];
@@ -4073,6 +3992,48 @@ classdef CaTSper_exported < matlab.apps.AppBase
             end
             app.thicknessUnit = thicknessUnit;
         end
+
+        % Value changed function: ColorOrderDropDown_TD
+        function ColorOrderDropDown_TDValueChanged(app, event)
+            cmap = app.ColorOrderDropDown_TD.Value;
+            cmapFunction = str2func(cmap);
+
+            ax1 = app.UIAxes1;
+            ax2 = app.UIAxes2;
+            
+            idxNum1 = size(ax1.ColorOrder,1);
+            idxNum2 = size(ax2.ColorOrder,1);
+
+            ax1.ColorOrder = cmapFunction(idxNum1);
+            ax2.ColorOrder = cmapFunction(idxNum2);
+        end
+
+        % Value changed function: ColorOrderDropDown_DM
+        function ColorOrderDropDown_DMValueChanged(app, event)
+            cmap = app.ColorOrderDropDown_DM.Value;
+            cmapFunction = str2func(cmap);
+
+            ax9 = app.UIAxes9;
+
+            idxNum = size(ax9.ColorOrder,1);
+
+            ax9.ColorOrder = cmapFunction(idxNum);
+        end
+
+        % Value changed function: ColorOrderDropDown_FD
+        function ColorOrderDropDown_FDValueChanged(app, event)
+            cmap = app.ColorOrderDropDown_FD.Value;
+            cmapFunction = str2func(cmap);
+
+            ax3 = app.UIAxes3;
+            ax4 = app.UIAxes4;
+
+            idxNum3 = size(ax3.ColorOrder,1);
+            idxNum4 = size(ax4.ColorOrder,1);
+            
+            ax3.ColorOrder = cmapFunction(idxNum3);
+            ax4.ColorOrder = cmapFunction(idxNum4);            
+        end
     end
 
     % Component initialization
@@ -4169,6 +4130,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             ylabel(app.UIAxes2, 'E_{field amplitude} (a.u.)')
             app.UIAxes2.FontWeight = 'bold';
             app.UIAxes2.XLim = [-5 15];
+            app.UIAxes2.GridLineWidth = 1;
+            app.UIAxes2.MinorGridLineWidth = 1;
             app.UIAxes2.XTickLabelRotation = 0;
             app.UIAxes2.YTickLabelRotation = 0;
             app.UIAxes2.ZTickLabelRotation = 0;
@@ -4183,6 +4146,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             ylabel(app.UIAxes1, 'E_{field amplitude} (a.u.)')
             app.UIAxes1.FontWeight = 'bold';
             app.UIAxes1.XLim = [-5 15];
+            app.UIAxes1.GridLineWidth = 1;
+            app.UIAxes1.MinorGridLineWidth = 1;
             app.UIAxes1.XTickLabelRotation = 0;
             app.UIAxes1.YTickLabelRotation = 0;
             app.UIAxes1.ZTickLabelRotation = 0;
@@ -4786,19 +4751,26 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.LegendButton_TD = uibutton(app.TimeDomainTDTab, 'state');
             app.LegendButton_TD.ValueChangedFcn = createCallbackFcn(app, @LegendButton_TDValueChanged, true);
             app.LegendButton_TD.Text = 'Legend';
-            app.LegendButton_TD.Position = [1204 13 99 23];
-
-            % Create JetColormapButton_TD
-            app.JetColormapButton_TD = uibutton(app.TimeDomainTDTab, 'state');
-            app.JetColormapButton_TD.ValueChangedFcn = createCallbackFcn(app, @JetColormapButton_TDValueChanged, true);
-            app.JetColormapButton_TD.Text = 'Jet Colormap';
-            app.JetColormapButton_TD.Position = [1320 13 107 23];
+            app.LegendButton_TD.Position = [1329 13 99 23];
 
             % Create SetCurrentSettingsDefaultButton
             app.SetCurrentSettingsDefaultButton = uibutton(app.TimeDomainTDTab, 'push');
             app.SetCurrentSettingsDefaultButton.ButtonPushedFcn = createCallbackFcn(app, @SetCurrentSettingsDefaultButtonPushed, true);
             app.SetCurrentSettingsDefaultButton.Position = [24 69 188 28];
             app.SetCurrentSettingsDefaultButton.Text = 'Set Current Settings Default';
+
+            % Create ColorOrderLabel
+            app.ColorOrderLabel = uilabel(app.TimeDomainTDTab);
+            app.ColorOrderLabel.HorizontalAlignment = 'right';
+            app.ColorOrderLabel.Position = [1141 14 64 22];
+            app.ColorOrderLabel.Text = 'ColorOrder';
+
+            % Create ColorOrderDropDown_TD
+            app.ColorOrderDropDown_TD = uidropdown(app.TimeDomainTDTab);
+            app.ColorOrderDropDown_TD.Items = {'parula', 'sky', 'turbo', 'hsv', 'hot', 'cool', 'spring', 'summer', 'autumn', 'winter', 'gray', 'bone', 'copper', 'pink', 'jet', 'lines'};
+            app.ColorOrderDropDown_TD.ValueChangedFcn = createCallbackFcn(app, @ColorOrderDropDown_TDValueChanged, true);
+            app.ColorOrderDropDown_TD.Position = [1220 14 93 22];
+            app.ColorOrderDropDown_TD.Value = 'lines';
 
             % Create FrequencyDomainFDTab
             app.FrequencyDomainFDTab = uitab(app.TabGroup);
@@ -4810,6 +4782,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             xlabel(app.UIAxes3, 'Frequency (THz)')
             ylabel(app.UIAxes3, 'E_{field amplitude} (a.u.)')
             app.UIAxes3.FontWeight = 'bold';
+            app.UIAxes3.GridLineWidth = 1;
+            app.UIAxes3.MinorGridLineWidth = 1;
             app.UIAxes3.XTickLabelRotation = 0;
             app.UIAxes3.YTickLabelRotation = 0;
             app.UIAxes3.YScale = 'log';
@@ -4825,6 +4799,8 @@ classdef CaTSper_exported < matlab.apps.AppBase
             xlabel(app.UIAxes4, 'Frequency (THz)')
             ylabel(app.UIAxes4, 'E_{field amplitude} (a.u.)')
             app.UIAxes4.FontWeight = 'bold';
+            app.UIAxes4.GridLineWidth = 1;
+            app.UIAxes4.MinorGridLineWidth = 1;
             app.UIAxes4.XTickLabelRotation = 0;
             app.UIAxes4.YTickLabelRotation = 0;
             app.UIAxes4.YScale = 'log';
@@ -5075,7 +5051,7 @@ classdef CaTSper_exported < matlab.apps.AppBase
 
             % Create ThicknessUnitLabel
             app.ThicknessUnitLabel = uilabel(app.ThicknessPanel);
-            app.ThicknessUnitLabel.Position = [61 91 33 22];
+            app.ThicknessUnitLabel.Position = [61 90 33 22];
             app.ThicknessUnitLabel.Text = '(mm)';
 
             % Create MagPhaseButtonGroup_2
@@ -5212,13 +5188,20 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.LegendButton_FD = uibutton(app.FrequencyDomainFDTab, 'state');
             app.LegendButton_FD.ValueChangedFcn = createCallbackFcn(app, @LegendButton_FDValueChanged, true);
             app.LegendButton_FD.Text = 'Legend';
-            app.LegendButton_FD.Position = [1216 12 99 23];
+            app.LegendButton_FD.Position = [1340 11 99 23];
 
-            % Create JetColormapButton_FD
-            app.JetColormapButton_FD = uibutton(app.FrequencyDomainFDTab, 'state');
-            app.JetColormapButton_FD.ValueChangedFcn = createCallbackFcn(app, @JetColormapButton_FDValueChanged, true);
-            app.JetColormapButton_FD.Text = 'Jet Colormap';
-            app.JetColormapButton_FD.Position = [1332 12 107 23];
+            % Create ColorOrderLabel_2
+            app.ColorOrderLabel_2 = uilabel(app.FrequencyDomainFDTab);
+            app.ColorOrderLabel_2.HorizontalAlignment = 'right';
+            app.ColorOrderLabel_2.Position = [1148 12 64 22];
+            app.ColorOrderLabel_2.Text = 'ColorOrder';
+
+            % Create ColorOrderDropDown_FD
+            app.ColorOrderDropDown_FD = uidropdown(app.FrequencyDomainFDTab);
+            app.ColorOrderDropDown_FD.Items = {'parula', 'sky', 'turbo', 'hsv', 'hot', 'cool', 'spring', 'summer', 'autumn', 'winter', 'gray', 'bone', 'copper', 'pink', 'jet', 'lines'};
+            app.ColorOrderDropDown_FD.ValueChangedFcn = createCallbackFcn(app, @ColorOrderDropDown_FDValueChanged, true);
+            app.ColorOrderDropDown_FD.Position = [1227 12 95 22];
+            app.ColorOrderDropDown_FD.Value = 'lines';
 
             % Create DataManagmentDMTab
             app.DataManagmentDMTab = uitab(app.TabGroup);
@@ -5372,13 +5355,13 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.CalculateButton = uibutton(app.Panel, 'push');
             app.CalculateButton.ButtonPushedFcn = createCallbackFcn(app, @CalculateButtonPushed, true);
             app.CalculateButton.BackgroundColor = [1 1 1];
-            app.CalculateButton.Position = [411 117 231 30];
+            app.CalculateButton.Position = [411 99 231 30];
             app.CalculateButton.Text = 'Calculate';
 
             % Create DPlotFrequencyxaxisPanel
             app.DPlotFrequencyxaxisPanel = uipanel(app.Panel);
             app.DPlotFrequencyxaxisPanel.Title = '3D Plot (Frequency x-axis)';
-            app.DPlotFrequencyxaxisPanel.Position = [39 40 345 71];
+            app.DPlotFrequencyxaxisPanel.Position = [35 55 345 71];
 
             % Create dataDropDownLabel
             app.dataDropDownLabel = uilabel(app.DPlotFrequencyxaxisPanel);
@@ -5408,19 +5391,37 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.PlotindividualdatasetsButton = uibutton(app.Panel, 'push');
             app.PlotindividualdatasetsButton.ButtonPushedFcn = createCallbackFcn(app, @PlotindividualdatasetsButtonPushed, true);
             app.PlotindividualdatasetsButton.Enable = 'off';
-            app.PlotindividualdatasetsButton.Position = [411 78 231 30];
+            app.PlotindividualdatasetsButton.Position = [411 58 231 30];
             app.PlotindividualdatasetsButton.Text = 'Plot (individual data sets)';
 
             % Create PlotmeanandrangeButton
             app.PlotmeanandrangeButton = uibutton(app.Panel, 'push');
             app.PlotmeanandrangeButton.ButtonPushedFcn = createCallbackFcn(app, @PlotmeanandrangeButtonPushed, true);
             app.PlotmeanandrangeButton.Enable = 'off';
-            app.PlotmeanandrangeButton.Position = [411 40 231 30];
+            app.PlotmeanandrangeButton.Position = [411 20 231 30];
             app.PlotmeanandrangeButton.Text = 'Plot (mean and range)';
+
+            % Create ColorOrderLabel_3
+            app.ColorOrderLabel_3 = uilabel(app.Panel);
+            app.ColorOrderLabel_3.HorizontalAlignment = 'right';
+            app.ColorOrderLabel_3.Position = [118 21 64 22];
+            app.ColorOrderLabel_3.Text = 'ColorOrder';
+
+            % Create ColorOrderDropDown_DM
+            app.ColorOrderDropDown_DM = uidropdown(app.Panel);
+            app.ColorOrderDropDown_DM.Items = {'parula', 'sky', 'turbo', 'hsv', 'hot', 'cool', 'spring', 'summer', 'autumn', 'winter', 'gray', 'bone', 'copper', 'pink', 'jet', 'lines'};
+            app.ColorOrderDropDown_DM.ValueChangedFcn = createCallbackFcn(app, @ColorOrderDropDown_DMValueChanged, true);
+            app.ColorOrderDropDown_DM.Position = [197 21 79 22];
+            app.ColorOrderDropDown_DM.Value = 'lines';
+
+            % Create GridOffButton_DM
+            app.GridOffButton_DM = uibutton(app.Panel, 'state');
+            app.GridOffButton_DM.Text = 'Grid Off';
+            app.GridOffButton_DM.Position = [292 20 81 23];
 
             % Create DMTabGroup
             app.DMTabGroup = uitabgroup(app.DataManagmentDMTab);
-            app.DMTabGroup.Position = [25 109 648 280];
+            app.DMTabGroup.Position = [18 106 648 280];
 
             % Create FrequencyBaseTab
             app.FrequencyBaseTab = uitab(app.DMTabGroup);
@@ -5609,12 +5610,6 @@ classdef CaTSper_exported < matlab.apps.AppBase
             app.AssignDM_DataButton.Tooltip = {'Assign data to variable in the base workspace'};
             app.AssignDM_DataButton.Position = [148 22 220 30];
             app.AssignDM_DataButton.Text = 'Assign DM_DATA in Workspace';
-
-            % Create JetColormapButton_DM
-            app.JetColormapButton_DM = uibutton(app.DataManagmentDMTab, 'state');
-            app.JetColormapButton_DM.ValueChangedFcn = createCallbackFcn(app, @JetColormapButton_DMValueChanged, true);
-            app.JetColormapButton_DM.Text = 'Jet Colormap';
-            app.JetColormapButton_DM.Position = [559 23 107 26];
 
             % Show the figure after all components are created
             app.CaTSperUIFigure.Visible = 'on';
