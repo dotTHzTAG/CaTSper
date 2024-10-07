@@ -15,7 +15,10 @@
       20
     ],
     "Apodisation_Function": "rectwin",
-    "DR_boundary": []
+    "DR_boundary": [
+      0.2,
+      4.0
+    ]
   },
   "Metadata_Settings": {
     "Sample_Thickness": "md1",
