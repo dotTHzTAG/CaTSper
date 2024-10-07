@@ -448,7 +448,7 @@ classdef DR_Checker_exported < matlab.apps.AppBase
             app.CutoffFrequencySlider.Limits = [1 7];
             app.CutoffFrequencySlider.ValueChangedFcn = createCallbackFcn(app, @CutoffFrequencySliderValueChanged, true);
             app.CutoffFrequencySlider.Position = [24 103 195 3];
-            app.CutoffFrequencySlider.Value = 3.5;
+            app.CutoffFrequencySlider.Value = 2;
 
             % Create SampleInformationPanel
             app.SampleInformationPanel = uipanel(app.DynamicRangeCheckerUIFigure);
