@@ -31,4 +31,4 @@ If you have any feedback, please reach out to us at jnw35@cam.ac.uk
 
 ## License
 
-[LGPLv3](https://www.gnu.org/licenses/lgpl-3.0.html)
+[GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
