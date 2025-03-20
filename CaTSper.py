@@ -1,20 +1,3 @@
-"""CaTSper/ Cambridge Terahertz Spectrum Analyser
-The dotTHz project, 2023 Terahertz Applications Group
-Department of Chemical Engineering and Biotechnology
-University of Cambridge, UK (Prof Axel Zeitler's group)
-
-<<Version information>>
-CaTSper_Python Version 0.3
-
-<<Liscence>>
-CaTSper source code is relesed und an MIT open source license.
-
-<<Contact>>
-https://github.com/CamTHz  - online repository
-https://thz.ceb.cam.ac.uk  - research group website
-Lead developer: Jasper Ward-Berry, jnw35@cam.ac.uk
-"""
-
 import os
 import sys
 import copy
