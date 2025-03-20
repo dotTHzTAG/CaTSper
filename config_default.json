@@ -1,0 +1,23 @@
+{
+	"FFT_Settings": {
+		"Transfer_Function": "uniform_slab",
+		"Minimum_Frequency": 0.2,
+		"Maximum_Frequency": 3.0,
+		"Upsampling": 3,
+		"Peak_SNR": 1.0,
+		"Extrapolation_Range": 0.2,
+		"Half-Width": 15,
+		"Window_Function": "hanning"
+	},
+	"Metadata_Settings": {
+		"Sample_Thickness": 1,
+		"Reference_Thickness": 2,
+		"Thickness_Unit": "mm",
+		"Thickness_Difference": true
+	},
+	"Dataset_Settings": {
+		"Sample": 1,
+		"Reference": 2,
+		"Baseline": 0
+	}
+}

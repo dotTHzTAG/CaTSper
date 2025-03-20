@@ -1,0 +1,6 @@
+numpy
+h5py
+PyQt6
+pyqtgraph
+colorcet
+thzpy
