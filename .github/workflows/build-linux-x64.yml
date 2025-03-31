@@ -1,0 +1,41 @@
+name: Package New Releases to .exe for Linux x64
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build-linux-x64:
+    name: Builds linux x64 release
+    runs-on: ubuntu-20.04
+      
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Run PyInstaller
+        run: |
+          python -m PyInstaller CaTSper.spec
+
+      - name: Rename Output
+        shell: pwsh
+        run: |
+          Move-Item -Path dist/CaTSper -Destination dist/CaTSper-linux-x64
+
+      - name: Upload to Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload ${{github.event.release.tag_name}} dist/CaTSper-linux-x64
