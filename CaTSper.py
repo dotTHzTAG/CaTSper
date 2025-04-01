@@ -160,15 +160,30 @@ class MainWindow(QMainWindow):
                                                 "Colour_Map": 0,
                                                 "Legend": False})
 
-    # Clear loaded files and their data
     def clearMemory(self):
         """Clear loaded files and their data, and reset settings."""
+
+        # Clear files selection
         self.files = []
         self.label_filenames.setText('')
+
+        # Reset model data
         self.td_model.clear()
-        self.fd_model.clear
-        self.tab_td.listWidget_selection.clear()
-        self.tab_fd.listWidget_selection.clear()
+        self.fd_model.clear()
+
+        # Reset settings to default
+        root = Path(__file__).parent
+        self.settings_file = root.joinpath("config_default.json")
+        self.applySettings()
+
+        # Re-initialise tabs
+        self.tab_td = TimeDomainTab(self)
+        self.tab_fd = FrequencyDomainTab(self)
+        self.tabWidget.removeTab(1)
+        self.tabWidget.removeTab(0)
+        self.tabWidget.addTab(self.tab_td, "Time Domain (TD)")
+        self.tabWidget.addTab(self.tab_fd, "Frequency Domain (FD)")
+        self.tab_td.pushButton_transform.clicked.connect(self.transform)
 
     def transform(self):
         measurements = self.tab_td.listWidget_selection.getSelectedMeasurements()
