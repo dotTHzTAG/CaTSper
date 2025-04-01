@@ -2177,7 +2177,7 @@ QCheckBox::indicator:checked {
             <item>
              <widget class="QComboBox" name="comboBox_colourmap">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="minimumSize">
                <size>
@@ -2199,6 +2199,71 @@ QCheckBox::indicator:checked {
               <property name="editable">
                <bool>false</bool>
               </property>
+              <item>
+               <property name="text">
+                <string>glasbey</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>glasbey_cool</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>glasbey_dark</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>glasbey_light</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>glasbey_warm</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>isolum</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>gouldian</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>colorwheel</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>blues</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>fire</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>coolwarm</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>gray</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>rainbow</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item>
@@ -2238,7 +2303,7 @@ QCheckBox::indicator:checked {
        </widget>
       </item>
       <item row="0" column="0" colspan="2">
-       <widget class="QFrame" name="frame">
+       <widget class="QFrame" name="frame_lists">
         <property name="minimumSize">
          <size>
           <width>0</width>

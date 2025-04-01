@@ -1,11 +1,8 @@
 from pathlib import Path
-import numpy as np
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDataWidgetMapper, QWidget
 from PyQt6.QtGui import QDoubleValidator
-from functools import partial
-from CaTSperClasses import CaTSperPlotWidget
 
 
 class TimeDomainTab(QWidget):
@@ -151,7 +148,6 @@ class TimeDomainTab(QWidget):
         self.plot_1.settings = self.parent().td_plot_settings
         self.plot_2.selection = self.listWidget_selection
         self.plot_2.settings = self.parent().td_plot_settings
-
 
     def setDataSelection(self, current):
         row = current.row()

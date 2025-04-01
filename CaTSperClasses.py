@@ -3,7 +3,8 @@ from PyQt6.QtWidgets import QListWidget
 from PyQt6.QtCore import QAbstractListModel, QAbstractTableModel
 from PyQt6.QtCore import Qt, QModelIndex
 from PyQt6 import QtCore
-from pyqtgraph import PlotWidget
+from PyQt6.QtGui import QPen, QColor
+from pyqtgraph import PlotWidget, mkPen
 from thzpy.dotthz import DotthzFile, DotthzMeasurement
 from thzpy.timedomain import primary_peak, n_effective
 import numpy as np
@@ -383,7 +384,7 @@ class CaTSperPlotWidget(PlotWidget):
         self.selection = selection
 
     def plotSelection(self):
-        palette = colorcet.b_glasbey_category10
+        palette = colorcet.palette_n[self.plot_settings.Colour_Map]
         plot_count = 0
         self.clear()
         self.getPlotItem().enableAutoRange()
@@ -404,17 +405,20 @@ class CaTSperPlotWidget(PlotWidget):
                 if self.plot_settings.Sample:
                     if "sample" in property:
                         y, x = property["sample"]
-                        self.plot(x, y, pen=palette[plot_count])
+                        self.plot(x, y, pen=mkPen(palette[plot_count],
+                                                  width=2))
                         plot_count += 1
                 if self.plot_settings.Reference:
                     if "reference" in property:
                         y, x = property["reference"]
-                        self.plot(x, y, pen=palette[plot_count])
+                        self.plot(x, y, pen=mkPen(palette[plot_count],
+                                                  width=2))
                         plot_count += 1
                 if self.plot_settings.Baseline:
                     if "baseline" in property:
                         y, x = property["baseline"]
-                        self.plot(x, y, pen=palette[plot_count])
+                        self.plot(x, y, pen=mkPen(palette[plot_count],
+                                                  width=2))
                         plot_count += 1
 
                 if self.plot_settings.Transform:
@@ -436,5 +440,6 @@ class CaTSperPlotWidget(PlotWidget):
                     else:
                         y = np.real(y)
 
-                self.plot(x, y, pen=palette[plot_count])
+                self.plot(x, y, pen=mkPen(palette[plot_count],
+                                          width=2))
                 plot_count += 1

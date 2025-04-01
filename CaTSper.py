@@ -146,7 +146,7 @@ class MainWindow(QMainWindow):
                                                 "Transform": False,
                                                 "X_Label": "Time (ps)",
                                                 "Y_Label": "Electric Field Amplitude (a.u.)",
-                                                "Colour_Map": 0,
+                                                "Colour_Map": "glasbey",
                                                 "Legend": False})
             self.fd_plot_settings.loadSettings({"Property": "waveforms",
                                                 "Sample": True,
@@ -156,8 +156,8 @@ class MainWindow(QMainWindow):
                                                 "Imaginary": False,
                                                 "Transform": True,
                                                 "X_Label": "Frequency (THz)",
-                                                "Y_Label": "Power (a.u)",
-                                                "Colour_Map": 0,
+                                                "Y_Label": "Frequency (THz)",
+                                                "Colour_Map": "glasbey",
                                                 "Legend": False})
 
     def clearMemory(self):
