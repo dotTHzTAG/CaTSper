@@ -26,6 +26,7 @@ class FrequencyDomainTab(QWidget):
 
         # Bindings for lists
         self.parent().fd_model.setView(self.listView_measurements)
+        self.parent().fd_model.setSelection(self.listWidget_selection)
         self.listView_measurements.setModel(self.parent().fd_model)
         self.listWidget_selection.setSourceModel(self.parent().fd_model)
         self.listWidget_selection.setSourceView(self.listView_measurements)

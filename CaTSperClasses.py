@@ -60,6 +60,13 @@ class SelectionListWidget(QListWidget):
                 self.addItem(item)
                 oldItemNames.append(item)
 
+    def deleteMatching(self, name):
+        items = self.getItems()
+        for item in items:
+            index = self.row(item)
+            if item.text() == name:
+                self.takeItem(index)
+
     def deleteSelected(self):
         items = self.selectedItems()
         for item in items:
@@ -310,10 +317,15 @@ class THzDataModel(QAbstractTableModel):
     def setView(self, view):
         self._view = view
 
+    def setSelection(self, selection):
+        self._selection = selection
+
     def deleteSelected(self):
         indices = self._view.selectedIndexes()
         indices.sort(reverse=True)
         for index in indices:
+            item = self.data(index, Qt.ItemDataRole.DisplayRole)
+            self._selection.deleteMatching(item)
             self.removeData(index)
 
     def clear(self):
