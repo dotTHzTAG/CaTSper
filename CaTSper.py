@@ -155,8 +155,8 @@ class MainWindow(QMainWindow):
                                                 "Log": True,
                                                 "Imaginary": False,
                                                 "Transform": True,
-                                                "X_Label": "Power (a.u)",
-                                                "Y_Label": "Frequency (THz)",
+                                                "X_Label": "Frequency (THz)",
+                                                "Y_Label": "Power (a.u)",
                                                 "Colour_Map": 0,
                                                 "Legend": False})
 

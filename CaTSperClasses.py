@@ -3,7 +3,6 @@ from PyQt6.QtWidgets import QListWidget
 from PyQt6.QtCore import QAbstractListModel, QAbstractTableModel
 from PyQt6.QtCore import Qt, QModelIndex
 from PyQt6 import QtCore
-import pyqtgraph
 from pyqtgraph import PlotWidget
 from thzpy.dotthz import DotthzFile, DotthzMeasurement
 from thzpy.timedomain import primary_peak, n_effective
@@ -370,6 +369,9 @@ class SettingsModel(QAbstractListModel):
 class CaTSperPlotWidget(PlotWidget):
     def __init__(self, parent=None, background='default', plotItem=None, **kwargs):
         super().__init__(parent, background, plotItem, **kwargs)
+        self.getPlotItem().setContextMenuActionVisible("Transforms", False)
+        self.getPlotItem().setContextMenuActionVisible("Downsample", False)
+        self.getPlotItem().setContextMenuActionVisible("Points", False)
 
     def setPlotSettings(self, plot_settings):
         self.plot_settings = plot_settings
@@ -422,6 +424,8 @@ class CaTSperPlotWidget(PlotWidget):
                     for trace in traces:
                         trace.setFftMode(True)
                     self.setXRange(fmin, fmax)
+                    self.enableAutoRange(axis='y')
+                    self.setAutoVisible(y=True)
 
             else:
                 x = dataset["frequency"]
