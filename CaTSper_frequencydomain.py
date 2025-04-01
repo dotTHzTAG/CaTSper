@@ -62,12 +62,9 @@ class FrequencyDomainTab(QWidget):
     def setPlotProperty(self):
         button = self.buttonGroup_properties.checkedButton()
         settings = self.parent().parent().parent().parent().fd_plot_settings
-        setattr(settings,
-                "Property",
-                button.property("plotProperty"))
-        setattr(settings,
-                "X_Label",
-                button.property("xLabel"))
-        setattr(settings,
-                "Y_Label",
-                button.property("yLabel"))
+        settings.setData(settings.index(0), button.property("plotProperty"))
+        settings.setData(settings.index(4), button.property("plotLog"))
+        settings.setData(settings.index(5), button.property("plotImaginary"))
+        settings.setData(settings.index(6), button.property("plotTransform"))
+        settings.setData(settings.index(7), button.property("xLabel"))
+        settings.setData(settings.index(8), button.property("yLabel"))

@@ -3,7 +3,6 @@ from PyQt6.QtWidgets import QListWidget
 from PyQt6.QtCore import QAbstractListModel, QAbstractTableModel
 from PyQt6.QtCore import Qt, QModelIndex
 from PyQt6 import QtCore
-from PyQt6.QtGui import QPen, QColor
 from pyqtgraph import PlotWidget, mkPen
 from thzpy.dotthz import DotthzFile, DotthzMeasurement
 from thzpy.timedomain import primary_peak, n_effective
@@ -349,7 +348,7 @@ class SettingsModel(QAbstractListModel):
                 role == Qt.ItemDataRole.EditRole):
             return value
 
-    def setData(self, index, data, role):
+    def setData(self, index, data, role=Qt.ItemDataRole.EditRole):
         attr_name = self.attr_map[index.row()]
         if type(data) is str:
             try:
