@@ -16,8 +16,10 @@ from CaTSperClasses import THzDataModel, SettingsModel
 from CaTSper_timedomain import TimeDomainTab
 from CaTSper_frequencydomain import FrequencyDomainTab
 
+
 if getattr(sys, 'frozen', False):
     os.chdir(sys._MEIPASS)
+
 
 class MainWindow(QMainWindow):
     """CaTSper main window class.
@@ -34,8 +36,8 @@ class MainWindow(QMainWindow):
         super().__init__(*args, **kwargs)
         root = Path(__file__).parent
         uic.loadUi(root.joinpath('CaTSper_python.ui'), self)
-        self.setWindowIcon(QIcon(str(root.joinpath('CaTSPer_resources', 'icon_48.png'))))
-        self.svg_CaTSper.load(str(root.joinpath('CaTSPer_resources', 'CaTSper_logo.svg')))
+        self.setWindowIcon(QIcon(str(root.joinpath('CaTSper_resources', 'CaTSper_logo.ico'))))
+        self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources', 'CaTSper_logo.svg')))
         self.files = []
 
         # Set up models.
@@ -241,10 +243,10 @@ class MainWindow(QMainWindow):
             setattr(transformed_measurement, "optical_constants", optical_constants)
             self.fd_model.addData(transformed_measurement)
 
+
 def main():
     """Execute application."""
     app = QApplication(sys.argv)
-    app.setStyle("WindowsVista")
     ex = MainWindow()
     ex.show()
     sys.exit(app.exec())
