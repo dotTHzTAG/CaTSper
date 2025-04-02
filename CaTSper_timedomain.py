@@ -106,6 +106,7 @@ class TimeDomainTab(QWidget):
         self.fft_mapper.addMapping(self.lineEdit_range, 5)
         self.fft_mapper.addMapping(self.lineEdit_halfwidth, 6)
         self.fft_mapper.addMapping(self.comboBox_winfunc, 7)
+        self.fft_mapper.addMapping(self.checkBox_naming, 8)
         self.fft_mapper.toFirst()
 
         # Set up mapping of metadata settings

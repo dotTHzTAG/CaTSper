@@ -36,8 +36,10 @@ class MainWindow(QMainWindow):
         super().__init__(*args, **kwargs)
         root = Path(__file__).parent
         uic.loadUi(root.joinpath('CaTSper_python.ui'), self)
-        self.setWindowIcon(QIcon(str(root.joinpath('CaTSper_resources', 'CaTSper_logo.ico'))))
-        self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources', 'CaTSper_logo.svg')))
+        self.setWindowIcon(QIcon(str(root.joinpath('CaTSper_resources',
+                                                   'CaTSper_logo.ico'))))
+        self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources',
+                                                'CaTSper_logo.svg')))
         self.files = []
 
         # Set up models.
@@ -50,7 +52,8 @@ class MainWindow(QMainWindow):
                                            "Peak_SNR",
                                            "Extrapolation_Range",
                                            "Half-Width",
-                                           "Window_Function"))
+                                           "Window_Function",
+                                           "Full_Naming"))
 
         self.ds_settings = SettingsModel(("Sample",
                                           "Reference",
@@ -128,10 +131,12 @@ class MainWindow(QMainWindow):
         self.td_model.layoutChanged.emit()
 
     def loadSettings(self):
+        root = Path(__file__).parent
         self.settings_file = QFileDialog.getOpenFileName(self,
                                                          'Open file',
-                                                         str(Path(__file__).parent),
-                                                         'json Files (*.json)')[0]
+                                                         str(root),
+                                                         'json Files (*.json)'
+                                                         )[0]
 
     def applySettings(self):
         with open(self.settings_file) as f:
@@ -147,7 +152,7 @@ class MainWindow(QMainWindow):
                                                 "Imaginary": False,
                                                 "Transform": False,
                                                 "X_Label": "Time (ps)",
-                                                "Y_Label": "Electric Field Amplitude (a.u.)",
+                                                "Y_Label": "E_Field (a.u.)",
                                                 "Colour_Map": "glasbey",
                                                 "Legend": False})
             self.fd_plot_settings.loadSettings({"Property": "waveforms",
@@ -190,64 +195,81 @@ class MainWindow(QMainWindow):
     def transform(self):
         measurements = self.tab_td.listWidget_selection.getSelectedMeasurements()
 
-        for measurement in measurements:
-            waveforms = measurement.getWaveforms(self.ds_settings.getSetting("Sample"),
-                                                 self.ds_settings.getSetting("Reference"),
-                                                 self.ds_settings.getSetting("Baseline"))
+        sample_index = self.ds_settings.getSetting("Sample")
+        ref_index = self.ds_settings.getSetting("Reference")
+        baseline_index = self.ds_settings.getSetting("Baseline")
+        st_index = self.md_settings.getSetting("Sample_Thickness")
+        rt_index = self.md_settings.getSetting("Reference_Thickness")
+        half_width = self.fft_settings.getSetting("Half-Width")
+        win_func = self.fft_settings.getSetting("Window_Function")
+        t_unit = self.md_settings.getSetting("Thickness_Unit")
+        f_min = self.fft_settings.getSetting("Minimum_Frequency")
+        f_max = self.fft_settings.getSetting("Maximum_Frequency")
+        upsampling = self.fft_settings.getSetting("Upsampling")
+        centre = self.fft_settings.getSetting("Peak_SNR")
+        range = self.fft_settings.getSetting("Extrapolation_Range")
+        transfer_func = self.fft_settings.getSetting("Transfer_Function")
 
-            st_index = self.md_settings.getSetting("Sample_Thickness")
+        for measurement in measurements:
+            waveforms = measurement.getWaveforms(sample_index,
+                                                 ref_index,
+                                                 baseline_index)
+
             if st_index:
                 sample_thickness = getattr(measurement, "md" + str(st_index))
             else:
                 sample_thickness = 0
-            rt_index = self.md_settings.getSetting("Reference_Thickness")
+
             if rt_index:
-                reference_thickness = getattr(measurement, "md" + str(rt_index))
+                ref_thickness = getattr(measurement, "md" + str(rt_index))
             else:
-                reference_thickness = 0.
+                ref_thickness = 0.
 
             sample = waveforms["sample"]
             reference = waveforms["reference"]
 
             if "baseline" not in waveforms:
                 baseline = None
-                sample, reference = common_window([sample, reference],
-                                                  self.fft_settings.getSetting("Half-Width"),
-                                                  self.fft_settings.getSetting("Window_Function"))
+                sample, reference = common_window([sample,
+                                                   reference],
+                                                  half_width,
+                                                  win_func)
             else:
                 baseline = waveforms["baseline"]
-                sample, reference, baseline = common_window([sample, reference, baseline],
-                                                            self.fft_settings.getSetting("Half-Width"),
-                                                            self.fft_settings.getSetting("Window_Function"))
+                sample, reference, baseline = common_window([sample,
+                                                             reference,
+                                                             baseline],
+                                                            half_width,
+                                                            win_func)
 
-            match self.fft_settings.getSetting("Transfer_Function"):
+            match transfer_func:
                 case "uniform_slab":
                     optical_constants = uniform_slab(sample_thickness,
                                                      sample, reference,
-                                                     self.md_settings.getSetting("Thickness_Unit"),
-                                                     1,
-                                                     self.fft_settings.getSetting("Minimum_Frequency"),
-                                                     self.fft_settings.getSetting("Maximum_Frequency"),
-                                                     self.fft_settings.getSetting("Upsampling"),
-                                                     self.fft_settings.getSetting("Peak_SNR"),
-                                                     self.fft_settings.getSetting("Extrapolation_Range"),
+                                                     t_unit,
+                                                     1.,
+                                                     f_min,
+                                                     f_max,
+                                                     upsampling,
+                                                     centre,
+                                                     range,
                                                      True)
 
                 case "binary_mixture":
                     optical_constants = binary_mixture(sample_thickness,
-                                                       reference_thickness,
+                                                       ref_thickness,
                                                        sample,
                                                        reference,
                                                        baseline,
-                                                       self.md_settings.getSetting("Thickness_Unit"),
-                                                       1,
+                                                       t_unit,
+                                                       1.,
                                                        1.54,
-                                                       0,
-                                                       self.fft_settings.getSetting("Minimum_Frequency"),
-                                                       self.fft_settings.getSetting("Maximum_Frequency"),
-                                                       self.fft_settings.getSetting("Upsampling"),
-                                                       self.fft_settings.getSetting("Peak_SNR"),
-                                                       self.fft_settings.getSetting("Extrapolation_Range"),
+                                                       0.,
+                                                       f_min,
+                                                       f_max,
+                                                       upsampling,
+                                                       centre,
+                                                       range,
                                                        "maxwell-garnett",
                                                        True)
 
@@ -257,7 +279,16 @@ class MainWindow(QMainWindow):
                 optical_constants["waveforms"]["baseline"] = baseline
 
             transformed_measurement = copy.deepcopy(measurement)
-            setattr(transformed_measurement, "optical_constants", optical_constants)
+            setattr(transformed_measurement,
+                    "optical_constants",
+                    optical_constants)
+            if self.fft_settings.getSetting("Full_Naming"):
+                name = (getattr(transformed_measurement, "name")
+                        + " (" + win_func + " " + str(half_width) + "ps, "
+                        + str(f_min) + "-" + str(f_max) + "THz, "
+                        + "2^" + str(upsampling) + " upsampling, "
+                        + transfer_func + ")")
+                setattr(transformed_measurement, "name", name)
             self.fd_model.addData(transformed_measurement)
 
 

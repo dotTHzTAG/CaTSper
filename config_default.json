@@ -7,7 +7,8 @@
 		"Peak_SNR": 1.0,
 		"Extrapolation_Range": 0.2,
 		"Half-Width": 15,
-		"Window_Function": "hanning"
+		"Window_Function": "hanning",
+		"Full_Naming": false
 	},
 	"Metadata_Settings": {
 		"Sample_Thickness": 1,
