@@ -1,7 +1,10 @@
+import json
 from pathlib import Path
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QDataWidgetMapper, QWidget
+from PyQt6.QtWidgets import (QDataWidgetMapper,
+                             QWidget,
+                             QFileDialog)
 from PyQt6.QtGui import QDoubleValidator
 
 
@@ -22,6 +25,8 @@ class TimeDomainTab(QWidget):
         self.pushButton_plot2.clicked.connect(self.plot_2.plotSelection)
         self.pushButton_legend.clicked.connect(self.plot_1.plotLegend)
         self.pushButton_legend.clicked.connect(self.plot_2.plotLegend)
+        self.pushButton_save.clicked.connect(self.saveSettings)
+        self.pushButton_load.clicked.connect(self.loadSettings)
 
         # Bindings for lists
         self.listView_measurements.setModel(self.parent().td_model)
@@ -154,3 +159,36 @@ class TimeDomainTab(QWidget):
     def setDataSelection(self, current):
         row = current.row()
         self.selection_mapper.setCurrentIndex(row)
+
+    def loadSettings(self):
+        root = Path(__file__).parent
+        file_path = QFileDialog.getOpenFileName(self,
+                                                'Open file',
+                                                str(root),
+                                                'json Files (*.json)')[0]
+        with open(file_path) as f:
+            settings = json.load(f)
+            fft = settings["FFT_Settings"]
+            md = settings["Metadata_Settings"]
+            ds = settings["Dataset_Settings"]
+            self.parent().parent().parent().parent().fft_settings.loadSettings(fft)
+            self.parent().parent().parent().parent().md_settings.loadSettings(md)
+            self.parent().parent().parent().parent().ds_settings.loadSettings(ds)
+
+    def saveSettings(self):
+        root = Path(__file__).parent
+        file_path = QFileDialog.getSaveFileName(self,
+                                                'Save file',
+                                                str(root),
+                                                'json Files (*.json)')[0]
+        fft = self.parent().parent().parent().parent().fft_settings.getSettings()
+        md = self.parent().parent().parent().parent().md_settings.getSettings()
+        ds = self.parent().parent().parent().parent().ds_settings.getSettings()
+
+        settings = {"FFT_Settings": fft,
+                    "Metadata_Settings": md,
+                    "Dataset_Settings": ds}
+
+        json_str = json.dumps(settings, indent='\t')
+        with open(file_path, 'w') as f:
+            f.write(json_str)

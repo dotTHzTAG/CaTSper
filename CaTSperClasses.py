@@ -334,9 +334,12 @@ class THzDataModel(QAbstractTableModel):
 
 class SettingsModel(QAbstractListModel):
 
-    def __init__(self, map):
+    def __init__(self, settings):
         super().__init__()
-        self.attr_map = map
+        for k, v in settings.items():
+            setattr(self, k, v)
+
+        self.attr_map = list(settings.keys())
 
     def rowCount(self, parent=QModelIndex()):
         return len(self.attr_map)

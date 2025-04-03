@@ -1039,7 +1039,7 @@ QCheckBox::indicator:checked {
             <item>
              <widget class="QPushButton" name="pushButton_save">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="minimumSize">
                <size>
@@ -1064,9 +1064,9 @@ QCheckBox::indicator:checked {
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_reset">
+             <widget class="QPushButton" name="pushButton_load">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="minimumSize">
                <size>
@@ -1086,7 +1086,7 @@ QCheckBox::indicator:checked {
                </font>
               </property>
               <property name="text">
-               <string>Reset Settings</string>
+               <string>Load Settings</string>
               </property>
              </widget>
             </item>

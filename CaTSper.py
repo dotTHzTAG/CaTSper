@@ -45,54 +45,39 @@ class MainWindow(QMainWindow):
         # Set up models.
         self.td_model = THzDataModel()
         self.fd_model = THzDataModel()
-        self.fft_settings = SettingsModel(("Transfer_Function",
-                                           "Minimum_Frequency",
-                                           "Maximum_Frequency",
-                                           "Upsampling",
-                                           "Peak_SNR",
-                                           "Extrapolation_Range",
-                                           "Half-Width",
-                                           "Window_Function",
-                                           "Full_Naming"))
 
-        self.ds_settings = SettingsModel(("Sample",
-                                          "Reference",
-                                          "Baseline"))
-
-        self.md_settings = SettingsModel(("Sample_Thickness",
-                                          "Reference_Thickness",
-                                          "Thickness_Unit",
-                                          "Thickness_Difference"))
-
-        self.td_plot_settings = SettingsModel(("Property",
-                                               "Sample",
-                                               "Reference",
-                                               "Baseline",
-                                               "Log",
-                                               "Imaginary",
-                                               "Transform",
-                                               "X_Label",
-                                               "Y_Label",
-                                               "Colour_Map"))
-
-        self.fd_plot_settings = SettingsModel(("Property",
-                                               "Sample",
-                                               "Reference",
-                                               "Baseline",
-                                               "Log",
-                                               "Imaginary",
-                                               "Transform",
-                                               "X_Label",
-                                               "Y_Label",
-                                               "Colour_Map"))
+        # Apply default settings
         pyqtgraph.setConfigOptions(antialias=True)
         self.settings_file = root.joinpath("config_default.json")
-        self.applySettings()
+        with open(self.settings_file) as f:
+            settings = json.load(f)
+            self.fft_settings = SettingsModel(settings["FFT_Settings"])
+            self.md_settings = SettingsModel(settings["Metadata_Settings"])
+            self.ds_settings = SettingsModel(settings["Dataset_Settings"])
+            self.td_plot_settings = SettingsModel({"Property": "waveforms",
+                                                   "Sample": True,
+                                                   "Reference": True,
+                                                   "Baseline": False,
+                                                   "Log": False,
+                                                   "Imaginary": False,
+                                                   "Transform": False,
+                                                   "X_Label": "Time (ps)",
+                                                   "Y_Label": "E_Field (a.u.)",
+                                                   "Colour_Map": "glasbey"})
+            self.fd_plot_settings = SettingsModel({"Property": "waveforms",
+                                                   "Sample": True,
+                                                   "Reference": True,
+                                                   "Baseline": True,
+                                                   "Log": True,
+                                                   "Imaginary": False,
+                                                   "Transform": True,
+                                                   "X_Label": "Frequency (THz)",
+                                                   "Y_Label": "Frequency (THz)",
+                                                   "Colour_Map": "glasbey"})
 
         # Set up tabs
         self.tab_td = TimeDomainTab(self)
         self.tabWidget.addTab(self.tab_td, "Time Domain (TD)")
-
         self.tab_fd = FrequencyDomainTab(self)
         self.tabWidget.addTab(self.tab_fd, "Frequency Domain (FD)")
 
@@ -127,41 +112,6 @@ class MainWindow(QMainWindow):
                                  ds.baseline_index,
                                  Qt.ItemDataRole.EditRole)
         self.td_model.layoutChanged.emit()
-
-    def loadSettings(self):
-        root = Path(__file__).parent
-        self.settings_file = QFileDialog.getOpenFileName(self,
-                                                         'Open file',
-                                                         str(root),
-                                                         'json Files (*.json)'
-                                                         )[0]
-
-    def applySettings(self):
-        with open(self.settings_file) as f:
-            settings = json.load(f)
-            self.fft_settings.loadSettings(settings["FFT_Settings"])
-            self.md_settings.loadSettings(settings["Metadata_Settings"])
-            self.ds_settings.loadSettings(settings["Dataset_Settings"])
-            self.td_plot_settings.loadSettings({"Property": "waveforms",
-                                                "Sample": True,
-                                                "Reference": True,
-                                                "Baseline": False,
-                                                "Log": False,
-                                                "Imaginary": False,
-                                                "Transform": False,
-                                                "X_Label": "Time (ps)",
-                                                "Y_Label": "E_Field (a.u.)",
-                                                "Colour_Map": "glasbey"})
-            self.fd_plot_settings.loadSettings({"Property": "waveforms",
-                                                "Sample": True,
-                                                "Reference": True,
-                                                "Baseline": True,
-                                                "Log": True,
-                                                "Imaginary": False,
-                                                "Transform": True,
-                                                "X_Label": "Frequency (THz)",
-                                                "Y_Label": "Frequency (THz)",
-                                                "Colour_Map": "glasbey"})
 
     def clearMemory(self):
         """Clear loaded files and their data, and reset settings."""
