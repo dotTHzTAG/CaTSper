@@ -5,14 +5,17 @@ import json
 from pathlib import Path
 import pyqtgraph
 from thzpy.timedomain import common_window
-from thzpy.transferfunctions import uniform_slab, binary_mixture
+from thzpy.transferfunctions import (uniform_slab,
+                                     binary_mixture)
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (QMainWindow,
                              QApplication,
                              QFileDialog)
-from CaTSperClasses import THzDataModel, SettingsModel
+from CaTSperClasses import (THzDataModel,
+                            SettingsModel,
+                            ExceptionHook)
 from CaTSper_timedomain import TimeDomainTab
 from CaTSper_frequencydomain import FrequencyDomainTab
 
@@ -86,6 +89,9 @@ class MainWindow(QMainWindow):
         self.pushButton_deploy.clicked.connect(self.deployFiles)
         self.pushButton_clear.clicked.connect(self.clearMemory)
         self.tab_td.pushButton_transform.clicked.connect(self.transform)
+
+        # Initialise pop-up exception handler
+        self.ehook = ExceptionHook()
 
     def importFiles(self):
         """Get the paths of files to load from a file dialog."""

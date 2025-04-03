@@ -1,13 +1,20 @@
 """Module providing custom classes for CaTSper."""
-from PyQt6.QtWidgets import QListWidget
-from PyQt6.QtCore import QAbstractListModel, QAbstractTableModel
-from PyQt6.QtCore import Qt, QModelIndex
+from PyQt6.QtWidgets import (QListWidget,
+                             QMessageBox)
+from PyQt6.QtCore import (QAbstractListModel,
+                          QAbstractTableModel,
+                          Qt,
+                          QModelIndex)
+from PyQt6.QtGui import QIcon
 from PyQt6 import QtCore
 from pyqtgraph import PlotWidget, mkPen
 from thzpy.dotthz import DotthzFile, DotthzMeasurement
 from thzpy.timedomain import primary_peak, n_effective
 import numpy as np
 import colorcet
+import sys
+import traceback
+from pathlib import Path
 
 
 class SelectionListWidget(QListWidget):
@@ -492,3 +499,35 @@ class CaTSperPlotWidget(PlotWidget):
         legend.clear()
         for trace in traces:
             legend.addItem(trace, trace.name())
+
+
+class ExceptionHook(object):
+
+    def __init__(self):
+        super().__init__()
+        self.default_except = sys.excepthook
+        sys.excepthook = self._except
+
+    def _except(self, type, value, trace):
+        self.default_except(type, value, trace)
+        root = Path(__file__).parent
+        self.dlg = QMessageBox()
+        self.dlg.setWindowTitle("Warning")
+        self.dlg.setText("A bug has occured.\n"
+                         "If the bug persists please report it to the "
+                         "developers with a description of what you were doing"
+                         " when the bug occured and a copy of the error trace."
+                         )
+        self.dlg.setIcon(QMessageBox.Icon.Warning)
+        self.dlg.setWindowIcon(QIcon(str(root.joinpath('CaTSper_resources',
+                                                       'CaTSper_logo.ico'))))
+
+        close = self.dlg.addButton(QMessageBox.StandardButton.Close)
+        self.dlg.setEscapeButton(close)
+
+        exception = traceback.TracebackException(type,
+                                                 value,
+                                                 trace,
+                                                 capture_locals=True)
+        self.dlg.setDetailedText('\n'.join(exception.format()))
+        self.dlg.exec()
