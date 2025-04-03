@@ -268,6 +268,10 @@ class THzMeasurement():
         if baseline_index != 0:
             waveforms["baseline"] = getattr(self, "ds" + str(baseline_index))
 
+        for k, v in waveforms.items():
+            if v is None:
+                del waveforms[k]
+
         return waveforms
 
 
