@@ -23,6 +23,8 @@ class FrequencyDomainTab(QWidget):
         self.pushButton_plot1.clicked.connect(self.plot_1.plotSelection)
         self.pushButton_plot2.clicked.connect(self.plot_2.plotSelection)
         self.buttonGroup_properties.buttonClicked.connect(self.setPlotProperty)
+        self.pushButton_legend.clicked.connect(self.plot_1.plotLegend)
+        self.pushButton_legend.clicked.connect(self.plot_2.plotLegend)
 
         # Bindings for lists
         self.parent().fd_model.setView(self.listView_measurements)
@@ -40,8 +42,7 @@ class FrequencyDomainTab(QWidget):
         self.plot_mapper.addMapping(self.checkBox_plotbaseline, 3)
         self.plot_mapper.addMapping(self.checkBox_plotlog, 4)
         self.plot_mapper.addMapping(self.checkBox_plotimaginary, 5)
-        self.plot_mapper.addMapping(self.comboBox_colourmap, 8)
-        self.plot_mapper.addMapping(self.pushButton_legend, 9)
+        self.plot_mapper.addMapping(self.comboBox_colourmap, 9)
         self.plot_mapper.toFirst()
 
         # Set Graph properties

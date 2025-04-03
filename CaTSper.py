@@ -73,8 +73,7 @@ class MainWindow(QMainWindow):
                                                "Transform",
                                                "X_Label",
                                                "Y_Label",
-                                               "Colour_Map",
-                                               "Legend"))
+                                               "Colour_Map"))
 
         self.fd_plot_settings = SettingsModel(("Property",
                                                "Sample",
@@ -85,8 +84,7 @@ class MainWindow(QMainWindow):
                                                "Transform",
                                                "X_Label",
                                                "Y_Label",
-                                               "Colour_Map",
-                                               "Legend"))
+                                               "Colour_Map"))
         pyqtgraph.setConfigOptions(antialias=True)
         self.settings_file = root.joinpath("config_default.json")
         self.applySettings()
@@ -153,8 +151,7 @@ class MainWindow(QMainWindow):
                                                 "Transform": False,
                                                 "X_Label": "Time (ps)",
                                                 "Y_Label": "E_Field (a.u.)",
-                                                "Colour_Map": "glasbey",
-                                                "Legend": False})
+                                                "Colour_Map": "glasbey"})
             self.fd_plot_settings.loadSettings({"Property": "waveforms",
                                                 "Sample": True,
                                                 "Reference": True,
@@ -164,8 +161,7 @@ class MainWindow(QMainWindow):
                                                 "Transform": True,
                                                 "X_Label": "Frequency (THz)",
                                                 "Y_Label": "Frequency (THz)",
-                                                "Colour_Map": "glasbey",
-                                                "Legend": False})
+                                                "Colour_Map": "glasbey"})
 
     def clearMemory(self):
         """Clear loaded files and their data, and reset settings."""

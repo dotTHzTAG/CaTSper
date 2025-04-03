@@ -20,6 +20,8 @@ class TimeDomainTab(QWidget):
         self.pushButton_delall.clicked.connect(self.listWidget_selection.clear)
         self.pushButton_plot1.clicked.connect(self.plot_1.plotSelection)
         self.pushButton_plot2.clicked.connect(self.plot_2.plotSelection)
+        self.pushButton_legend.clicked.connect(self.plot_1.plotLegend)
+        self.pushButton_legend.clicked.connect(self.plot_2.plotLegend)
 
         # Bindings for lists
         self.listView_measurements.setModel(self.parent().td_model)
@@ -140,8 +142,7 @@ class TimeDomainTab(QWidget):
         self.plot_mapper.addMapping(self.checkBox_plotsample, 1)
         self.plot_mapper.addMapping(self.checkBox_plotreference, 2)
         self.plot_mapper.addMapping(self.checkBox_plotbaseline, 3)
-        self.plot_mapper.addMapping(self.comboBox_colourmap, 10)
-        self.plot_mapper.addMapping(self.pushButton_legend, 11)
+        self.plot_mapper.addMapping(self.comboBox_colourmap, 9)
         self.plot_mapper.toFirst()
 
         # Set up plot handling

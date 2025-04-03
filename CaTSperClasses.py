@@ -379,11 +379,19 @@ class SettingsModel(QAbstractListModel):
 
 
 class CaTSperPlotWidget(PlotWidget):
-    def __init__(self, parent=None, background='default', plotItem=None, **kwargs):
+    def __init__(self,
+                 parent=None,
+                 background='default',
+                 plotItem=None,
+                 **kwargs):
         super().__init__(parent, background, plotItem, **kwargs)
         self.getPlotItem().setContextMenuActionVisible("Transforms", False)
         self.getPlotItem().setContextMenuActionVisible("Downsample", False)
         self.getPlotItem().setContextMenuActionVisible("Points", False)
+        self.getPlotItem().addLegend(verSpacing=-0.1,
+                                     frame=True,
+                                     labelTextSize='6pt')
+        self.getPlotItem().addLegend().anchor(itemPos=(1, 0), parentPos=(1, 0))
 
     def setPlotSettings(self, plot_settings):
         self.plot_settings = plot_settings
@@ -395,44 +403,62 @@ class CaTSperPlotWidget(PlotWidget):
         self.selection = selection
 
     def plotSelection(self):
-        palette = colorcet.palette_n[self.plot_settings.Colour_Map]
+
+        sample_index = self.ds_settings.getSetting("Sample")
+        ref_index = self.ds_settings.getSetting("Reference")
+        baseline_index = self.ds_settings.getSetting("Baseline")
+        colormap = self.plot_settings.getSetting("Colour_Map")
+        plot_property = self.plot_settings.getSetting("Property")
+        plot_sample = self.plot_settings.getSetting("Sample")
+        plot_ref = self.plot_settings.getSetting("Reference")
+        plot_baseline = self.plot_settings.getSetting("Baseline")
+        transform = self.plot_settings.getSetting("Transform")
+        log = self.plot_settings.getSetting("Log")
+
+        palette = colorcet.palette_n[colormap]
         plot_count = 0
         self.clear()
         self.getPlotItem().enableAutoRange()
         self.setLabel('left', self.plot_settings.Y_Label)
         self.setLabel('bottom', self.plot_settings.X_Label)
-        datasets = self.selection.getSelectedDatasets(self.ds_settings.Sample,
-                                                      self.ds_settings.Reference,
-                                                      self.ds_settings.Baseline)
+        datasets = self.selection.getSelectedDatasets(sample_index,
+                                                      ref_index,
+                                                      baseline_index)
 
-        if self.plot_settings.Log:
+        names = [m.name for m in self.selection.getSelectedMeasurements()]
+
+        if log:
             self.getPlotItem().setLogMode(False, True)
         else:
             self.getPlotItem().setLogMode(False, False)
 
         for dataset in datasets:
-            if self.plot_settings.Property == "waveforms":
+            name = names.pop(0)
+            if plot_property == "waveforms":
                 property = dataset["waveforms"]
-                if self.plot_settings.Sample:
+                if plot_sample:
                     if "sample" in property:
                         y, x = property["sample"]
-                        self.plot(x, y, pen=mkPen(palette[plot_count],
-                                                  width=2))
+                        self.plot(x, y,
+                                  pen=mkPen(palette[plot_count], width=2),
+                                  name=name+"_sample")
                         plot_count += 1
-                if self.plot_settings.Reference:
+                if plot_ref:
                     if "reference" in property:
                         y, x = property["reference"]
-                        self.plot(x, y, pen=mkPen(palette[plot_count],
-                                                  width=2))
+                        self.plot(x, y,
+                                  pen=mkPen(palette[plot_count], width=2),
+                                  name=name+"_reference")
                         plot_count += 1
-                if self.plot_settings.Baseline:
+                if plot_baseline:
                     if "baseline" in property:
                         y, x = property["baseline"]
-                        self.plot(x, y, pen=mkPen(palette[plot_count],
-                                                  width=2))
+                        self.plot(x, y,
+                                  pen=mkPen(palette[plot_count], width=2),
+                                  name=name+"_baseline")
                         plot_count += 1
 
-                if self.plot_settings.Transform:
+                if transform:
                     fmin = np.min(datasets[0]["frequency"])
                     fmax = np.max(datasets[0]["frequency"])
                     traces = self.getPlotItem().listDataItems()
@@ -444,13 +470,22 @@ class CaTSperPlotWidget(PlotWidget):
 
             else:
                 x = dataset["frequency"]
-                y = dataset[self.plot_settings.Property]
+                y = dataset[plot_property]
                 if any(np.iscomplex(y)):
                     if self.plot_settings.Imaginary:
                         y = np.imag(y)
                     else:
                         y = np.real(y)
 
-                self.plot(x, y, pen=mkPen(palette[plot_count],
-                                          width=2))
+                self.plot(x, y,
+                          pen=mkPen(palette[plot_count], width=2),
+                          name=name)
                 plot_count += 1
+        self.getPlotItem().addLegend().clear()
+
+    def plotLegend(self):
+        traces = self.getPlotItem().listDataItems()
+        legend = self.getPlotItem().addLegend()
+        legend.clear()
+        for trace in traces:
+            legend.addItem(trace, trace.name())

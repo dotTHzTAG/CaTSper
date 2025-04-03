@@ -2269,7 +2269,7 @@ QCheckBox::indicator:checked {
             <item>
              <widget class="QPushButton" name="pushButton_legend">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="minimumSize">
                <size>
@@ -2292,7 +2292,7 @@ QCheckBox::indicator:checked {
                <string>Legend</string>
               </property>
               <property name="checkable">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
