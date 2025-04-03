@@ -117,6 +117,12 @@ class MainWindow(QMainWindow):
         self.ds_settings.setData(self.ds_settings.index(2, 0),
                                  ds.baseline_index,
                                  Qt.ItemDataRole.EditRole)
+        self.md_settings.setData(self.md_settings.index(0, 0),
+                                 ds.sample_thickness,
+                                 Qt.ItemDataRole.EditRole)
+        self.md_settings.setData(self.md_settings.index(1, 0),
+                                 ds.reference_thickness,
+                                 Qt.ItemDataRole.EditRole)
         self.td_model.layoutChanged.emit()
 
     def clearMemory(self):
