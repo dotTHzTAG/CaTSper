@@ -1,18 +1,18 @@
 import os
 import sys
 import copy
-import json
 from pathlib import Path
 import pyqtgraph
 from thzpy.timedomain import common_window
-from thzpy.transferfunctions import uniform_slab, binary_mixture
+from thzpy.transferfunctions import (uniform_slab,
+                                     binary_mixture)
 from PyQt6 import uic
-from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (QMainWindow,
                              QApplication,
                              QFileDialog)
-from CaTSperClasses import THzDataModel, SettingsModel
+from CaTSperClasses import (THzDataModel,
+                            ExceptionHook)
 from CaTSper_timedomain import TimeDomainTab
 from CaTSper_frequencydomain import FrequencyDomainTab
 
@@ -22,82 +22,46 @@ if getattr(sys, 'frozen', False):
 
 
 class MainWindow(QMainWindow):
-    """CaTSper main window class.
-    Contains methods handling primary data operations and transfer.
-
-    Attributes:
-        files (list of str): A list of paths to .thz files
-    """
+    """CaTSper main window."""
 
     def __init__(self, *args, **kwargs):
         """Initialises the main window.
-        Sets bindings for persistant ui elements."""
-        # Initialise and load UI
+
+        Initialises the main window, tabs, and data models, and Sets function
+        bindings for persistant ui elements.
+        """
+
+        # Initialise and load UI.
         super().__init__(*args, **kwargs)
         root = Path(__file__).parent
         uic.loadUi(root.joinpath('CaTSper_python.ui'), self)
-        self.setWindowIcon(QIcon(str(root.joinpath('CaTSper_resources', 'CaTSper_logo.ico'))))
-        self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources', 'CaTSper_logo.svg')))
+        pyqtgraph.setConfigOptions(antialias=True)
         self.files = []
+
+        # Set icons.
+        self.setWindowIcon(QIcon(str(root.joinpath('CaTSper_resources',
+                                                   'CaTSper_logo.ico'))))
+        self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources',
+                                                'CaTSper_logo.svg')))
 
         # Set up models.
         self.td_model = THzDataModel()
         self.fd_model = THzDataModel()
-        self.fft_settings = SettingsModel(("Transfer_Function",
-                                           "Minimum_Frequency",
-                                           "Maximum_Frequency",
-                                           "Upsampling",
-                                           "Peak_SNR",
-                                           "Extrapolation_Range",
-                                           "Half-Width",
-                                           "Window_Function"))
 
-        self.ds_settings = SettingsModel(("Sample",
-                                          "Reference",
-                                          "Baseline"))
-
-        self.md_settings = SettingsModel(("Sample_Thickness",
-                                          "Reference_Thickness",
-                                          "Thickness_Unit",
-                                          "Thickness_Difference"))
-
-        self.td_plot_settings = SettingsModel(("Property",
-                                               "Sample",
-                                               "Reference",
-                                               "Baseline",
-                                               "Log",
-                                               "Imaginary",
-                                               "X_Label",
-                                               "Y_Label",
-                                               "Colour_Map",
-                                               "Legend"))
-
-        self.fd_plot_settings = SettingsModel(("Property",
-                                               "Sample",
-                                               "Reference",
-                                               "Baseline",
-                                               "Log",
-                                               "Imaginary",
-                                               "X_Label",
-                                               "Y_Label",
-                                               "Colour_Map",
-                                               "Legend"))
-        pyqtgraph.setConfigOptions(antialias=True)
-        self.settings_file = root.joinpath("config_default.json")
-        self.applySettings()
-
-        # Set up tabs
+        # Set up tabs.
         self.tab_td = TimeDomainTab(self)
         self.tabWidget.addTab(self.tab_td, "Time Domain (TD)")
-
         self.tab_fd = FrequencyDomainTab(self)
         self.tabWidget.addTab(self.tab_fd, "Frequency Domain (FD)")
 
-        # Binding for buttons
+        # Bindings for buttons.
         self.pushButton_import.clicked.connect(self.importFiles)
         self.pushButton_deploy.clicked.connect(self.deployFiles)
         self.pushButton_clear.clicked.connect(self.clearMemory)
         self.tab_td.pushButton_transform.clicked.connect(self.transform)
+
+        # Initialise pop-up exception handler.
+        self.ehook = ExceptionHook()
 
     def importFiles(self):
         """Get the paths of files to load from a file dialog."""
@@ -111,141 +75,171 @@ class MainWindow(QMainWindow):
 
     def deployFiles(self):
         """Load selected files."""
-        for file in self.files:
-            self.td_model.loadData(file)
-        ds = self.td_model._data[0]
-        self.ds_settings.setData(self.ds_settings.index(0, 0),
-                                 ds.sample_index,
-                                 Qt.ItemDataRole.EditRole)
-        self.ds_settings.setData(self.ds_settings.index(1, 0),
-                                 ds.reference_index,
-                                 Qt.ItemDataRole.EditRole)
-        self.ds_settings.setData(self.ds_settings.index(2, 0),
-                                 ds.baseline_index,
-                                 Qt.ItemDataRole.EditRole)
-        self.td_model.layoutChanged.emit()
 
-    def loadSettings(self):
-        self.settings_file = QFileDialog.getOpenFileName(self,
-                                                         'Open file',
-                                                         str(Path(__file__).parent),
-                                                         'json Files (*.json)')[0]
+        if self.files != []:
+            # Load measurements from files to model.
+            for file in self.files:
+                self.td_model.loadMeasurements(file)
 
-    def applySettings(self):
-        with open(self.settings_file) as f:
-            settings = json.load(f)
-            self.fft_settings.loadSettings(settings["FFT_Settings"])
-            self.md_settings.loadSettings(settings["Metadata_Settings"])
-            self.ds_settings.loadSettings(settings["Dataset_Settings"])
-            self.td_plot_settings.loadSettings({"Property": "waveforms",
-                                                "Sample": True,
-                                                "Reference": True,
-                                                "Baseline": False,
-                                                "Log": False,
-                                                "Imaginary": False,
-                                                "Transform": False,
-                                                "X_Label": "Time (ps)",
-                                                "Y_Label": "Electric Field Amplitude (a.u.)",
-                                                "Colour_Map": 0,
-                                                "Legend": False})
-            self.fd_plot_settings.loadSettings({"Property": "waveforms",
-                                                "Sample": True,
-                                                "Reference": True,
-                                                "Baseline": True,
-                                                "Log": True,
-                                                "Imaginary": False,
-                                                "Transform": True,
-                                                "X_Label": "Power (a.u)",
-                                                "Y_Label": "Frequency (THz)",
-                                                "Colour_Map": 0,
-                                                "Legend": False})
+            # Apply inferred dataset and metadata indices to settings.
+            ds = self.td_model.measurement(self.td_model.createIndex(0, 0))
+            self.tab_td.ds_settings.setSetting("Sample",
+                                               ds.sample_index)
+            self.tab_td.ds_settings.setSetting("Reference",
+                                               ds.reference_index)
+            self.tab_td.ds_settings.setSetting("Baseline",
+                                               ds.baseline_index)
+            self.tab_td.md_settings.setSetting("Sample_Thickness",
+                                               ds.sample_thickness)
+            self.tab_td.md_settings.setSetting("Reference_Thickness",
+                                               ds.reference_thickness)
+            self.td_model.layoutChanged.emit()
 
-    # Clear loaded files and their data
     def clearMemory(self):
         """Clear loaded files and their data, and reset settings."""
+
+        # Clear files selection
         self.files = []
         self.label_filenames.setText('')
+
+        # Reset model data
         self.td_model.clear()
-        self.fd_model.clear
-        self.tab_td.listWidget_selection.clear()
-        self.tab_fd.listWidget_selection.clear()
+        self.fd_model.clear()
+
+        # Re-initialise tabs
+        self.tab_td = TimeDomainTab(self)
+        self.tab_fd = FrequencyDomainTab(self)
+        self.tabWidget.removeTab(1)
+        self.tabWidget.removeTab(0)
+        self.tabWidget.addTab(self.tab_td, "Time Domain (TD)")
+        self.tabWidget.addTab(self.tab_fd, "Frequency Domain (FD)")
+        self.tab_td.pushButton_transform.clicked.connect(self.transform)
 
     def transform(self):
-        measurements = self.tab_td.listWidget_selection.getSelectedMeasurements()
+        """Transform measurements into the frequency domain.
 
+        Pulls the selected datasets from the time-domain model and the relevant
+        transform settings. Applies the transform to each measurement and adds
+        the output to the frequency-domain model.
+        """
+
+        # Load measurements and settings.
+        measurements = self.tab_td.listWidget_select.getSelectedMeasurements()
+        sample_index = self.tab_td.ds_settings.setting("Sample")
+        ref_index = self.tab_td.ds_settings.setting("Reference")
+        baseline_index = self.tab_td.ds_settings.setting("Baseline")
+        st_index = self.tab_td.md_settings.setting("Sample_Thickness")
+        rt_index = self.tab_td.md_settings.setting("Reference_Thickness")
+        half_width = self.tab_td.fft_settings.setting("Half-Width")
+        win_func = self.tab_td.fft_settings.setting("Window_Function")
+        t_unit = self.tab_td.md_settings.setting("Thickness_Unit")
+        f_min = self.tab_td.fft_settings.setting("Minimum_Frequency")
+        f_max = self.tab_td.fft_settings.setting("Maximum_Frequency")
+        upsampling = self.tab_td.fft_settings.setting("Upsampling")
+        centre = self.tab_td.fft_settings.setting("Peak_SNR")
+        e_range = self.tab_td.fft_settings.setting("Extrapolation_Range")
+        tran_func = self.tab_td.fft_settings.setting("Transfer_Function")
+        full_name = self.tab_td.fft_settings.setting("Full_Naming")
+
+        # Iterate over all measurements.
         for measurement in measurements:
-            waveforms = measurement.getWaveforms(self.ds_settings.getSetting("Sample"),
-                                                 self.ds_settings.getSetting("Reference"),
-                                                 self.ds_settings.getSetting("Baseline"))
 
-            st_index = self.md_settings.getSetting("Sample_Thickness")
+            # Acquire the relevent waveforms as specified by the user.
+            waveforms = measurement.getWaveforms(sample_index,
+                                                 ref_index,
+                                                 baseline_index)
+
+            # Acquire sample and reference thickness if they exist, else set 0.
             if st_index:
                 sample_thickness = getattr(measurement, "md" + str(st_index))
             else:
                 sample_thickness = 0
-            rt_index = self.md_settings.getSetting("Reference_Thickness")
+
             if rt_index:
-                reference_thickness = getattr(measurement, "md" + str(rt_index))
+                ref_thickness = getattr(measurement, "md" + str(rt_index))
             else:
-                reference_thickness = 0.
+                ref_thickness = 0.
 
-            sample = waveforms["sample"]
-            reference = waveforms["reference"]
-
-            if "baseline" not in waveforms:
+            # Apply window function to samples.
+            # If no baseline is selected by user set it to None and ignore it.
+            if "baseline" not in waveforms.keys():
+                sample = waveforms["sample"]
+                reference = waveforms["reference"]
                 baseline = None
-                sample, reference = common_window([sample, reference],
-                                                  self.fft_settings.getSetting("Half-Width"),
-                                                  self.fft_settings.getSetting("Window_Function"))
+                sample, reference = common_window([sample,
+                                                   reference],
+                                                  half_width,
+                                                  win_func)
             else:
+                sample = waveforms["sample"]
+                reference = waveforms["reference"]
                 baseline = waveforms["baseline"]
-                sample, reference, baseline = common_window([sample, reference, baseline],
-                                                            self.fft_settings.getSetting("Half-Width"),
-                                                            self.fft_settings.getSetting("Window_Function"))
+                sample, reference, baseline = common_window([sample,
+                                                             reference,
+                                                             baseline],
+                                                            half_width,
+                                                            win_func)
 
-            match self.fft_settings.getSetting("Transfer_Function"):
+            # Apply transfer function.
+            match tran_func:
                 case "uniform_slab":
                     optical_constants = uniform_slab(sample_thickness,
                                                      sample, reference,
-                                                     self.md_settings.getSetting("Thickness_Unit"),
-                                                     1,
-                                                     self.fft_settings.getSetting("Minimum_Frequency"),
-                                                     self.fft_settings.getSetting("Maximum_Frequency"),
-                                                     self.fft_settings.getSetting("Upsampling"),
-                                                     self.fft_settings.getSetting("Peak_SNR"),
-                                                     self.fft_settings.getSetting("Extrapolation_Range"),
+                                                     t_unit,
+                                                     1.,
+                                                     f_min,
+                                                     f_max,
+                                                     upsampling,
+                                                     centre,
+                                                     e_range,
                                                      True)
 
                 case "binary_mixture":
                     optical_constants = binary_mixture(sample_thickness,
-                                                       reference_thickness,
+                                                       ref_thickness,
                                                        sample,
                                                        reference,
                                                        baseline,
-                                                       self.md_settings.getSetting("Thickness_Unit"),
-                                                       1,
+                                                       t_unit,
+                                                       1.,
                                                        1.54,
-                                                       0,
-                                                       self.fft_settings.getSetting("Minimum_Frequency"),
-                                                       self.fft_settings.getSetting("Maximum_Frequency"),
-                                                       self.fft_settings.getSetting("Upsampling"),
-                                                       self.fft_settings.getSetting("Peak_SNR"),
-                                                       self.fft_settings.getSetting("Extrapolation_Range"),
+                                                       0.,
+                                                       f_min,
+                                                       f_max,
+                                                       upsampling,
+                                                       centre,
+                                                       e_range,
                                                        "maxwell-garnett",
                                                        True)
 
+            # Add waveforms to optical constants.
             optical_constants["waveforms"] = {"sample": sample,
                                               "reference": reference}
             if baseline is not None:
                 optical_constants["waveforms"]["baseline"] = baseline
 
+            # Copy measurement and add optical constants to it.
             transformed_measurement = copy.deepcopy(measurement)
-            setattr(transformed_measurement, "optical_constants", optical_constants)
-            self.fd_model.addData(transformed_measurement)
+            setattr(transformed_measurement,
+                    "optical_constants",
+                    optical_constants)
+
+            # If requested rename copied measurement.
+            if full_name:
+                name = (getattr(transformed_measurement, "name")
+                        + " (" + win_func + " " + str(half_width) + "ps, "
+                        + str(f_min) + "-" + str(f_max) + "THz, "
+                        + "2^" + str(upsampling) + " upsampling, "
+                        + tran_func + ")")
+                setattr(transformed_measurement, "name", name)
+
+            # Add to frequency domain model.
+            self.fd_model.addMeasurement(transformed_measurement)
 
 
 def main():
     """Execute application."""
+
     app = QApplication(sys.argv)
     ex = MainWindow()
     ex.show()
