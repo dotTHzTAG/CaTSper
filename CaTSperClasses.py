@@ -15,6 +15,7 @@ import colorcet
 import sys
 import traceback
 from pathlib import Path
+from copy import copy
 
 
 class SelectionListWidget(QListWidget):
@@ -619,14 +620,14 @@ class CaTSperPlotWidget(PlotWidget):
         """Plot all items in the current selection."""
 
         # Get settings for plotting.
-        sample_index = self.dsSettings().setting("Sample")
+        sam_index = self.dsSettings().setting("Sample")
         ref_index = self.dsSettings().setting("Reference")
-        baseline_index = self.dsSettings().setting("Baseline")
+        base_index = self.dsSettings().setting("Baseline")
         colormap = self.plotSettings().setting("Colour_Map")
         plot_property = self.plotSettings().setting("Property")
-        plot_sample = self.plotSettings().setting("Sample")
+        plot_sam = self.plotSettings().setting("Sample")
         plot_ref = self.plotSettings().setting("Reference")
-        plot_baseline = self.plotSettings().setting("Baseline")
+        plot_base = self.plotSettings().setting("Baseline")
         transform = self.plotSettings().setting("Transform")
         log = self.plotSettings().setting("Log")
         imag = self.plotSettings().setting("Imaginary")
@@ -634,8 +635,7 @@ class CaTSperPlotWidget(PlotWidget):
         y_label = self.plotSettings().setting("Y_Label")
 
         # Set up plot.
-        palette = colorcet.palette_n[colormap]
-        plot_count = 0
+        palette = copy(colorcet.palette_n[colormap])
         self.clear()
         self.getPlotItem().addLegend().clear()
         self.getPlotItem().enableAutoRange()
@@ -648,9 +648,25 @@ class CaTSperPlotWidget(PlotWidget):
 
         # Get datasets and names to plot.
         names = [m.name for m in self.selection().getSelectedMeasurements()]
-        datasets = self.selection().getSelectedDatasets(sample_index,
-                                                        ref_index,
-                                                        baseline_index)
+        datasets = self.selection().getSelectedDatasets(sam_index*plot_sam,
+                                                        ref_index*plot_ref,
+                                                        base_index*plot_base)
+
+        # Work out how many traces will be plotted.
+        trace_count = len(names)
+        if plot_property == "waveforms":
+            trace_count *= (plot_sam + plot_ref + plot_base)
+
+        # Fit colormap palette to plot count.
+        if "glasbey" in colormap:
+            # For categorical colormaps just repeat the palette.
+            while trace_count > len(palette):
+                palette = np.repeat(palette, 1)
+        else:
+            # For continuous colormaps sub/supersample the palette.
+            indices = np.linspace(0, 255,
+                                  trace_count).astype(int)
+            palette = [palette[index] for index in indices]
 
         # Plot datasets.
         for dataset in datasets:
@@ -659,27 +675,11 @@ class CaTSperPlotWidget(PlotWidget):
             # Special case for plotting multiple waveforms per dataset.
             if plot_property == "waveforms":
                 property = dataset["waveforms"]
-                if plot_sample:
-                    if "sample" in property:
-                        y, x = property["sample"]
-                        self.plot(x, y,
-                                  pen=mkPen(palette[plot_count], width=2),
-                                  name=name+"_sample")
-                        plot_count += 1
-                if plot_ref:
-                    if "reference" in property:
-                        y, x = property["reference"]
-                        self.plot(x, y,
-                                  pen=mkPen(palette[plot_count], width=2),
-                                  name=name+"_reference")
-                        plot_count += 1
-                if plot_baseline:
-                    if "baseline" in property:
-                        y, x = property["baseline"]
-                        self.plot(x, y,
-                                  pen=mkPen(palette[plot_count], width=2),
-                                  name=name+"_baseline")
-                        plot_count += 1
+                for k, v in property.items():
+                    y, x = v
+                    self.plot(x, y,
+                              pen=mkPen(palette.pop(0), width=2),
+                              name=name + "_" + k)
 
                 # For plotting FFT amplitude use the built in transform.
                 if transform:
@@ -705,9 +705,8 @@ class CaTSperPlotWidget(PlotWidget):
                         y = np.real(y)
 
                 self.plot(x, y,
-                          pen=mkPen(palette[plot_count], width=2),
+                          pen=mkPen(palette.pop(0), width=2),
                           name=name)
-                plot_count += 1
 
     def plotLegend(self):
         """Generate a legend for the current plot."""
