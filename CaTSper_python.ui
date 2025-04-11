@@ -37,29 +37,29 @@
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="leftMargin">
-        <number>1</number>
+        <number>2</number>
        </property>
        <property name="topMargin">
-        <number>1</number>
+        <number>2</number>
        </property>
        <property name="rightMargin">
-        <number>1</number>
+        <number>2</number>
        </property>
        <property name="bottomMargin">
-        <number>1</number>
+        <number>2</number>
        </property>
        <item>
         <widget class="QSvgWidget" name="svg_CaTSper" native="true">
          <property name="minimumSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>44</width>
+           <height>44</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>44</width>
+           <height>44</height>
           </size>
          </property>
         </widget>
