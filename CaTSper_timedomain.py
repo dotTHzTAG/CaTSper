@@ -188,11 +188,12 @@ class TimeDomainTab(QWidget):
                                                 'json Files (*.json)')[0]
 
         # Load settings to dict from .json and apply to model.
-        with open(file_path) as f:
-            settings = json.load(f)
-            self.fft_settings.setSettings(settings["FFT_Settings"])
-            self.md_settings.setSettings(settings["Metadata_Settings"])
-            self.ds_settings.setSettings(settings["Dataset_Settings"])
+        if file_path != "":
+            with open(file_path) as f:
+                settings = json.load(f)
+                self.fft_settings.setSettings(settings["FFT_Settings"])
+                self.md_settings.setSettings(settings["Metadata_Settings"])
+                self.ds_settings.setSettings(settings["Dataset_Settings"])
 
     def saveSettings(self):
         """Save current settings to a .json file"""
@@ -204,20 +205,21 @@ class TimeDomainTab(QWidget):
                                                 str(root),
                                                 'json Files (*.json)')[0]
 
-        # Get current settings.
-        fft = self.fft_settings.settings()
-        md = self.md_settings.settings()
-        ds = self.ds_settings.settings()
+        if file_path != "":
+            # Get current settings.
+            fft = self.fft_settings.settings()
+            md = self.md_settings.settings()
+            ds = self.ds_settings.settings()
 
-        # Construct settins dictionary.
-        settings = {"FFT_Settings": fft,
-                    "Metadata_Settings": md,
-                    "Dataset_Settings": ds}
+            # Construct settins dictionary.
+            settings = {"FFT_Settings": fft,
+                        "Metadata_Settings": md,
+                        "Dataset_Settings": ds}
 
-        # Dump dictionary to json and save.
-        json_str = json.dumps(settings, indent='\t')
-        with open(file_path, 'w') as f:
-            f.write(json_str)
+            # Dump dictionary to json and save.
+            json_str = json.dumps(settings, indent='\t')
+            with open(file_path, 'w') as f:
+                f.write(json_str)
 
     def defaultSettings(self):
         """Initialise settings models with default values."""
