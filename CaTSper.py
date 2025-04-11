@@ -76,23 +76,24 @@ class MainWindow(QMainWindow):
     def deployFiles(self):
         """Load selected files."""
 
-        # Load measurements from files to model.
-        for file in self.files:
-            self.td_model.loadMeasurements(file)
+        if self.files != []:
+            # Load measurements from files to model.
+            for file in self.files:
+                self.td_model.loadMeasurements(file)
 
-        # Apply inferred dataset and metadata indices to settings.
-        ds = self.td_model.measurement(self.td_model.createIndex(0, 0))
-        self.tab_td.ds_settings.setSetting("Sample",
-                                           ds.sample_index)
-        self.tab_td.ds_settings.setSetting("Reference",
-                                           ds.reference_index)
-        self.tab_td.ds_settings.setSetting("Baseline",
-                                           ds.baseline_index)
-        self.tab_td.md_settings.setSetting("Sample_Thickness",
-                                           ds.sample_thickness)
-        self.tab_td.md_settings.setSetting("Reference_Thickness",
-                                           ds.reference_thickness)
-        self.td_model.layoutChanged.emit()
+            # Apply inferred dataset and metadata indices to settings.
+            ds = self.td_model.measurement(self.td_model.createIndex(0, 0))
+            self.tab_td.ds_settings.setSetting("Sample",
+                                               ds.sample_index)
+            self.tab_td.ds_settings.setSetting("Reference",
+                                               ds.reference_index)
+            self.tab_td.ds_settings.setSetting("Baseline",
+                                               ds.baseline_index)
+            self.tab_td.md_settings.setSetting("Sample_Thickness",
+                                               ds.sample_thickness)
+            self.tab_td.md_settings.setSetting("Reference_Thickness",
+                                               ds.reference_thickness)
+            self.td_model.layoutChanged.emit()
 
     def clearMemory(self):
         """Clear loaded files and their data, and reset settings."""
