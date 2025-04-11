@@ -637,7 +637,6 @@ class CaTSperPlotWidget(PlotWidget):
         # Set up plot.
         palette = copy(colorcet.palette_n[colormap])
         self.clear()
-        self.getPlotItem().addLegend().clear()
         self.getPlotItem().enableAutoRange()
         self.setLabel('left', y_label)
         self.setLabel('bottom', x_label)
@@ -707,6 +706,9 @@ class CaTSperPlotWidget(PlotWidget):
                 self.plot(x, y,
                           pen=mkPen(palette.pop(0), width=2),
                           name=name)
+
+        # Stop legend showing by default.
+        self.getPlotItem().addLegend().clear()
 
     def plotLegend(self):
         """Generate a legend for the current plot."""
