@@ -299,7 +299,7 @@ Data Management</string>
              </widget>
             </item>
             <item row="0" column="0" rowspan="8">
-             <widget class="SelectionListWidget" name="listWidget_selection">
+             <widget class="SelectionListWidget" name="listWidget_select">
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>

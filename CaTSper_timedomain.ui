@@ -2706,7 +2706,7 @@ Range</string>
              </widget>
             </item>
             <item row="0" column="0" rowspan="10">
-             <widget class="SelectionListWidget" name="listWidget_selection">
+             <widget class="SelectionListWidget" name="listWidget_select">
               <property name="font">
                <font>
                 <family>Arial</family>
