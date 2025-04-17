@@ -27,15 +27,11 @@ class FrequencyDomainTab(QWidget):
         self.defaultSettings()
 
         # Set Graph properties
-        self.frame_plot1.setStyleSheet("background-color: palette(base);")
-        self.plot_1.setBackground(self.palette().base().color())
         self.plot_1.setTitle("Plot 1", size="12pt")
         self.plot_1.setPlotSettings(self.plot_settings)
         self.plot_1.setDSSettings(self.ds_settings)
         self.plot_1.setSelection(self.listWidget_select)
 
-        self.frame_plot2.setStyleSheet("background-color: palette(base);")
-        self.plot_2.setBackground(self.palette().base().color())
         self.plot_2.setTitle("Plot 2", size="12pt")
         self.plot_2.setPlotSettings(self.plot_settings)
         self.plot_2.setDSSettings(self.ds_settings)
