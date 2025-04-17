@@ -7,6 +7,7 @@ from thzpy.timedomain import common_window
 from thzpy.transferfunctions import (uniform_slab,
                                      binary_mixture)
 from PyQt6 import uic
+from PyQt6.QtCore import QEvent, Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (QMainWindow,
                              QApplication,
@@ -15,7 +16,7 @@ from CaTSperClasses import (THzDataModel,
                             ExceptionHook)
 from CaTSper_timedomain import TimeDomainTab
 from CaTSper_frequencydomain import FrequencyDomainTab
-
+from warnings import warn
 
 if getattr(sys, 'frozen', False):
     os.chdir(sys._MEIPASS)
@@ -37,12 +38,8 @@ class MainWindow(QMainWindow):
         uic.loadUi(root.joinpath('CaTSper_python.ui'), self)
         pyqtgraph.setConfigOptions(antialias=True)
         self.files = []
-
-        # Set icons.
         self.setWindowIcon(QIcon(str(root.joinpath('CaTSper_resources',
                                                    'CaTSper_logo.ico'))))
-        self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources',
-                                                'CaTSper_logo.svg')))
 
         # Set up models.
         self.td_model = THzDataModel()
@@ -53,6 +50,7 @@ class MainWindow(QMainWindow):
         self.tabWidget.addTab(self.tab_td, "Time Domain (TD)")
         self.tab_fd = FrequencyDomainTab(self)
         self.tabWidget.addTab(self.tab_fd, "Frequency Domain (FD)")
+        self.syncTheme()
 
         # Bindings for buttons.
         self.pushButton_import.clicked.connect(self.importFiles)
@@ -62,6 +60,61 @@ class MainWindow(QMainWindow):
 
         # Initialise pop-up exception handler.
         self.ehook = ExceptionHook()
+
+    def changeEvent(self, a0):
+        """Intercept palette change events."""
+
+        if a0.type() == QEvent.Type.PaletteChange:
+            self.syncTheme()
+        return super().changeEvent(a0)
+
+    def syncTheme(self):
+        """Apply dark/light theme changes to elements
+        that don't handle them automatically."""
+
+        root = Path(__file__).parent
+        style_hints = QApplication.styleHints()
+        colour_scheme = style_hints.colorScheme()
+
+        frame_ss = "background-color: palette(base);"
+        light_toggle_ss = """
+            QCheckBox::indicator
+                {width: 32px;height: 16px;}
+            QCheckBox::indicator:unchecked
+                {image: url(CaTSPer_resources/toggle_left_light.png);}
+            QCheckBox::indicator:checked
+                {image: url(CaTSPer_resources/toggle_right_light.png);}"""
+        dark_toggle_ss = """
+            QCheckBox::indicator
+                {width: 32px;height: 16px;}
+            QCheckBox::indicator:unchecked
+                {image: url(CaTSPer_resources/toggle_left_dark.png);}
+            QCheckBox::indicator:checked
+                {image: url(CaTSPer_resources/toggle_right_dark.png);}"""
+
+        self.tab_td.frame_plot1.setStyleSheet(frame_ss)
+        self.tab_td.plot_1.setBackground(self.palette().base().color())
+        self.tab_td.frame_plot2.setStyleSheet(frame_ss)
+        self.tab_td.plot_2.setBackground(self.palette().base().color())
+        self.tab_fd.frame_plot1.setStyleSheet(frame_ss)
+        self.tab_fd.plot_1.setBackground(self.palette().base().color())
+        self.tab_fd.frame_plot2.setStyleSheet(frame_ss)
+        self.tab_fd.plot_2.setBackground(self.palette().base().color())
+
+        if colour_scheme == Qt.ColorScheme.Light:
+            self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources',
+                                                    'dotTHz_logo_light.svg')))
+            self.tab_td.checkBox_offset.setStyleSheet(light_toggle_ss)
+            self.tab_fd.checkBox_plotlog.setStyleSheet(light_toggle_ss)
+            self.tab_fd.checkBox_plotimaginary.setStyleSheet(light_toggle_ss)
+        elif colour_scheme == Qt.ColorScheme.Dark:
+            self.tab_td.checkBox_offset.setStyleSheet(dark_toggle_ss)
+            self.tab_fd.checkBox_plotlog.setStyleSheet(dark_toggle_ss)
+            self.tab_fd.checkBox_plotimaginary.setStyleSheet(dark_toggle_ss)
+            self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources',
+                                                    'dotTHz_logo_dark.svg')))
+        else:
+            warn("Unknown system theme.")
 
     def importFiles(self):
         """Get the paths of files to load from a file dialog."""
