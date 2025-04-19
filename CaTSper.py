@@ -168,6 +168,8 @@ class MainWindow(QMainWindow):
         self.tabWidget.addTab(self.tab_fd, "Frequency Domain (FD)")
         self.tab_td.pushButton_transform.clicked.connect(self.transform)
 
+        self.syncTheme()
+
     def transform(self):
         """Transform measurements into the frequency domain.
 
