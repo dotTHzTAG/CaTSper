@@ -4,7 +4,8 @@ from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (QDataWidgetMapper,
                              QWidget,
-                             QFileDialog)
+                             QFileDialog,
+                             QLineEdit)
 from PyQt6.QtGui import QDoubleValidator
 from CaTSperClasses import SettingsModel
 
@@ -167,11 +168,25 @@ class TimeDomainTab(QWidget):
         self.listView_measurements.selectionModel().currentChanged.connect(
             self.setDataSelection)
 
+        # Set up left alignment for QLineEdit overflows.
+        for obj in self.findChildren(QLineEdit):
+            obj.editingFinished.connect(self.homeText)
+
+    def homeText(self):
+        """Home the text of a QLineEdit"""
+
+        obj = self.sender()
+        obj.home(True)
+
     def setDataSelection(self, current):
         """Set mapper index to show the metadata of the select measurement."""
 
         row = current.row()
         self.selection_mapper.setCurrentIndex(row)
+
+        # Set overflowing QLineEdits to align left.
+        for obj in self.findChildren(QLineEdit):
+            obj.home(False)
 
     def loadSettings(self):
         """Load settings from a .json file."""
