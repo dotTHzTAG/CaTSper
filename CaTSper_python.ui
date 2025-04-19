@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>768</height>
+    <width>1200</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1024</width>
-    <height>768</height>
+    <width>1200</width>
+    <height>900</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -69,6 +69,7 @@
       <property name="font">
        <font>
         <pointsize>28</pointsize>
+        <weight>75</weight>
         <italic>true</italic>
         <bold>true</bold>
        </font>
@@ -88,14 +89,14 @@
      <widget class="QPushButton" name="pushButton_import">
       <property name="minimumSize">
        <size>
-        <width>120</width>
-        <height>24</height>
+        <width>140</width>
+        <height>30</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>120</width>
-        <height>24</height>
+        <width>140</width>
+        <height>30</height>
        </size>
       </property>
       <property name="focusPolicy">
@@ -111,13 +112,13 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>24</height>
+        <height>30</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>24</height>
+        <height>30</height>
        </size>
       </property>
       <property name="frameShape">
@@ -135,14 +136,14 @@
      <widget class="QPushButton" name="pushButton_deploy">
       <property name="minimumSize">
        <size>
-        <width>101</width>
-        <height>24</height>
+        <width>120</width>
+        <height>30</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>101</width>
-        <height>24</height>
+        <width>120</width>
+        <height>30</height>
        </size>
       </property>
       <property name="focusPolicy">
@@ -157,14 +158,14 @@
      <widget class="QPushButton" name="pushButton_clear">
       <property name="minimumSize">
        <size>
-        <width>101</width>
-        <height>24</height>
+        <width>120</width>
+        <height>30</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>101</width>
-        <height>24</height>
+        <width>120</width>
+        <height>30</height>
        </size>
       </property>
       <property name="focusPolicy">

@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1006</width>
-    <height>668</height>
+    <width>1176</width>
+    <height>794</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1006</width>
-    <height>668</height>
+    <width>1176</width>
+    <height>794</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -24,13 +24,13 @@
     <widget class="QFrame" name="frame_menus">
      <property name="minimumSize">
       <size>
-       <width>600</width>
+       <width>700</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>600</width>
+       <width>700</width>
        <height>16777215</height>
       </size>
      </property>
@@ -58,9 +58,15 @@
       </property>
       <item row="1" column="0">
        <widget class="QFrame" name="frame_info2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
-          <width>297</width>
+          <width>347</width>
           <height>0</height>
          </size>
         </property>
@@ -106,7 +112,7 @@
               <property name="minimumSize">
                <size>
                 <width>85</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -120,46 +126,14 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1" colspan="3">
-             <widget class="QLineEdit" name="lineEdit_description">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="mouseTracking">
-               <bool>false</bool>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="acceptDrops">
-               <bool>false</bool>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_datetime">
-              <property name="minimumSize">
-               <size>
-                <width>85</width>
-                <height>16</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>85</width>
-                <height>16</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Date and Time</string>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="1" colspan="3">
              <widget class="QLineEdit" name="lineEdit_datetime">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="mouseTracking">
                <bool>false</bool>
               </property>
@@ -176,6 +150,12 @@
             </item>
             <item row="2" column="1" colspan="3">
              <widget class="QLineEdit" name="lineEdit_instrument">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="mouseTracking">
                <bool>false</bool>
               </property>
@@ -198,6 +178,12 @@
             </item>
             <item row="5" column="1" colspan="3">
              <widget class="QLineEdit" name="lineEdit_user">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="mouseTracking">
                <bool>false</bool>
               </property>
@@ -212,31 +198,37 @@
               </property>
              </widget>
             </item>
-            <item row="8" column="1">
-             <widget class="QLineEdit" name="lineEdit_refractiveindex">
+            <item row="0" column="1" colspan="3">
+             <widget class="QLineEdit" name="lineEdit_description">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>0</height>
+                <height>30</height>
                </size>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>40</width>
-                <height>16777215</height>
-               </size>
+              <property name="mouseTracking">
+               <bool>false</bool>
               </property>
               <property name="focusPolicy">
                <enum>Qt::StrongFocus</enum>
               </property>
+              <property name="acceptDrops">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_intrument">
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_datetime">
               <property name="minimumSize">
                <size>
                 <width>85</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -246,7 +238,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Instrument</string>
+               <string>Date/Time</string>
               </property>
              </widget>
             </item>
@@ -255,7 +247,7 @@
               <property name="minimumSize">
                <size>
                 <width>85</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -269,12 +261,31 @@
               </property>
              </widget>
             </item>
-            <item row="8" column="0">
-             <widget class="QLabel" name="label_refractiveindex">
+            <item row="8" column="1">
+             <widget class="QLineEdit" name="lineEdit_refractiveindex">
+              <property name="minimumSize">
+               <size>
+                <width>60</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_intrument">
               <property name="minimumSize">
                <size>
                 <width>85</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -284,7 +295,26 @@
                </size>
               </property>
               <property name="text">
-               <string>Refractive Index</string>
+               <string>Instrument</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="0">
+             <widget class="QLabel" name="label_refractiveindex">
+              <property name="minimumSize">
+               <size>
+                <width>85</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>85</width>
+                <height>16</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Refr. Index</string>
               </property>
              </widget>
             </item>
@@ -292,14 +322,14 @@
              <widget class="QLabel" name="label_etalon">
               <property name="minimumSize">
                <size>
-                <width>81</width>
-                <height>16</height>
+                <width>110</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>81</width>
-                <height>16</height>
+                <width>110</width>
+                <height>20</height>
                </size>
               </property>
               <property name="text">
@@ -314,13 +344,13 @@
              <widget class="QLineEdit" name="lineEdit_etalon">
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>60</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>40</width>
+                <width>60</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -350,85 +380,12 @@
             <property name="bottomMargin">
              <number>6</number>
             </property>
-            <item row="0" column="4">
-             <widget class="QLineEdit" name="lineEdit_md1unit">
-              <property name="maximumSize">
-               <size>
-                <width>30</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="lineEdit_md1">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>60</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2" colspan="2">
-             <widget class="QLineEdit" name="lineEdit_md1desc">
-              <property name="mouseTracking">
-               <bool>false</bool>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="acceptDrops">
-               <bool>false</bool>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_md2">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>16</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>md2</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="label_md1">
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -445,17 +402,42 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="lineEdit_md3">
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_md2">
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>0</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>60</width>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>md2</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="lineEdit_md1">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>70</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -464,27 +446,14 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="lineEdit_md2">
+            <item row="0" column="2" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_md1desc">
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>0</height>
+                <height>30</height>
                </size>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>60</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="2" colspan="2">
-             <widget class="QLineEdit" name="lineEdit_md3desc">
               <property name="mouseTracking">
                <bool>false</bool>
               </property>
@@ -499,12 +468,72 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="2" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_md3desc">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="acceptDrops">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="lineEdit_md3">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>70</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="lineEdit_md2">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>70</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_md3">
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -523,6 +552,12 @@
             </item>
             <item row="1" column="2" colspan="2">
              <widget class="QLineEdit" name="lineEdit_md2desc">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="mouseTracking">
                <bool>false</bool>
               </property>
@@ -537,31 +572,12 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
-             <widget class="QLineEdit" name="lineEdit_md4">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>60</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-             </widget>
-            </item>
             <item row="4" column="0">
              <widget class="QLabel" name="label_thickness">
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -578,28 +594,12 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="2" colspan="2">
-             <widget class="QLineEdit" name="lineEdit_md4desc">
-              <property name="mouseTracking">
-               <bool>false</bool>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="acceptDrops">
-               <bool>false</bool>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
             <item row="3" column="0">
              <widget class="QLabel" name="label_md4">
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -616,12 +616,69 @@
               </property>
              </widget>
             </item>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="lineEdit_md4">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>70</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_md4desc">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="acceptDrops">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="2">
+             <widget class="QLabel" name="label_sampletoggle">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Sample</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
             <item row="5" column="0">
              <widget class="QLabel" name="label_samplethickness">
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -638,72 +695,33 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="2">
-             <widget class="QLabel" name="label_sampletoggle">
+            <item row="5" column="2">
+             <widget class="QLabel" name="label_refthickness">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
-               <string>Sample</string>
+               <string>Reference</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
-            <item row="4" column="1">
-             <widget class="QComboBox" name="comboBox_thicknessunit">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>60</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="settingCategory" stdset="0">
-               <string>Metadata_Settings</string>
-              </property>
-              <property name="setting" stdset="0">
-               <string>Thickness_Unit</string>
-              </property>
-              <item>
-               <property name="text">
-                <string>cm</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>mm</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>um</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>nm</string>
-               </property>
-              </item>
-             </widget>
-            </item>
             <item row="5" column="1">
              <widget class="QComboBox" name="comboBox_samplethickness">
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>70</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>60</width>
+                <width>70</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -743,34 +761,62 @@
               </item>
              </widget>
             </item>
-            <item row="5" column="2">
-             <widget class="QLabel" name="label_refthickness">
-              <property name="text">
-               <string>Reference</string>
+            <item row="4" column="1">
+             <widget class="QComboBox" name="comboBox_thicknessunit">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="4">
-             <widget class="QLineEdit" name="lineEdit_md2unit">
               <property name="maximumSize">
                <size>
-                <width>30</width>
+                <width>70</width>
                 <height>16777215</height>
                </size>
               </property>
               <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
+               <enum>Qt::WheelFocus</enum>
               </property>
+              <property name="settingCategory" stdset="0">
+               <string>Metadata_Settings</string>
+              </property>
+              <property name="setting" stdset="0">
+               <string>Thickness_Unit</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>cm</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>mm</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>um</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>nm</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item row="2" column="4">
              <widget class="QLineEdit" name="lineEdit_md3unit">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>30</width>
+                <width>40</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -781,9 +827,34 @@
             </item>
             <item row="3" column="4">
              <widget class="QLineEdit" name="lineEdit_md4unit">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>30</width>
+                <width>40</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="4">
+             <widget class="QLineEdit" name="lineEdit_md2unit">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -797,7 +868,7 @@
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -823,17 +894,36 @@
               </property>
              </widget>
             </item>
-            <item row="5" column="3">
-             <widget class="QComboBox" name="comboBox_referencethickness">
+            <item row="0" column="4">
+             <widget class="QLineEdit" name="lineEdit_md1unit">
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>50</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>60</width>
+                <width>40</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="3" colspan="2">
+             <widget class="QComboBox" name="comboBox_referencethickness">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>70</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -911,13 +1001,13 @@
               <property name="minimumSize">
                <size>
                 <width>101</width>
-                <height>24</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>24</height>
+                <height>30</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -936,13 +1026,13 @@
               <property name="minimumSize">
                <size>
                 <width>101</width>
-                <height>24</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>24</height>
+                <height>30</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -961,9 +1051,15 @@
       </item>
       <item row="1" column="1">
        <widget class="QFrame" name="frame_info">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
-          <width>297</width>
+          <width>347</width>
           <height>0</height>
          </size>
         </property>
@@ -1014,8 +1110,8 @@
              <widget class="QComboBox" name="comboBox_baseline">
               <property name="minimumSize">
                <size>
-                <width>60</width>
-                <height>0</height>
+                <width>50</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -1059,8 +1155,8 @@
              <widget class="QComboBox" name="comboBox_sample">
               <property name="minimumSize">
                <size>
-                <width>60</width>
-                <height>0</height>
+                <width>50</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -1104,8 +1200,8 @@
              <widget class="QLabel" name="label_reference">
               <property name="minimumSize">
                <size>
-                <width>60</width>
-                <height>0</height>
+                <width>80</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -1126,8 +1222,8 @@
              <widget class="QLabel" name="label_baseline">
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>80</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -1151,8 +1247,8 @@
              <widget class="QComboBox" name="comboBox_reference">
               <property name="minimumSize">
                <size>
-                <width>60</width>
-                <height>0</height>
+                <width>50</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -1196,8 +1292,8 @@
              <widget class="QLabel" name="label_sample">
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>80</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -1216,6 +1312,12 @@
             </item>
             <item row="2" column="1">
              <widget class="QLineEdit" name="lineEdit_ds3">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="mouseTracking">
                <bool>false</bool>
               </property>
@@ -1234,18 +1336,21 @@
              <widget class="QLabel" name="label_ds3">
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>30</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>21</width>
+                <width>30</width>
                 <height>16777215</height>
                </size>
               </property>
               <property name="text">
                <string>ds3</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
@@ -1253,23 +1358,32 @@
              <widget class="QLabel" name="label_ds1">
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>30</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>21</width>
+                <width>30</width>
                 <height>16777215</height>
                </size>
               </property>
               <property name="text">
                <string>ds1</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="QLineEdit" name="lineEdit_ds1">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="mouseTracking">
                <bool>false</bool>
               </property>
@@ -1286,6 +1400,12 @@
             </item>
             <item row="1" column="1">
              <widget class="QLineEdit" name="lineEdit_ds2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="mouseTracking">
                <bool>false</bool>
               </property>
@@ -1304,18 +1424,21 @@
              <widget class="QLabel" name="label_ds2">
               <property name="minimumSize">
                <size>
-                <width>0</width>
-                <height>0</height>
+                <width>30</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>21</width>
+                <width>30</width>
                 <height>16777215</height>
                </size>
               </property>
               <property name="text">
                <string>ds2</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
@@ -1348,6 +1471,12 @@
             </property>
             <item row="2" column="0">
              <widget class="QLabel" name="label_winfunc">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Function</string>
               </property>
@@ -1364,11 +1493,17 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="focusPolicy">
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
-               <string>Plot Window Function</string>
+               <string>Plot Function</string>
               </property>
              </widget>
             </item>
@@ -1379,6 +1514,18 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>90</width>
+                <height>16777215</height>
+               </size>
               </property>
               <property name="focusPolicy">
                <enum>Qt::WheelFocus</enum>
@@ -1418,6 +1565,12 @@
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_halfwidth">
+              <property name="minimumSize">
+               <size>
+                <width>90</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Half-Width  </string>
               </property>
@@ -1425,9 +1578,15 @@
             </item>
             <item row="1" column="1">
              <widget class="QLineEdit" name="lineEdit_halfwidth">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>60</width>
+                <width>50</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -1447,6 +1606,12 @@
             </item>
             <item row="1" column="2" colspan="2">
              <widget class="QLabel" name="label_ps">
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>ps</string>
               </property>
@@ -1462,6 +1627,12 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>30</height>
+               </size>
               </property>
               <property name="focusPolicy">
                <enum>Qt::StrongFocus</enum>
@@ -1503,6 +1674,12 @@
             </property>
             <item row="3" column="9">
              <widget class="QLabel" name="label_thz2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>THz</string>
               </property>
@@ -1510,6 +1687,12 @@
             </item>
             <item row="1" column="6">
              <widget class="QLineEdit" name="lineEdit_fmin">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -1532,6 +1715,12 @@
             </item>
             <item row="3" column="0" colspan="3">
              <widget class="QLabel" name="label_unwrapping">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Unwrapping</string>
               </property>
@@ -1539,6 +1728,12 @@
             </item>
             <item row="3" column="3" colspan="2">
              <widget class="QLabel" name="label_extrapolation">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Centre:</string>
               </property>
@@ -1549,6 +1744,12 @@
             </item>
             <item row="4" column="0" colspan="3">
              <widget class="QLabel" name="label_upsampling">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Upsampling</string>
               </property>
@@ -1556,6 +1757,12 @@
             </item>
             <item row="0" column="5" colspan="5">
              <widget class="QComboBox" name="comboBox_transferfunction">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="focusPolicy">
                <enum>Qt::WheelFocus</enum>
               </property>
@@ -1573,6 +1780,12 @@
             </item>
             <item row="1" column="9">
              <widget class="QLabel" name="label_thz1">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>THz</string>
               </property>
@@ -1580,6 +1793,12 @@
             </item>
             <item row="1" column="5">
              <widget class="QLabel" name="label_from">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>from</string>
               </property>
@@ -1590,6 +1809,12 @@
             </item>
             <item row="1" column="7">
              <widget class="QLabel" name="label_to">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>to</string>
               </property>
@@ -1600,6 +1825,12 @@
             </item>
             <item row="1" column="8">
              <widget class="QLineEdit" name="lineEdit_fmax">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -1625,6 +1856,12 @@
             </item>
             <item row="3" column="8">
              <widget class="QLineEdit" name="lineEdit_range">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -1647,6 +1884,12 @@
             </item>
             <item row="0" column="0" colspan="4">
              <widget class="QLabel" name="label_transferfunction">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Transfer Function</string>
               </property>
@@ -1654,6 +1897,12 @@
             </item>
             <item row="3" column="5">
              <widget class="QLineEdit" name="lineEdit_centre">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -1673,6 +1922,12 @@
             </item>
             <item row="1" column="0" colspan="4">
              <widget class="QLabel" name="label_frequencyrange">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Frequency Range</string>
               </property>
@@ -1680,6 +1935,12 @@
             </item>
             <item row="3" column="6" colspan="2">
              <widget class="QLabel" name="label_range">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Range:</string>
               </property>
@@ -1718,6 +1979,12 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="focusPolicy">
                <enum>Qt::StrongFocus</enum>
               </property>
@@ -1728,8 +1995,14 @@
             </item>
             <item row="4" column="3" colspan="5">
              <widget class="QLabel" name="label_upsamplingdescription">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
-               <string>Zero Filling, + power of  </string>
+               <string>2 to the power of </string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1743,6 +2016,12 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
               </property>
               <property name="maximumSize">
                <size>
@@ -1819,18 +2098,18 @@
              <widget class="QLabel" name="label_colourmap">
               <property name="minimumSize">
                <size>
-                <width>71</width>
-                <height>21</height>
+                <width>80</width>
+                <height>20</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>21</height>
+                <height>20</height>
                </size>
               </property>
               <property name="text">
-               <string>Colour Map:</string>
+               <string>Colour Map: </string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1851,13 +2130,13 @@
               <property name="minimumSize">
                <size>
                 <width>91</width>
-                <height>24</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>91</width>
-                <height>24</height>
+                <height>30</height>
                </size>
               </property>
               <property name="editable">
@@ -1938,13 +2217,13 @@
               <property name="minimumSize">
                <size>
                 <width>91</width>
-                <height>24</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>91</width>
-                <height>24</height>
+                <height>30</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -2031,14 +2310,14 @@
              <widget class="QPushButton" name="pushButton_delall">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -2054,14 +2333,14 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_addall">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -2099,14 +2378,14 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_del">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -2121,14 +2400,14 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_add">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -2208,14 +2487,14 @@ ALL</string>
              <widget class="QFrame" name="frame_selectionboxes">
               <property name="minimumSize">
                <size>
-                <width>85</width>
-                <height>61</height>
+                <width>100</width>
+                <height>60</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>85</width>
-                <height>61</height>
+                <width>100</width>
+                <height>80</height>
                </size>
               </property>
               <property name="frameShape">
@@ -2242,6 +2521,12 @@ ALL</string>
                </property>
                <item>
                 <widget class="QCheckBox" name="checkBox_plotsample">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
                  <property name="focusPolicy">
                   <enum>Qt::StrongFocus</enum>
                  </property>
@@ -2258,6 +2543,12 @@ ALL</string>
                </item>
                <item>
                 <widget class="QCheckBox" name="checkBox_plotreference">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
                  <property name="focusPolicy">
                   <enum>Qt::StrongFocus</enum>
                  </property>
@@ -2274,6 +2565,12 @@ ALL</string>
                </item>
                <item>
                 <widget class="QCheckBox" name="checkBox_plotbaseline">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
                  <property name="focusPolicy">
                   <enum>Qt::StrongFocus</enum>
                  </property>
@@ -2295,14 +2592,14 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_plot1">
               <property name="minimumSize">
                <size>
-                <width>81</width>
-                <height>24</height>
+                <width>0</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>81</width>
-                <height>24</height>
+                <width>16777215</width>
+                <height>16777215</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -2317,13 +2614,13 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_plot2">
               <property name="minimumSize">
                <size>
-                <width>81</width>
-                <height>24</height>
+                <width>0</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>81</width>
+                <width>16777215</width>
                 <height>24</height>
                </size>
               </property>
@@ -2342,14 +2639,14 @@ ALL</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>80</width>
-                <height>50</height>
+                <width>0</width>
+                <height>70</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>80</width>
-                <height>50</height>
+                <width>16777215</width>
+                <height>70</height>
                </size>
               </property>
               <property name="focusPolicy">

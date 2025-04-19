@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1006</width>
-    <height>668</height>
+    <width>1176</width>
+    <height>794</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1006</width>
-    <height>668</height>
+    <width>1176</width>
+    <height>794</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
     <widget class="QFrame" name="frame_menus">
      <property name="minimumSize">
       <size>
-       <width>400</width>
+       <width>450</width>
        <height>0</height>
       </size>
      </property>
@@ -87,7 +87,7 @@
           <widget class="QGroupBox" name="groupBox_meas">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>1</horstretch>
+             <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
@@ -123,14 +123,14 @@
              <widget class="QPushButton" name="pushButton_remove">
               <property name="minimumSize">
                <size>
-                <width>82</width>
-                <height>41</height>
+                <width>90</width>
+                <height>50</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>41</height>
+                <height>45</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -167,14 +167,14 @@
              <widget class="QPushButton" name="pushButton_removeall">
               <property name="minimumSize">
                <size>
-                <width>82</width>
-                <height>41</height>
+                <width>90</width>
+                <height>50</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>41</height>
+                <height>45</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -190,14 +190,14 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_delall">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -213,14 +213,14 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_addall">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -236,14 +236,14 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_add">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -258,14 +258,14 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_del">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -283,7 +283,7 @@ ALL</string>
           <widget class="QGroupBox" name="groupBox_selection">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>1</horstretch>
+             <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
@@ -316,14 +316,14 @@ ALL</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>100</width>
-                <height>40</height>
+                <width>140</width>
+                <height>50</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>40</height>
+                <height>50</height>
                </size>
               </property>
               <property name="focusPolicy">
@@ -819,7 +819,7 @@ Constant</string>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -847,6 +847,12 @@ Constant</string>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_linear">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Linear</string>
               </property>
@@ -866,7 +872,7 @@ Constant</string>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>24</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -888,6 +894,12 @@ Constant</string>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_real">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Real</string>
               </property>
@@ -898,7 +910,7 @@ Constant</string>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>16</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -929,7 +941,7 @@ Constant</string>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>21</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -954,12 +966,12 @@ Constant</string>
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>24</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>91</width>
+                <width>16777215</width>
                 <height>24</height>
                </size>
               </property>
@@ -1065,6 +1077,12 @@ Constant</string>
                </property>
                <item>
                 <widget class="QCheckBox" name="checkBox_plotsample">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
                  <property name="focusPolicy">
                   <enum>Qt::StrongFocus</enum>
                  </property>
@@ -1081,6 +1099,12 @@ Constant</string>
                </item>
                <item>
                 <widget class="QCheckBox" name="checkBox_plotreference">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
                  <property name="focusPolicy">
                   <enum>Qt::StrongFocus</enum>
                  </property>
@@ -1097,6 +1121,12 @@ Constant</string>
                </item>
                <item>
                 <widget class="QCheckBox" name="checkBox_plotbaseline">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
                  <property name="focusPolicy">
                   <enum>Qt::StrongFocus</enum>
                  </property>
