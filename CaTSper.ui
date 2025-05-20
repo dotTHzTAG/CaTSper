@@ -69,7 +69,7 @@
       <property name="font">
        <font>
         <pointsize>28</pointsize>
-        <weight>75</weight>
+        <weight>700</weight>
         <italic>true</italic>
         <bold>true</bold>
        </font>
@@ -81,7 +81,7 @@
        <enum>Qt::PlainText</enum>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
      </widget>
     </item>

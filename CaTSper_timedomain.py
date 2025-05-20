@@ -192,10 +192,10 @@ class TimeDomainTab(QWidget):
         """Load settings from a .json file."""
 
         # Get path to load from file dialog.
-        root = Path(__file__).parent
+        path = Path.home()
         file_path = QFileDialog.getOpenFileName(self,
                                                 'Open file',
-                                                str(root),
+                                                str(path),
                                                 'json Files (*.json)')[0]
 
         # Load settings to dict from .json and apply to model.
@@ -210,10 +210,10 @@ class TimeDomainTab(QWidget):
         """Save current settings to a .json file"""
 
         # Get path to save to from file dialog.
-        root = Path(__file__).parent
+        path = Path.home()
         file_path = QFileDialog.getSaveFileName(self,
                                                 'Save file',
-                                                str(root),
+                                                str(path),
                                                 'json Files (*.json)')[0]
 
         if file_path != "":

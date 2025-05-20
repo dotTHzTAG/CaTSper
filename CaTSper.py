@@ -36,11 +36,11 @@ class MainWindow(QMainWindow):
         # Initialise and load UI.
         super().__init__(*args, **kwargs)
         root = Path(__file__).parent
-        uic.loadUi(root.joinpath('CaTSper_python.ui'), self)
+        uic.loadUi(root.joinpath('CaTSper.ui'), self)
         pyqtgraph.setConfigOptions(antialias=True)
         self.files = []
         self.setWindowIcon(QIcon(str(root.joinpath('CaTSper_resources',
-                                                   'CaTSper_logo.ico'))))
+                                                   'dotTHz_logo.ico'))))
 
         # Set up models.
         self.td_model = THzDataModel()
@@ -99,10 +99,10 @@ class MainWindow(QMainWindow):
 
     def importFiles(self):
         """Get the paths of files to load from a file dialog."""
-
+        path = Path.home()
         self.files = QFileDialog.getOpenFileNames(self,
                                                   'Open file',
-                                                  str(Path(__file__).parent),
+                                                  str(path),
                                                   'Terahertz Files (*.thz)')[0]
         names = [name.split('/')[-1] for name in self.files]
         self.label_filenames.setText(', '.join(names))
