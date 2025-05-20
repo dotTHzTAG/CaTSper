@@ -647,9 +647,9 @@ class CaTSperPlotWidget(PlotWidget):
 
         # Get datasets and names to plot.
         names = [m.name for m in self.selection().getSelectedMeasurements()]
-        datasets = self.selection().getSelectedDatasets(sam_index*plot_sam,
-                                                        ref_index*plot_ref,
-                                                        base_index*plot_base)
+        datasets = self.selection().getSelectedDatasets(sam_index,
+                                                        ref_index,
+                                                        base_index)
 
         # Work out how many traces will be plotted.
         trace_count = len(names)
@@ -671,14 +671,24 @@ class CaTSperPlotWidget(PlotWidget):
         for dataset in datasets:
             name = names.pop(0)
 
-            # Special case for plotting multiple waveforms per dataset.
+            # Special case for plotting multiple waveforms per measurement.
             if plot_property == "waveforms":
                 property = dataset["waveforms"]
-                for k, v in property.items():
-                    y, x = v
+                if plot_sam and "sample" in property:
+                    y, x = property["sample"]
                     self.plot(x, y,
                               pen=mkPen(palette.pop(0), width=2),
-                              name=name + "_" + k)
+                              name=name + "_" + "sample")
+                if plot_ref and "reference" in property:
+                    y, x = property["reference"]
+                    self.plot(x, y,
+                              pen=mkPen(palette.pop(0), width=2),
+                              name=name + "_" + "reference")
+                if plot_base and "baseline" in property:
+                    y, x = property["baseline"]
+                    self.plot(x, y,
+                              pen=mkPen(palette.pop(0), width=2),
+                              name=name + "_" + "baseline")
 
                 # For plotting FFT amplitude use the built in transform.
                 if transform:
