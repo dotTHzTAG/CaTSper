@@ -177,6 +177,7 @@ class TimeDomainTab(QWidget):
 
         obj = self.sender()
         obj.home(True)
+        obj.deselect()
 
     def setDataSelection(self, current):
         """Set mapper index to show the metadata of the select measurement."""
