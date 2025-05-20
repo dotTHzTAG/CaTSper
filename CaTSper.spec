@@ -5,7 +5,7 @@ a = Analysis(
     ['CaTSper.py'],
     pathex=[],
     binaries=[],
-    datas=[('CaTSper_python.ui', '.'), ('CaTSper_timedomain.ui', '.'), ('CaTSper_frequencydomain.ui', '.'), ('config_default.json', '.'), ('CaTSper_resources/dotTHz_logo_dark.svg', 'CaTSper_resources'), ('CaTSper_resources/dotTHz_logo_light.svg', 'CaTSper_resources'), ('CaTSper_resources/dotTHz_logo.ico', 'CaTSper_resources'), ('CaTSper_resources/dotTHz_logo.icns', 'CaTSper_resources')],
+    datas=[('CaTSper.ui', '.'), ('CaTSper_timedomain.ui', '.'), ('CaTSper_frequencydomain.ui', '.'), ('config_default.json', '.'), ('CaTSper_resources/dotTHz_logo_dark.svg', 'CaTSper_resources'), ('CaTSper_resources/dotTHz_logo_light.svg', 'CaTSper_resources'), ('CaTSper_resources/dotTHz_logo.ico', 'CaTSper_resources'), ('CaTSper_resources/dotTHz_logo.icns', 'CaTSper_resources')],
     hiddenimports=['PyQt6.QtSvgWidgets'],
     hookspath=[],
     hooksconfig={},
