@@ -277,6 +277,7 @@ def main():
     """Execute application."""
 
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
     ex = MainWindow()
     ex.show()
     sys.exit(app.exec())
