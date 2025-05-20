@@ -7,15 +7,17 @@ from thzpy.timedomain import common_window
 from thzpy.transferfunctions import (uniform_slab,
                                      binary_mixture)
 from PyQt6 import uic
+from PyQt6.QtCore import QEvent, Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (QMainWindow,
                              QApplication,
-                             QFileDialog)
+                             QFileDialog,
+                             QWidget)
 from CaTSperClasses import (THzDataModel,
                             ExceptionHook)
 from CaTSper_timedomain import TimeDomainTab
 from CaTSper_frequencydomain import FrequencyDomainTab
-
+from warnings import warn
 
 if getattr(sys, 'frozen', False):
     os.chdir(sys._MEIPASS)
@@ -34,15 +36,11 @@ class MainWindow(QMainWindow):
         # Initialise and load UI.
         super().__init__(*args, **kwargs)
         root = Path(__file__).parent
-        uic.loadUi(root.joinpath('CaTSper_python.ui'), self)
+        uic.loadUi(root.joinpath('CaTSper.ui'), self)
         pyqtgraph.setConfigOptions(antialias=True)
         self.files = []
-
-        # Set icons.
         self.setWindowIcon(QIcon(str(root.joinpath('CaTSper_resources',
-                                                   'CaTSper_logo.ico'))))
-        self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources',
-                                                'CaTSper_logo.svg')))
+                                                   'dotTHz_logo.ico'))))
 
         # Set up models.
         self.td_model = THzDataModel()
@@ -53,6 +51,7 @@ class MainWindow(QMainWindow):
         self.tabWidget.addTab(self.tab_td, "Time Domain (TD)")
         self.tab_fd = FrequencyDomainTab(self)
         self.tabWidget.addTab(self.tab_fd, "Frequency Domain (FD)")
+        self.syncTheme()
 
         # Bindings for buttons.
         self.pushButton_import.clicked.connect(self.importFiles)
@@ -63,12 +62,47 @@ class MainWindow(QMainWindow):
         # Initialise pop-up exception handler.
         self.ehook = ExceptionHook()
 
+    def changeEvent(self, a0):
+        """Intercept palette change events."""
+
+        if a0.type() == QEvent.Type.PaletteChange:
+            self.syncTheme()
+        return super().changeEvent(a0)
+
+    def syncTheme(self):
+        """Apply dark/light theme changes to elements
+        that don't handle them automatically."""
+
+        root = Path(__file__).parent
+        style_hints = QApplication.styleHints()
+        colour_scheme = style_hints.colorScheme()
+
+        # Refresh styling by repolishing all widgets.
+        for child in self.findChildren(QWidget):
+            child.style().unpolish(child)
+            child.style().polish(child)
+
+        # Set plot backgrounds seperately becuase they don't use QSS.
+        self.tab_td.plot_1.setBackground(self.palette().base().color())
+        self.tab_td.plot_2.setBackground(self.palette().base().color())
+        self.tab_fd.plot_1.setBackground(self.palette().base().color())
+        self.tab_fd.plot_2.setBackground(self.palette().base().color())
+
+        if colour_scheme == Qt.ColorScheme.Light:
+            self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources',
+                                                    'dotTHz_logo_light.svg')))
+        elif colour_scheme == Qt.ColorScheme.Dark:
+            self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources',
+                                                    'dotTHz_logo_dark.svg')))
+        else:
+            warn("Unknown system theme.")
+
     def importFiles(self):
         """Get the paths of files to load from a file dialog."""
-
+        path = Path.home()
         self.files = QFileDialog.getOpenFileNames(self,
                                                   'Open file',
-                                                  str(Path(__file__).parent),
+                                                  str(path),
                                                   'Terahertz Files (*.thz)')[0]
         names = [name.split('/')[-1] for name in self.files]
         self.label_filenames.setText(', '.join(names))
@@ -114,6 +148,8 @@ class MainWindow(QMainWindow):
         self.tabWidget.addTab(self.tab_td, "Time Domain (TD)")
         self.tabWidget.addTab(self.tab_fd, "Frequency Domain (FD)")
         self.tab_td.pushButton_transform.clicked.connect(self.transform)
+
+        self.syncTheme()
 
     def transform(self):
         """Transform measurements into the frequency domain.
@@ -241,6 +277,7 @@ def main():
     """Execute application."""
 
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
     ex = MainWindow()
     ex.show()
     sys.exit(app.exec())

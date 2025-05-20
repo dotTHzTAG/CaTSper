@@ -4,7 +4,8 @@ from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (QDataWidgetMapper,
                              QWidget,
-                             QFileDialog)
+                             QFileDialog,
+                             QLineEdit)
 from PyQt6.QtGui import QDoubleValidator
 from CaTSperClasses import SettingsModel
 
@@ -32,8 +33,6 @@ class TimeDomainTab(QWidget):
         self.defaultSettings()
 
         # Set Graph properties
-        self.frame_plot1.setStyleSheet("background-color: palette(base);")
-        self.plot_1.setBackground(self.palette().base().color())
         self.plot_1.setTitle("Plot 1", size="12pt")
         self.plot_1.setLabel('left', "Electric Field Amplitude (a.u.)")
         self.plot_1.setLabel('bottom', "Time (ps)")
@@ -41,8 +40,6 @@ class TimeDomainTab(QWidget):
         self.plot_1.setDSSettings(self.ds_settings)
         self.plot_1.setSelection(self.listWidget_select)
 
-        self.frame_plot2.setStyleSheet("background-color: palette(base);")
-        self.plot_2.setBackground(self.palette().base().color())
         self.plot_2.setTitle("Plot 2", size="12pt")
         self.plot_2.setLabel('left', "Electric Field Amplitude (a.u.)")
         self.plot_2.setLabel('bottom', "Time (ps)")
@@ -101,7 +98,7 @@ class TimeDomainTab(QWidget):
         self.md_mapper.addMapping(self.comboBox_samplethickness, 0, prp)
         self.md_mapper.addMapping(self.comboBox_referencethickness, 1, prp)
         self.md_mapper.addMapping(self.comboBox_thicknessunit, 2)
-        self.md_mapper.addMapping(self.checkBox_offset, 3)
+        self.md_mapper.addMapping(self.radioButton_offset, 3)
         self.md_mapper.toFirst()
 
         # Set up mapping of dataset settings
@@ -171,20 +168,35 @@ class TimeDomainTab(QWidget):
         self.listView_measurements.selectionModel().currentChanged.connect(
             self.setDataSelection)
 
+        # Set up left alignment for QLineEdit overflows.
+        for obj in self.findChildren(QLineEdit):
+            obj.editingFinished.connect(self.homeText)
+
+    def homeText(self):
+        """Home the text of a QLineEdit"""
+
+        obj = self.sender()
+        obj.home(True)
+        obj.deselect()
+
     def setDataSelection(self, current):
         """Set mapper index to show the metadata of the select measurement."""
 
         row = current.row()
         self.selection_mapper.setCurrentIndex(row)
 
+        # Set overflowing QLineEdits to align left.
+        for obj in self.findChildren(QLineEdit):
+            obj.home(False)
+
     def loadSettings(self):
         """Load settings from a .json file."""
 
         # Get path to load from file dialog.
-        root = Path(__file__).parent
+        path = Path.home()
         file_path = QFileDialog.getOpenFileName(self,
                                                 'Open file',
-                                                str(root),
+                                                str(path),
                                                 'json Files (*.json)')[0]
 
         # Load settings to dict from .json and apply to model.
@@ -199,10 +211,10 @@ class TimeDomainTab(QWidget):
         """Save current settings to a .json file"""
 
         # Get path to save to from file dialog.
-        root = Path(__file__).parent
+        path = Path.home()
         file_path = QFileDialog.getSaveFileName(self,
                                                 'Save file',
-                                                str(root),
+                                                str(path),
                                                 'json Files (*.json)')[0]
 
         if file_path != "":

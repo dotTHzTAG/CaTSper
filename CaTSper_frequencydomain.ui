@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>924</width>
-    <height>590</height>
+    <width>1176</width>
+    <height>794</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1176</width>
+    <height>794</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -18,7 +24,7 @@
     <widget class="QFrame" name="frame_menus">
      <property name="minimumSize">
       <size>
-       <width>400</width>
+       <width>450</width>
        <height>0</height>
       </size>
      </property>
@@ -27,11 +33,6 @@
        <width>400</width>
        <height>16777215</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>8</pointsize>
-      </font>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -53,7 +54,7 @@
        <number>0</number>
       </property>
       <property name="spacing">
-       <number>0</number>
+       <number>6</number>
       </property>
       <item row="0" column="0" colspan="2">
        <widget class="QFrame" name="frame_lists">
@@ -70,11 +71,23 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QGroupBox" name="groupBox_meas">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>1</horstretch>
+             <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
@@ -110,15 +123,18 @@
              <widget class="QPushButton" name="pushButton_remove">
               <property name="minimumSize">
                <size>
-                <width>82</width>
-                <height>41</height>
+                <width>90</width>
+                <height>50</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>41</height>
+                <height>45</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>REMOVE</string>
@@ -127,6 +143,9 @@
             </item>
             <item row="0" column="0" rowspan="6" colspan="2">
              <widget class="QListView" name="listView_measurements">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
@@ -148,15 +167,18 @@
              <widget class="QPushButton" name="pushButton_removeall">
               <property name="minimumSize">
                <size>
-                <width>82</width>
-                <height>41</height>
+                <width>90</width>
+                <height>50</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>41</height>
+                <height>45</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>REMOVE
@@ -168,15 +190,18 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_delall">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>DEL
@@ -188,15 +213,18 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_addall">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>ADD
@@ -208,15 +236,18 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_add">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>ADD</string>
@@ -227,15 +258,18 @@ ALL</string>
              <widget class="QPushButton" name="pushButton_del">
               <property name="minimumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>41</width>
-                <height>41</height>
+                <width>45</width>
+                <height>45</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>DEL</string>
@@ -249,7 +283,7 @@ ALL</string>
           <widget class="QGroupBox" name="groupBox_selection">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>1</horstretch>
+             <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
@@ -282,15 +316,18 @@ ALL</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>100</width>
-                <height>40</height>
+                <width>140</width>
+                <height>50</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>40</height>
+                <height>50</height>
                </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>Move to
@@ -300,6 +337,9 @@ Data Management</string>
             </item>
             <item row="0" column="0" rowspan="8">
              <widget class="SelectionListWidget" name="listWidget_select">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
@@ -342,16 +382,16 @@ Data Management</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <property name="leftMargin">
-          <number>6</number>
+          <number>0</number>
          </property>
          <property name="topMargin">
-          <number>6</number>
+          <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>6</number>
+          <number>0</number>
          </property>
          <property name="bottomMargin">
-          <number>6</number>
+          <number>0</number>
          </property>
          <item row="0" column="0" rowspan="2" colspan="2">
           <widget class="QGroupBox" name="groupBox_properties">
@@ -393,6 +433,9 @@ Data Management</string>
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>FFT
@@ -438,6 +481,9 @@ Amplitude</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
                <string>Absorption
 Coefficient</string>
@@ -478,6 +524,9 @@ Coefficient</string>
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>Transmission
@@ -520,6 +569,9 @@ Phase</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
                <string>Extinction
 Coefficient</string>
@@ -560,6 +612,9 @@ Coefficient</string>
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>Transmission
@@ -602,6 +657,9 @@ Amplitude</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
                <string>Refractive
 Index</string>
@@ -643,6 +701,9 @@ Index</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
               <property name="text">
                <string>Transmission
 Intensity</string>
@@ -683,6 +744,9 @@ Intensity</string>
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>Dielectric
@@ -750,146 +814,46 @@ Constant</string>
             <property name="bottomMargin">
              <number>6</number>
             </property>
-            <item row="2" column="1">
-             <widget class="QCheckBox" name="checkBox_plotimaginary">
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_real">
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>16</height>
+                <height>30</height>
                </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QCheckBox::indicator {
-    width: 32px;
-    height: 16px;
-}
-
-QCheckBox::indicator:unchecked {
-    image: url(CaTSPer_resources/toggle_left.png);
-}
-
-QCheckBox::indicator:checked {
-    image: url(CaTSPer_resources/toggle_right.png);
-}</string>
               </property>
               <property name="text">
-               <string>Imag</string>
+               <string>Real</string>
               </property>
-              <property name="tristate">
-               <bool>false</bool>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_linear">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Linear</string>
               </property>
-             </widget>
-            </item>
-            <item row="6" column="0" colspan="2">
-             <widget class="QPushButton" name="pushButton_legend">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>24</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>24</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Legend</string>
-              </property>
-              <property name="checkable">
-               <bool>false</bool>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_real">
-              <property name="text">
-               <string>Real</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QCheckBox" name="checkBox_plotlog">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>16</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QCheckBox::indicator {
-    width: 32px;
-    height: 16px;
-}
-
-QCheckBox::indicator:unchecked {
-    image: url(CaTSPer_resources/toggle_left.png);
-}
-
-QCheckBox::indicator:checked {
-    image: url(CaTSPer_resources/toggle_right.png);
-}</string>
-              </property>
+            <item row="1" column="2">
+             <widget class="QLabel" name="label_log">
               <property name="text">
                <string>Log</string>
               </property>
-              <property name="tristate">
-               <bool>false</bool>
-              </property>
              </widget>
             </item>
-            <item row="4" column="0" colspan="2">
-             <widget class="QLabel" name="label_colourmap">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>21</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>21</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Colour Map:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0" colspan="2">
+            <item row="5" column="0" colspan="3">
              <widget class="QComboBox" name="comboBox_colourmap">
               <property name="enabled">
                <bool>true</bool>
@@ -897,19 +861,17 @@ QCheckBox::indicator:checked {
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>21</height>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>91</width>
-                <height>21</height>
+                <width>16777215</width>
+                <height>24</height>
                </size>
               </property>
-              <property name="font">
-               <font>
-                <family>Arial</family>
-               </font>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
               </property>
               <property name="editable">
                <bool>false</bool>
@@ -981,7 +943,48 @@ QCheckBox::indicator:checked {
               </item>
              </widget>
             </item>
-            <item row="0" column="0" colspan="2">
+            <item row="2" column="2">
+             <widget class="QLabel" name="label_imag">
+              <property name="text">
+               <string>Imag</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0" colspan="3">
+             <widget class="QPushButton" name="pushButton_legend">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>Legend</string>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="3">
              <widget class="QFrame" name="frame_dsselection">
               <property name="enabled">
                <bool>true</bool>
@@ -1010,10 +1013,14 @@ QCheckBox::indicator:checked {
                </property>
                <item>
                 <widget class="QCheckBox" name="checkBox_plotsample">
-                 <property name="font">
-                  <font>
-                   <pointsize>8</pointsize>
-                  </font>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
                  </property>
                  <property name="text">
                   <string>Sample</string>
@@ -1028,10 +1035,14 @@ QCheckBox::indicator:checked {
                </item>
                <item>
                 <widget class="QCheckBox" name="checkBox_plotreference">
-                 <property name="font">
-                  <font>
-                   <pointsize>8</pointsize>
-                  </font>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
                  </property>
                  <property name="text">
                   <string>Reference</string>
@@ -1046,10 +1057,14 @@ QCheckBox::indicator:checked {
                </item>
                <item>
                 <widget class="QCheckBox" name="checkBox_plotbaseline">
-                 <property name="font">
-                  <font>
-                   <pointsize>8</pointsize>
-                  </font>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
                  </property>
                  <property name="text">
                   <string>Baseline</string>
@@ -1063,6 +1078,126 @@ QCheckBox::indicator:checked {
                 </widget>
                </item>
               </layout>
+             </widget>
+            </item>
+            <item row="4" column="0" colspan="3">
+             <widget class="QLabel" name="label_colourmap">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>21</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Colour Map:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QRadioButton" name="radioButton_plotlog">
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QRadioButton{
+width: 40;
+height: 20;
+background: palette(text);
+border-radius: 10px;
+}
+
+QRadioButton::indicator:checked{
+left: 22px;
+width: 14px;
+height: 14px;
+background: palette(Window);
+border-radius: 7px;
+}
+
+QRadioButton::indicator:unchecked {
+left: 4px;
+width: 14px;
+height: 14px;
+background: palette(Window);
+border-radius: 7px;
+}</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="autoExclusive">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QRadioButton" name="radioButton_plotimaginary">
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QRadioButton{
+width: 40;
+height: 20;
+background: palette(text);
+border-radius: 10px;
+}
+
+QRadioButton::indicator:checked{
+left: 22px;
+width: 14px;
+height: 14px;
+background: palette(Window);
+border-radius: 7px;
+}
+
+QRadioButton::indicator:unchecked {
+left: 4px;
+width: 14px;
+height: 14px;
+background: palette(Window);
+border-radius: 7px;
+}</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="autoExclusive">
+               <bool>false</bool>
+              </property>
              </widget>
             </item>
            </layout>
@@ -1118,10 +1253,8 @@ QCheckBox::indicator:checked {
                 <height>40</height>
                </size>
               </property>
-              <property name="font">
-               <font>
-                <pointsize>8</pointsize>
-               </font>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>Plot 1</string>
@@ -1148,10 +1281,8 @@ QCheckBox::indicator:checked {
                 <height>40</height>
                </size>
               </property>
-              <property name="font">
-               <font>
-                <pointsize>8</pointsize>
-               </font>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
                <string>Plot 2</string>
@@ -1214,6 +1345,9 @@ QCheckBox::indicator:checked {
         <property name="autoFillBackground">
          <bool>false</bool>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: palette(base);</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -1244,6 +1378,9 @@ QCheckBox::indicator:checked {
       </item>
       <item row="0" column="0">
        <widget class="QFrame" name="frame_plot1">
+        <property name="styleSheet">
+         <string notr="true">background-color: palette(base);</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -1267,13 +1404,7 @@ QCheckBox::indicator:checked {
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="CaTSperPlotWidget" name="plot_1" native="true">
-           <property name="font">
-            <font>
-             <pointsize>11</pointsize>
-            </font>
-           </property>
-          </widget>
+          <widget class="CaTSperPlotWidget" name="plot_1" native="true"/>
          </item>
         </layout>
        </widget>
