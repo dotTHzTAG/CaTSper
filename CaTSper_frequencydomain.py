@@ -44,8 +44,8 @@ class FrequencyDomainTab(QWidget):
         self.plot_mapper.addMapping(self.checkBox_plotsample, 1)
         self.plot_mapper.addMapping(self.checkBox_plotreference, 2)
         self.plot_mapper.addMapping(self.checkBox_plotbaseline, 3)
-        self.plot_mapper.addMapping(self.checkBox_plotlog, 4)
-        self.plot_mapper.addMapping(self.checkBox_plotimaginary, 5)
+        self.plot_mapper.addMapping(self.radioButton_plotlog, 4)
+        self.plot_mapper.addMapping(self.radioButton_plotimaginary, 5)
         self.plot_mapper.addMapping(self.comboBox_colourmap, 9)
         self.plot_mapper.toFirst()
 

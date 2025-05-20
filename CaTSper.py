@@ -11,7 +11,8 @@ from PyQt6.QtCore import QEvent, Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (QMainWindow,
                              QApplication,
-                             QFileDialog)
+                             QFileDialog,
+                             QWidget)
 from CaTSperClasses import (THzDataModel,
                             ExceptionHook)
 from CaTSper_timedomain import TimeDomainTab
@@ -76,41 +77,21 @@ class MainWindow(QMainWindow):
         style_hints = QApplication.styleHints()
         colour_scheme = style_hints.colorScheme()
 
-        frame_ss = "background-color: palette(base);"
-        light_toggle_ss = """
-            QCheckBox::indicator
-                {width: 32px;height: 16px;}
-            QCheckBox::indicator:unchecked
-                {image: url(CaTSPer_resources/toggle_left_light.png);}
-            QCheckBox::indicator:checked
-                {image: url(CaTSPer_resources/toggle_right_light.png);}"""
-        dark_toggle_ss = """
-            QCheckBox::indicator
-                {width: 32px;height: 16px;}
-            QCheckBox::indicator:unchecked
-                {image: url(CaTSPer_resources/toggle_left_dark.png);}
-            QCheckBox::indicator:checked
-                {image: url(CaTSPer_resources/toggle_right_dark.png);}"""
+        # Refresh styling by repolishing all widgets.
+        for child in self.findChildren(QWidget):
+            child.style().unpolish(child)
+            child.style().polish(child)
 
-        self.tab_td.frame_plot1.setStyleSheet(frame_ss)
+        # Set plot backgrounds seperately becuase they don't use QSS.
         self.tab_td.plot_1.setBackground(self.palette().base().color())
-        self.tab_td.frame_plot2.setStyleSheet(frame_ss)
         self.tab_td.plot_2.setBackground(self.palette().base().color())
-        self.tab_fd.frame_plot1.setStyleSheet(frame_ss)
         self.tab_fd.plot_1.setBackground(self.palette().base().color())
-        self.tab_fd.frame_plot2.setStyleSheet(frame_ss)
         self.tab_fd.plot_2.setBackground(self.palette().base().color())
 
         if colour_scheme == Qt.ColorScheme.Light:
             self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources',
                                                     'dotTHz_logo_light.svg')))
-            self.tab_td.checkBox_offset.setStyleSheet(light_toggle_ss)
-            self.tab_fd.checkBox_plotlog.setStyleSheet(light_toggle_ss)
-            self.tab_fd.checkBox_plotimaginary.setStyleSheet(light_toggle_ss)
         elif colour_scheme == Qt.ColorScheme.Dark:
-            self.tab_td.checkBox_offset.setStyleSheet(dark_toggle_ss)
-            self.tab_fd.checkBox_plotlog.setStyleSheet(dark_toggle_ss)
-            self.tab_fd.checkBox_plotimaginary.setStyleSheet(dark_toggle_ss)
             self.svg_CaTSper.load(str(root.joinpath('CaTSper_resources',
                                                     'dotTHz_logo_dark.svg')))
         else:

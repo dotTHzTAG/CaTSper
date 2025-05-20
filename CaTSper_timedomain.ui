@@ -380,55 +380,8 @@
             <property name="bottomMargin">
              <number>6</number>
             </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_md1">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>md1</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_md2">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>md2</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="lineEdit_md1">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
+            <item row="4" column="1">
+             <widget class="QComboBox" name="comboBox_thicknessunit">
               <property name="minimumSize">
                <size>
                 <width>70</width>
@@ -442,219 +395,34 @@
                </size>
               </property>
               <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
+               <enum>Qt::WheelFocus</enum>
               </property>
-             </widget>
-            </item>
-            <item row="0" column="2" colspan="2">
-             <widget class="QLineEdit" name="lineEdit_md1desc">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
+              <property name="settingCategory" stdset="0">
+               <string>Metadata_Settings</string>
               </property>
-              <property name="mouseTracking">
-               <bool>false</bool>
+              <property name="setting" stdset="0">
+               <string>Thickness_Unit</string>
               </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="acceptDrops">
-               <bool>false</bool>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="2" colspan="2">
-             <widget class="QLineEdit" name="lineEdit_md3desc">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="mouseTracking">
-               <bool>false</bool>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="acceptDrops">
-               <bool>false</bool>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="lineEdit_md3">
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="lineEdit_md2">
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_md3">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>md3</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2" colspan="2">
-             <widget class="QLineEdit" name="lineEdit_md2desc">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="mouseTracking">
-               <bool>false</bool>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="acceptDrops">
-               <bool>false</bool>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="label_thickness">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Thickness</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_md4">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>md4</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QLineEdit" name="lineEdit_md4">
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="2" colspan="2">
-             <widget class="QLineEdit" name="lineEdit_md4desc">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="mouseTracking">
-               <bool>false</bool>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="acceptDrops">
-               <bool>false</bool>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
+              <item>
+               <property name="text">
+                <string>cm</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>mm</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>um</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>nm</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item row="4" column="2">
@@ -695,19 +463,63 @@
               </property>
              </widget>
             </item>
-            <item row="5" column="2">
-             <widget class="QLabel" name="label_refthickness">
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="lineEdit_md4">
               <property name="minimumSize">
                <size>
-                <width>80</width>
+                <width>70</width>
                 <height>30</height>
                </size>
               </property>
-              <property name="text">
-               <string>Reference</string>
+              <property name="maximumSize">
+               <size>
+                <width>70</width>
+                <height>16777215</height>
+               </size>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="5">
+             <widget class="QLineEdit" name="lineEdit_md4unit">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2" colspan="3">
+             <widget class="QLineEdit" name="lineEdit_md4desc">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="acceptDrops">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -761,52 +573,7 @@
               </item>
              </widget>
             </item>
-            <item row="4" column="1">
-             <widget class="QComboBox" name="comboBox_thicknessunit">
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="settingCategory" stdset="0">
-               <string>Metadata_Settings</string>
-              </property>
-              <property name="setting" stdset="0">
-               <string>Thickness_Unit</string>
-              </property>
-              <item>
-               <property name="text">
-                <string>cm</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>mm</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>um</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>nm</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item row="2" column="4">
+            <item row="2" column="5">
              <widget class="QLineEdit" name="lineEdit_md3unit">
               <property name="minimumSize">
                <size>
@@ -825,17 +592,90 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="4">
-             <widget class="QLineEdit" name="lineEdit_md4unit">
+            <item row="4" column="5">
+             <widget class="QLabel" name="label_offsettoggle">
+              <property name="text">
+               <string>Offset</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_md4">
               <property name="minimumSize">
                <size>
-                <width>50</width>
+                <width>0</width>
                 <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>40</width>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>md4</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_thickness">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Thickness</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_md3">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>md3</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="lineEdit_md3">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>70</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -844,7 +684,29 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="4">
+            <item row="2" column="2" colspan="3">
+             <widget class="QLineEdit" name="lineEdit_md3desc">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="acceptDrops">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="5">
              <widget class="QLineEdit" name="lineEdit_md2unit">
               <property name="minimumSize">
                <size>
@@ -863,38 +725,29 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="3" colspan="2">
-             <widget class="QCheckBox" name="checkBox_offset">
+            <item row="0" column="2" colspan="3">
+             <widget class="QLineEdit" name="lineEdit_md1desc">
               <property name="minimumSize">
                <size>
                 <width>0</width>
                 <height>30</height>
                </size>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
+              <property name="mouseTracking">
+               <bool>false</bool>
               </property>
               <property name="focusPolicy">
                <enum>Qt::StrongFocus</enum>
               </property>
-              <property name="styleSheet">
-               <string notr="true">QCheckBox::indicator {
-    width: 32px;
-    height: 16px;
-}</string>
-              </property>
-              <property name="text">
-               <string>Offset</string>
-              </property>
-              <property name="tristate">
+              <property name="acceptDrops">
                <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="0" column="4">
+            <item row="0" column="5">
              <widget class="QLineEdit" name="lineEdit_md1unit">
               <property name="minimumSize">
                <size>
@@ -913,8 +766,33 @@
               </property>
              </widget>
             </item>
-            <item row="5" column="3" colspan="2">
-             <widget class="QComboBox" name="comboBox_referencethickness">
+            <item row="1" column="2" colspan="3">
+             <widget class="QLineEdit" name="lineEdit_md2desc">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="acceptDrops">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="lineEdit_md1">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>70</width>
@@ -924,6 +802,88 @@
               <property name="maximumSize">
                <size>
                 <width>70</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_md1">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>md1</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_md2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>md2</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="lineEdit_md2">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>70</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="4" colspan="2">
+             <widget class="QComboBox" name="comboBox_referencethickness">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -961,6 +921,83 @@
                 <string>md4</string>
                </property>
               </item>
+             </widget>
+            </item>
+            <item row="4" column="3" colspan="2">
+             <widget class="QRadioButton" name="radioButton_offset">
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QRadioButton{
+width: 40;
+height: 20;
+background: palette(text);
+border-radius: 10px;
+}
+
+QRadioButton::indicator:checked{
+left: 4px;
+width: 14px;
+height: 14px;
+background: palette(Window);
+border-radius: 7px;
+}
+
+QRadioButton::indicator:unchecked {
+left: 22px;
+width: 14px;
+height: 14px;
+background: palette(Window);
+border-radius: 7px;
+}</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+              <property name="autoExclusive">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="2">
+             <widget class="QLabel" name="label_refthickness">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Reference</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
              </widget>
             </item>
            </layout>
@@ -1042,6 +1079,441 @@
                <string>Load Settings</string>
               </property>
              </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QFrame" name="frame_lists">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>200</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QGroupBox" name="groupBox_meas">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="title">
+            <string>Measurements</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_22" rowstretch="0,0,0,0,0,0" columnstretch="0,0">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetDefaultConstraint</enum>
+            </property>
+            <property name="leftMargin">
+             <number>6</number>
+            </property>
+            <property name="topMargin">
+             <number>6</number>
+            </property>
+            <property name="rightMargin">
+             <number>6</number>
+            </property>
+            <property name="bottomMargin">
+             <number>6</number>
+            </property>
+            <property name="horizontalSpacing">
+             <number>6</number>
+            </property>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="pushButton_delall">
+              <property name="minimumSize">
+               <size>
+                <width>45</width>
+                <height>45</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>45</width>
+                <height>45</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>DEL
+ALL</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="pushButton_addall">
+              <property name="minimumSize">
+               <size>
+                <width>45</width>
+                <height>45</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>45</width>
+                <height>45</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>ADD
+ALL</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" rowspan="6">
+             <widget class="QListView" name="listView_measurements">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="showDropIndicator" stdset="0">
+               <bool>false</bool>
+              </property>
+              <property name="dragEnabled">
+               <bool>false</bool>
+              </property>
+              <property name="dragDropMode">
+               <enum>QAbstractItemView::NoDragDrop</enum>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::ExtendedSelection</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="pushButton_del">
+              <property name="minimumSize">
+               <size>
+                <width>45</width>
+                <height>45</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>45</width>
+                <height>45</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>DEL</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="pushButton_add">
+              <property name="minimumSize">
+               <size>
+                <width>45</width>
+                <height>45</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>45</width>
+                <height>45</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>ADD</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_selection">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="title">
+            <string>Selection</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout">
+            <property name="leftMargin">
+             <number>6</number>
+            </property>
+            <property name="topMargin">
+             <number>6</number>
+            </property>
+            <property name="rightMargin">
+             <number>6</number>
+            </property>
+            <property name="bottomMargin">
+             <number>6</number>
+            </property>
+            <item row="0" column="0" rowspan="5">
+             <widget class="SelectionListWidget" name="listWidget_select">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="showDropIndicator" stdset="0">
+               <bool>false</bool>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::MultiSelection</enum>
+              </property>
+              <property name="sortingEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QFrame" name="frame_selectionboxes">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>80</height>
+               </size>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_7">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>3</number>
+               </property>
+               <property name="topMargin">
+                <number>3</number>
+               </property>
+               <property name="rightMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <widget class="QCheckBox" name="checkBox_plotsample">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>Sample</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBox_plotreference">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>Reference</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBox_plotbaseline">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::StrongFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>Baseline</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                 <property name="autoExclusive">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="pushButton_plot1">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>Plot 1</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="pushButton_plot2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>Plot 2</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="pushButton_drcheck">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>70</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="text">
+               <string>Check
+Dynamic
+Range</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>68</width>
+                <height>4</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -2019,13 +2491,13 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>70</width>
                 <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>16777215</width>
+                <width>70</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -2243,441 +2715,6 @@
         </layout>
        </widget>
       </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QFrame" name="frame_lists">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>200</height>
-         </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QGroupBox" name="groupBox_meas">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="title">
-            <string>Measurements</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_22" rowstretch="0,0,0,0,0,0" columnstretch="0,0">
-            <property name="sizeConstraint">
-             <enum>QLayout::SetDefaultConstraint</enum>
-            </property>
-            <property name="leftMargin">
-             <number>6</number>
-            </property>
-            <property name="topMargin">
-             <number>6</number>
-            </property>
-            <property name="rightMargin">
-             <number>6</number>
-            </property>
-            <property name="bottomMargin">
-             <number>6</number>
-            </property>
-            <property name="horizontalSpacing">
-             <number>6</number>
-            </property>
-            <item row="3" column="1">
-             <widget class="QPushButton" name="pushButton_delall">
-              <property name="minimumSize">
-               <size>
-                <width>45</width>
-                <height>45</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>45</width>
-                <height>45</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>DEL
-ALL</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="pushButton_addall">
-              <property name="minimumSize">
-               <size>
-                <width>45</width>
-                <height>45</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>45</width>
-                <height>45</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>ADD
-ALL</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0" rowspan="6">
-             <widget class="QListView" name="listView_measurements">
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="editTriggers">
-               <set>QAbstractItemView::NoEditTriggers</set>
-              </property>
-              <property name="showDropIndicator" stdset="0">
-               <bool>false</bool>
-              </property>
-              <property name="dragEnabled">
-               <bool>false</bool>
-              </property>
-              <property name="dragDropMode">
-               <enum>QAbstractItemView::NoDragDrop</enum>
-              </property>
-              <property name="selectionMode">
-               <enum>QAbstractItemView::ExtendedSelection</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QPushButton" name="pushButton_del">
-              <property name="minimumSize">
-               <size>
-                <width>45</width>
-                <height>45</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>45</width>
-                <height>45</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>DEL</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="pushButton_add">
-              <property name="minimumSize">
-               <size>
-                <width>45</width>
-                <height>45</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>45</width>
-                <height>45</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>ADD</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
-             <spacer name="verticalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox_selection">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="title">
-            <string>Selection</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout">
-            <property name="leftMargin">
-             <number>6</number>
-            </property>
-            <property name="topMargin">
-             <number>6</number>
-            </property>
-            <property name="rightMargin">
-             <number>6</number>
-            </property>
-            <property name="bottomMargin">
-             <number>6</number>
-            </property>
-            <item row="0" column="0" rowspan="5">
-             <widget class="SelectionListWidget" name="listWidget_select">
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="editTriggers">
-               <set>QAbstractItemView::NoEditTriggers</set>
-              </property>
-              <property name="showDropIndicator" stdset="0">
-               <bool>false</bool>
-              </property>
-              <property name="selectionMode">
-               <enum>QAbstractItemView::MultiSelection</enum>
-              </property>
-              <property name="sortingEnabled">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QFrame" name="frame_selectionboxes">
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>80</height>
-               </size>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Plain</enum>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_7">
-               <property name="spacing">
-                <number>0</number>
-               </property>
-               <property name="leftMargin">
-                <number>3</number>
-               </property>
-               <property name="topMargin">
-                <number>3</number>
-               </property>
-               <property name="rightMargin">
-                <number>3</number>
-               </property>
-               <property name="bottomMargin">
-                <number>3</number>
-               </property>
-               <item>
-                <widget class="QCheckBox" name="checkBox_plotsample">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>24</height>
-                  </size>
-                 </property>
-                 <property name="focusPolicy">
-                  <enum>Qt::StrongFocus</enum>
-                 </property>
-                 <property name="text">
-                  <string>Sample</string>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBox_plotreference">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>24</height>
-                  </size>
-                 </property>
-                 <property name="focusPolicy">
-                  <enum>Qt::StrongFocus</enum>
-                 </property>
-                 <property name="text">
-                  <string>Reference</string>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBox_plotbaseline">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>24</height>
-                  </size>
-                 </property>
-                 <property name="focusPolicy">
-                  <enum>Qt::StrongFocus</enum>
-                 </property>
-                 <property name="text">
-                  <string>Baseline</string>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
-                 </property>
-                 <property name="autoExclusive">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="pushButton_plot1">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>Plot 1</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QPushButton" name="pushButton_plot2">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>24</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>Plot 2</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QPushButton" name="pushButton_drcheck">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>70</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>70</height>
-               </size>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="text">
-               <string>Check
-Dynamic
-Range</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
-             <spacer name="verticalSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>68</width>
-                <height>4</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -2728,6 +2765,9 @@ Range</string>
         <property name="autoFillBackground">
          <bool>false</bool>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: palette(base);</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -2758,6 +2798,9 @@ Range</string>
       </item>
       <item row="0" column="0">
        <widget class="QFrame" name="frame_plot1">
+        <property name="styleSheet">
+         <string notr="true">background-color: palette(base);</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>

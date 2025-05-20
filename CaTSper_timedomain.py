@@ -98,7 +98,7 @@ class TimeDomainTab(QWidget):
         self.md_mapper.addMapping(self.comboBox_samplethickness, 0, prp)
         self.md_mapper.addMapping(self.comboBox_referencethickness, 1, prp)
         self.md_mapper.addMapping(self.comboBox_thicknessunit, 2)
-        self.md_mapper.addMapping(self.checkBox_offset, 3)
+        self.md_mapper.addMapping(self.radioButton_offset, 3)
         self.md_mapper.toFirst()
 
         # Set up mapping of dataset settings
