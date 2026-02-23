@@ -172,7 +172,8 @@ class MainWindow(QMainWindow):
         ref_index = self.tab_td.ds_settings.setting("Reference")
         baseline_index = self.tab_td.ds_settings.setting("Baseline")
         st_index = self.tab_td.md_settings.setting("Sample_Thickness")
-        rt_index = self.tab_td.md_settings.setting("Reference_Thickness")
+        rt_index = self.tab_td.md_settings.setting("Thickness_Difference")
+        t_dif = self.tab_td.md_settings.setting("Reference_Thickness")
         half_width = self.tab_td.fft_settings.setting("Half-Width")
         win_func = self.tab_td.fft_settings.setting("Window_Function")
         t_unit = self.tab_td.md_settings.setting("Thickness_Unit")
@@ -203,6 +204,12 @@ class MainWindow(QMainWindow):
             else:
                 ref_thickness = 0.
 
+            # Calcualte thickness difference is requestes
+            if t_dif:
+                thickness = sample_thickness - ref_thickness
+            else:
+                thickness = sample_thickness
+
             # Apply window function to samples.
             # If no baseline is selected by user set it to None and ignore it.
             if "baseline" not in waveforms.keys():
@@ -226,7 +233,7 @@ class MainWindow(QMainWindow):
             # Apply transfer function.
             match tran_func:
                 case "uniform_slab":
-                    optical_constants = uniform_slab(sample_thickness,
+                    optical_constants = uniform_slab(thickness,
                                                      sample, reference,
                                                      t_unit,
                                                      1.,
