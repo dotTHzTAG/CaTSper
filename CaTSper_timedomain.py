@@ -70,8 +70,6 @@ class TimeDomainTab(QWidget):
         self.selection_mapper.addMapping(self.lineEdit_ds1, 17)
         self.selection_mapper.addMapping(self.lineEdit_ds2, 18)
         self.selection_mapper.addMapping(self.lineEdit_ds3, 19)
-        self.selection_mapper.addMapping(self.comboBox_samplethickness, 23)
-        self.selection_mapper.addMapping(self.comboBox_referencethickness, 24)
         self.selection_mapper.addMapping(self.lineEdit_etalon, 25)
         self.selection_mapper.addMapping(self.lineEdit_refractiveindex, 26)
 
