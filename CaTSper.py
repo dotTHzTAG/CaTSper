@@ -131,6 +131,9 @@ class MainWindow(QMainWindow):
                 unit_field = "md" + str(ds.sample_thickness) + "_unit"
                 self.tab_td.md_settings.setSetting("Thickness_Unit",
                                                    getattr(ds, unit_field))
+                if ds.reference_thickness != 0:
+                    self.tab_td.md_settings.setSetting("Thickness_Difference",
+                                                       False)
             self.td_model.layoutChanged.emit()
 
     def clearMemory(self):
