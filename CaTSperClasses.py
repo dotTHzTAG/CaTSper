@@ -270,7 +270,7 @@ class THzMeasurement():
         else:
             raise ValueError("Could not identify a sutiable time axis. "
                              "Please ensure your time values never decrease.")
-     
+
         return waveform
 
     def data(self, index):
@@ -372,8 +372,8 @@ class THzMeasurement():
             self.sample_index = peak_times[0][0]
             self.etalon = float(peak_times[0][1])
             if len(peak_times) > 1:
-                self.reference_index = peak_times[1][0]
-                peak_delay = peak_times[0][1] - peak_times[1][1]
+                self.reference_index = peak_times[-1][0]
+                peak_delay = peak_times[0][1] - peak_times[-1][1]
                 self.etalon += float(2*peak_delay)
                 if len(peak_times) > 2:
                     self.baseline_index = peak_times[2][0]
