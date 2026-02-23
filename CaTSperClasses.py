@@ -8,7 +8,7 @@ from PyQt6.QtCore import (QAbstractListModel,
 from PyQt6.QtGui import QIcon
 from PyQt6 import QtCore
 from pyqtgraph import PlotWidget, mkPen
-from thzpy.dotthz import DotthzFile, DotthzMeasurement
+from thzpy.dotthz import DotthzFile
 from thzpy.timedomain import primary_peak, n_effective
 import numpy as np
 import colorcet
@@ -213,7 +213,7 @@ class THzMeasurement():
         Get the waveforms from the datasets at the given indices.
     """
 
-    def __init__(self, name: str, measurement: DotthzMeasurement):
+    def __init__(self, name: str, measurement):
         super().__init__()
         self.name = name
         self._loadDotTHz(measurement)
@@ -246,6 +246,33 @@ class THzMeasurement():
                          "etalon",
                          "n")
 
+    def _format_waveform(self, waveform):
+        # Accepts valid waveforms with varying structure
+        # and converts them to a standard format.
+
+        shape = np.shape(waveform)
+
+        # Check that waveform only contains two 1-d datasets.
+        if (len(shape) != 2) or (2 not in shape):
+            raise ValueError("Waveform could not be processed. "
+                             "Please check the format of your data.")
+
+        # Reshape waveforms structured as pairs of values.
+        if shape[1] == 2:
+            waveform = np.swapaxes(waveform, 0, 1)
+
+        # Ensure the time base is the second dataset.
+        # Time dataset is found by checking for continuosly increasing values.
+        if min(np.diff(waveform[0])) > 0:
+            waveform = waveform[::-1]
+        elif min(np.diff(waveform[1])) > 0:
+            waveform = waveform
+        else:
+            raise ValueError("Could not identify a sutiable time axis. "
+                             "Please ensure your time values never decrease.")
+     
+        return waveform
+
     def data(self, index):
         attr_name = self.attr_map[index]
         return getattr(self, attr_name)
@@ -270,70 +297,70 @@ class THzMeasurement():
         return waveform
 
     def _loadDotTHz(self, measurement):
-        """Load the data and metadata from a DotthzMeasurement Object."""
+        """Load the data and metadata from a measurement Object."""
 
         # Create metadata attributes.
-        metadata = getattr(measurement, "meta_data")
-        self.md_dict = getattr(metadata, "md")
-        self.ds_dict = getattr(measurement, "datasets")
-        self.user = getattr(metadata, "user")
-        self.description = getattr(metadata, "description")
-        self.instrument = getattr(metadata, "instrument")
-        self.time = getattr(metadata, "time")
-        self.date = getattr(metadata, "date")
+        metadata = getattr(measurement, "metadata")
+        md_mapping = metadata.mapping
 
-        # Create individual attributes for the first 4 custom metadata entries.
-        thicknesses = []
         self.md0 = 0.
-        i = 1
-        for k, v in self.md_dict.items():
+        thicknesses = []
+        md_count = 1
 
-            # Attempt to separate units from names.
-            split = k.split("(")
-            if len(split) > 1:
-                k = split[0].strip()
-                u = split[1][:-1]
-                setattr(self, "md" + str(i) + "_unit", u)
+        for k, v in md_mapping.items():
+            if v[0:2] == "md":
 
-                # Store thicknesses with index.
-                if u[-1] == "m":
-                    thicknesses.append((i, v))
+                # Attempt to separate units from names.
+                split = k.split("(")
+                if len(split) > 1:
+                    name = split[0].strip()
+                    unit = split[1][:-1]
+                    setattr(self, v + "_unit", unit)
+                    setattr(self, v + "_description", name)
 
+                    # Store thicknesses with index.
+                    if unit[-1] == "m":
+                        thicknesses.append((md_count, metadata[k]))
+
+                else:
+                    setattr(self, v + "_unit", "")
+                    setattr(self, v + "_description", k)
+
+                setattr(self, v, metadata[k])
+                md_count += 1
             else:
-                setattr(self, "md" + str(i) + "_unit", "")
-
-            setattr(self, "md" + str(i) + "_description", k)
-            setattr(self, "md" + str(i), v)
-            i += 1
-            if i > 5:
-                break
+                setattr(self, v, metadata[k])
 
         # If there are less than 4 metadata entries top up with empty ones.
-        while i < 5:
-            setattr(self, "md" + str(i) + "_description", None)
-            setattr(self, "md" + str(i) + "_unit", None)
-            setattr(self, "md" + str(i), None)
-            i += 1
+        while md_count < 5:
+            setattr(self, "md" + str(md_count) + "_description", None)
+            setattr(self, "md" + str(md_count) + "_unit", None)
+            setattr(self, "md" + str(md_count), None)
+            md_count += 1
 
-        # Create individual attributes for the first 4 datasets.
+        # Create dataset attributes
         peak_times = []
         self.ds0 = [None, None]
-        i = 1
-        for k, v in self.ds_dict.items():
-            setattr(self, "ds" + str(i) + "_description", k)
-            setattr(self, "ds" + str(i), self._formatDS(v))
+
+        datasets = getattr(measurement, "datasets")
+        ds_mapping = datasets.mapping
+
+        ds_count = 1
+        for k, v in ds_mapping.items():
+            ds = np.array(datasets[k])
+            setattr(self, v, self._format_waveform(ds))
+            setattr(self, v + "_description", k)
 
             # Store peak times and index for each dataset.
-            time, _, _ = primary_peak(v)
-            peak_times.append((i, time))
+            time, _, _ = primary_peak(ds)
+            peak_times.append((ds_count, time))
+            ds_count += 1
 
-            i += 1
-            if i > 5:
-                break
-        while i < 5:
-            setattr(self, "ds" + str(i) + "_description", None)
-            setattr(self, "ds" + str(i), None)
-            i += 1
+        # If there are less than 3 datasets top up with empty ones.
+        while ds_count < 4:
+            setattr(self, "ds" + str(ds_count) + "_description", None)
+            setattr(self, "ds" + str(ds_count), None)
+            ds_count += 1
 
         # Attempt to order datasets using peak time
         peak_times.sort(key=lambda pair: pair[1], reverse=True)
@@ -427,8 +454,7 @@ class THzDataModel(QAbstractTableModel):
     def __init__(self):
         super().__init__()
         self._measurements = []
-        self._column_count = len(THzMeasurement("temp",
-                                                DotthzMeasurement()).attr_map)
+        self._column_count = 27
 
     def rowCount(self, column):
         return len(self.measurements())
