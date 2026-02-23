@@ -315,6 +315,7 @@ class THzMeasurement():
                 if len(split) > 1:
                     name = split[0].strip()
                     unit = split[1][:-1]
+                    unit = unit.replace("μ", "u")
                     setattr(self, v + "_unit", unit)
                     setattr(self, v + "_description", name)
 
