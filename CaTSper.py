@@ -172,8 +172,8 @@ class MainWindow(QMainWindow):
         ref_index = self.tab_td.ds_settings.setting("Reference")
         baseline_index = self.tab_td.ds_settings.setting("Baseline")
         st_index = self.tab_td.md_settings.setting("Sample_Thickness")
-        rt_index = self.tab_td.md_settings.setting("Thickness_Difference")
-        t_dif = self.tab_td.md_settings.setting("Reference_Thickness")
+        rt_index = self.tab_td.md_settings.setting("Reference_Thickness")
+        t_dif = self.tab_td.md_settings.setting("Thickness_Difference")
         half_width = self.tab_td.fft_settings.setting("Half-Width")
         win_func = self.tab_td.fft_settings.setting("Window_Function")
         t_unit = self.tab_td.md_settings.setting("Thickness_Unit")
@@ -195,20 +195,20 @@ class MainWindow(QMainWindow):
 
             # Acquire sample and reference thickness if they exist, else set 0.
             if st_index:
-                sample_thickness = getattr(measurement, "md" + str(st_index))
+                sample_thickness = float(getattr(measurement, "md" + str(st_index)))
             else:
                 sample_thickness = 0
 
             if rt_index:
-                ref_thickness = getattr(measurement, "md" + str(rt_index))
+                ref_thickness = float(getattr(measurement, "md" + str(rt_index)))
             else:
                 ref_thickness = 0.
 
             # Calcualte thickness difference is requestes
             if t_dif:
-                thickness = sample_thickness - ref_thickness
-            else:
                 thickness = sample_thickness
+            else:
+                thickness = sample_thickness - ref_thickness
 
             # Apply window function to samples.
             # If no baseline is selected by user set it to None and ignore it.
