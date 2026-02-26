@@ -435,11 +435,9 @@ class THzMeasurement():
             waveforms["baseline"] = getattr(self, "ds" + str(baseline_index))
 
         # Delete None datasets.
-        for k, v in waveforms.items():
-            if v is None:
-                del waveforms[k]
+        waveforms_out = {k: v for k, v in waveforms.items() if v is not None}
 
-        return waveforms
+        return waveforms_out
 
 
 class THzDataModel(QAbstractTableModel):
