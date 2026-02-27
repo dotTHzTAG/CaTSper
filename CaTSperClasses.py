@@ -373,7 +373,7 @@ class THzMeasurement():
             self.sample_index = peak_times[0][0]
             self.etalon = float(peak_times[0][1])
             if len(peak_times) > 1:
-                self.reference_index = peak_times[-1][0]
+                self.reference_index = peak_times[1][0]
                 peak_delay = peak_times[0][1] - peak_times[-1][1]
                 self.etalon += float(2*peak_delay)
                 if len(peak_times) > 2:
@@ -435,11 +435,9 @@ class THzMeasurement():
             waveforms["baseline"] = getattr(self, "ds" + str(baseline_index))
 
         # Delete None datasets.
-        for k, v in waveforms.items():
-            if v is None:
-                del waveforms[k]
+        waveforms_out = {k: v for k, v in waveforms.items() if v is not None}
 
-        return waveforms
+        return waveforms_out
 
 
 class THzDataModel(QAbstractTableModel):

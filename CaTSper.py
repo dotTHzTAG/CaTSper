@@ -3,6 +3,7 @@ import sys
 import copy
 from pathlib import Path
 import pyqtgraph
+import numpy as np
 from thzpy.timedomain import common_window
 from thzpy.transferfunctions import (uniform_slab,
                                      binary_mixture)
@@ -193,6 +194,15 @@ class MainWindow(QMainWindow):
                                                  ref_index,
                                                  baseline_index)
 
+            # Check that all datasets were found.
+            if len(waveforms) != max([sample_index,
+                                      ref_index,
+                                      baseline_index]):
+                raise Exception("""
+                                Selected waveform does not exist within
+                                measurements. Please check your dataset
+                                information.""")
+
             # Acquire sample and reference thickness if they exist, else set 0.
             if st_index:
                 sample_thickness = float(getattr(measurement, "md" + str(st_index)))
@@ -212,6 +222,7 @@ class MainWindow(QMainWindow):
 
             # Apply window function to samples.
             # If no baseline is selected by user set it to None and ignore it.
+            # If there is baseline and no reference use baseline as reference.
             if "baseline" not in waveforms.keys():
                 sample = waveforms["sample"]
                 reference = waveforms["reference"]
@@ -220,6 +231,15 @@ class MainWindow(QMainWindow):
                                                    reference],
                                                   half_width,
                                                   win_func)
+            elif "reference" not in waveforms.keys():
+                sample = waveforms["sample"]
+                reference = waveforms["baseline"]
+                baseline = waveforms["baseline"]
+                sample, reference, baseline = common_window([sample,
+                                                             reference,
+                                                             baseline],
+                                                            half_width,
+                                                            win_func)
             else:
                 sample = waveforms["sample"]
                 reference = waveforms["reference"]
@@ -267,6 +287,9 @@ class MainWindow(QMainWindow):
                                               "reference": reference}
             if baseline is not None:
                 optical_constants["waveforms"]["baseline"] = baseline
+
+            # Add absorbance to optical constants.
+            optical_constants["absorbance"] = 2 - np.log10(optical_constants["transmission_amplitude"])
 
             # Copy measurement and add optical constants to it.
             transformed_measurement = copy.deepcopy(measurement)

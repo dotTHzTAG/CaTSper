@@ -705,8 +705,7 @@ Index</string>
                <enum>Qt::StrongFocus</enum>
               </property>
               <property name="text">
-               <string>Transmission
-Intensity</string>
+               <string>Absorbance</string>
               </property>
               <property name="checkable">
                <bool>true</bool>
@@ -715,13 +714,13 @@ Intensity</string>
                <bool>true</bool>
               </property>
               <property name="plotProperty" stdset="0">
-               <string>transmission_intensity</string>
+               <string>absorbance</string>
               </property>
               <property name="xLabel" stdset="0">
                <string>Frequency (THz)</string>
               </property>
               <property name="yLabel" stdset="0">
-               <string>Transmission Intensity</string>
+               <string>Absorbance</string>
               </property>
               <property name="plotLog" stdset="0">
                <bool>true</bool>
