@@ -3,6 +3,7 @@ import sys
 import copy
 from pathlib import Path
 import pyqtgraph
+import numpy as np
 from thzpy.timedomain import common_window
 from thzpy.transferfunctions import (uniform_slab,
                                      binary_mixture)
@@ -286,6 +287,9 @@ class MainWindow(QMainWindow):
                                               "reference": reference}
             if baseline is not None:
                 optical_constants["waveforms"]["baseline"] = baseline
+
+            # Add absorbance to optical constants.
+            optical_constants["absorbance"] = 2 - np.log10(optical_constants["transmission_amplitude"])
 
             # Copy measurement and add optical constants to it.
             transformed_measurement = copy.deepcopy(measurement)
