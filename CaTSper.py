@@ -3,6 +3,7 @@ import sys
 import copy
 from pathlib import Path
 import pyqtgraph
+import numpy as np
 from thzpy.timedomain import common_window
 from thzpy.transferfunctions import (uniform_slab,
                                      binary_mixture)
@@ -127,6 +128,13 @@ class MainWindow(QMainWindow):
                                                ds.sample_thickness)
             self.tab_td.md_settings.setSetting("Reference_Thickness",
                                                ds.reference_thickness)
+            if ds.sample_thickness != 0:
+                unit_field = "md" + str(ds.sample_thickness) + "_unit"
+                self.tab_td.md_settings.setSetting("Thickness_Unit",
+                                                   getattr(ds, unit_field))
+                if ds.reference_thickness != 0:
+                    self.tab_td.md_settings.setSetting("Thickness_Difference",
+                                                       False)
             self.td_model.layoutChanged.emit()
 
     def clearMemory(self):
@@ -166,6 +174,7 @@ class MainWindow(QMainWindow):
         baseline_index = self.tab_td.ds_settings.setting("Baseline")
         st_index = self.tab_td.md_settings.setting("Sample_Thickness")
         rt_index = self.tab_td.md_settings.setting("Reference_Thickness")
+        t_dif = self.tab_td.md_settings.setting("Thickness_Difference")
         half_width = self.tab_td.fft_settings.setting("Half-Width")
         win_func = self.tab_td.fft_settings.setting("Window_Function")
         t_unit = self.tab_td.md_settings.setting("Thickness_Unit")
@@ -185,19 +194,35 @@ class MainWindow(QMainWindow):
                                                  ref_index,
                                                  baseline_index)
 
+            # Check that all datasets were found.
+            if len(waveforms) != max([sample_index,
+                                      ref_index,
+                                      baseline_index]):
+                raise Exception("""
+                                Selected waveform does not exist within
+                                measurements. Please check your dataset
+                                information.""")
+
             # Acquire sample and reference thickness if they exist, else set 0.
             if st_index:
-                sample_thickness = getattr(measurement, "md" + str(st_index))
+                sample_thickness = float(getattr(measurement, "md" + str(st_index)))
             else:
                 sample_thickness = 0
 
             if rt_index:
-                ref_thickness = getattr(measurement, "md" + str(rt_index))
+                ref_thickness = float(getattr(measurement, "md" + str(rt_index)))
             else:
                 ref_thickness = 0.
 
+            # Calcualte thickness difference is requestes
+            if t_dif:
+                thickness = sample_thickness
+            else:
+                thickness = sample_thickness - ref_thickness
+
             # Apply window function to samples.
             # If no baseline is selected by user set it to None and ignore it.
+            # If there is baseline and no reference use baseline as reference.
             if "baseline" not in waveforms.keys():
                 sample = waveforms["sample"]
                 reference = waveforms["reference"]
@@ -206,6 +231,15 @@ class MainWindow(QMainWindow):
                                                    reference],
                                                   half_width,
                                                   win_func)
+            elif "reference" not in waveforms.keys():
+                sample = waveforms["sample"]
+                reference = waveforms["baseline"]
+                baseline = waveforms["baseline"]
+                sample, reference, baseline = common_window([sample,
+                                                             reference,
+                                                             baseline],
+                                                            half_width,
+                                                            win_func)
             else:
                 sample = waveforms["sample"]
                 reference = waveforms["reference"]
@@ -219,7 +253,7 @@ class MainWindow(QMainWindow):
             # Apply transfer function.
             match tran_func:
                 case "uniform_slab":
-                    optical_constants = uniform_slab(sample_thickness,
+                    optical_constants = uniform_slab(thickness,
                                                      sample, reference,
                                                      t_unit,
                                                      1.,
@@ -253,6 +287,9 @@ class MainWindow(QMainWindow):
                                               "reference": reference}
             if baseline is not None:
                 optical_constants["waveforms"]["baseline"] = baseline
+
+            # Add absorbance to optical constants.
+            optical_constants["absorbance"] = 2 - np.log10(optical_constants["transmission_amplitude"])
 
             # Copy measurement and add optical constants to it.
             transformed_measurement = copy.deepcopy(measurement)
